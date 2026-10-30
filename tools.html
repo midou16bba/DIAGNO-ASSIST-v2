@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختر أداة التقييم | DIAGNO-ASSIST</title>
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{--blue:#2563eb;--blue-deep:#1d4ed8;--blue-light:#60a5fa;--sky:#06b6d4;--ink:#0b1c3f;--muted:#5b6b8c;--line:#e3ecfe;--bg:#fff;--golden:#f59e0b;--golden-deep:#d97706}
+        body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;overflow-x:hidden}
+        .container{width:auto;max-width:none;padding-inline:3%}
+
+        /* ===== Header ===== */
+        header.nav{background:linear-gradient(135deg,#0b1c3f 0%,#16337a 50%,#1d4ed8 100%);position:sticky;top:0;z-index:100;box-shadow:0 8px 32px rgba(11,28,63,.35)}
+        .nav-inner{display:flex;align-items:center;justify-content:space-between;height:96px;gap:24px}
+        .brand{display:flex;align-items:center;gap:16px;text-decoration:none;flex-shrink:0}
+        .brand-logo{width:64px;height:64px;border-radius:20px;object-fit:cover;box-shadow:0 10px 26px rgba(37,99,235,.30),0 0 0 4px rgba(37,99,235,.08)}
+        .brand-text{line-height:1.15}
+        .brand-name{display:block;font-size:27px;font-weight:900;letter-spacing:.5px;background:linear-gradient(120deg,var(--blue-deep),var(--blue) 55%,var(--sky));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .brand-sub{display:block;font-size:13.5px;font-weight:700;color:#c8daff}
+        .nav-links{display:flex;gap:32px}
+        .nav-links a{color:#d6e4ff;text-decoration:none;font-weight:700;font-size:15px;position:relative;padding-block:8px;transition:color .25s}
+        .nav-links a::after{content:'';position:absolute;bottom:0;right:0;width:0;height:3px;border-radius:3px;background:linear-gradient(90deg,#22d3ee,#60a5fa);transition:width .3s}
+        .nav-links a:hover{color:#fff}
+        .nav-links a:hover::after{width:100%}
+        .nav-links .ico{margin-inline-start:4px}
+        .btn{display:inline-flex;align-items:center;gap:8px;font-family:inherit;font-weight:700;border:none;border-radius:14px;cursor:pointer;text-decoration:none;transition:all .25s cubic-bezier(.4,0,.2,1)}
+        .btn-primary{background:linear-gradient(135deg,var(--blue),var(--blue-deep));color:#fff;padding:14px 34px;font-size:16px;box-shadow:0 6px 20px rgba(37,99,235,.35)}
+        .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(37,99,235,.45)}
+        .nav-cta{padding:12px 28px;font-size:15px;border-radius:14px}
+
+        /* ===== Page Hero ===== */
+        .page-hero{background:linear-gradient(135deg,#0b1c3f 0%,#16337a 40%,#1d4ed8 100%);padding:28px 0 32px;text-align:center;color:#fff;position:relative;overflow:hidden}
+        .page-hero::before{content:'';position:absolute;top:-40%;right:-10%;width:400px;height:400px;background:radial-gradient(circle,rgba(255,255,255,.06) 0%,transparent 70%);border-radius:50%}
+        .page-hero::after{content:'';position:absolute;bottom:-30%;left:5%;width:300px;height:300px;background:radial-gradient(circle,rgba(255,255,255,.04) 0%,transparent 70%);border-radius:50%}
+        .breadcrumb{display:flex;align-items:center;justify-content:center;gap:8px;font-size:12.5px;color:rgba(255,255,255,.6);margin-bottom:8px;position:relative;z-index:1}
+        .breadcrumb a{color:rgba(255,255,255,.7);text-decoration:none;transition:color .2s}
+        .breadcrumb a:hover{color:#fff}
+        .breadcrumb .sep{margin:0 4px}
+        .page-hero h1{font-size:clamp(25px,3.4vw,33px);font-weight:900;margin-bottom:8px;position:relative;z-index:1}
+        .page-hero p{font-size:15px;color:rgba(255,255,255,.75);max-width:500px;margin:0 auto;position:relative;z-index:1}
+
+        /* ===== Back Button ===== */
+        .back-btn{display:inline-flex;align-items:center;gap:8px;color:rgba(255,255,255,.8);text-decoration:none;font-weight:700;font-size:13.5px;padding:6px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);backdrop-filter:blur(4px);transition:all .25s;margin-top:10px;position:relative;z-index:1}
+        .back-btn:hover{background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.35)}
+
+        /* ===== Tool Cards Section ===== */
+        .tools-section{padding:30px 0 56px}
+        .tools-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;max-width:960px;margin:0 auto;align-items:stretch}
+
+        /* ===== Tool Card ===== */
+        .tool-card{border-radius:22px;padding:0;border:none;position:relative;overflow:hidden;transition:all .4s cubic-bezier(.4,0,.2,1);cursor:pointer;text-decoration:none;color:inherit;display:block;min-height:0}
+        .tool-card:hover{transform:translateY(-8px);box-shadow:0 24px 60px rgba(37,99,235,.2)}
+
+        /* Card background with gradient wave */
+        .tool-card-bg{position:absolute;inset:0;background:#f0f4ff;border-radius:24px;overflow:hidden}
+        .tool-card-bg::before{content:'';position:absolute;top:-60px;left:-60px;width:280px;height:280px;background:radial-gradient(circle,rgba(37,99,235,.15) 0%,transparent 70%);border-radius:50%}
+        .tool-card-bg::after{content:'';position:absolute;bottom:-80px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(6,182,212,.1) 0%,transparent 70%);border-radius:50%}
+
+        /* Purple variant for التشخيص الفارقي */
+        .tool-card.purple .tool-card-bg{background:linear-gradient(135deg,#f0f0ff 0%,#e8e0ff 100%)}
+        .tool-card.purple .tool-card-bg::before{background:radial-gradient(circle,rgba(124,58,237,.12) 0%,transparent 70%)}
+        .tool-card.purple .tool-card-bg::after{background:radial-gradient(circle,rgba(139,92,246,.08) 0%,transparent 70%)}
+
+        /* Blue variant for حساب الشدة */
+        .tool-card.blue .tool-card-bg{background:linear-gradient(135deg,#f0f7ff 0%,#e0f0ff 100%)}
+        .tool-card.blue .tool-card-bg::before{background:radial-gradient(circle,rgba(37,99,235,.12) 0%,transparent 70%)}
+        .tool-card.blue .tool-card-bg::after{background:radial-gradient(circle,rgba(6,182,212,.08) 0%,transparent 70%)}
+
+        /* Green variant for إضافة مقياس */
+        .tool-card.green .tool-card-bg{background:linear-gradient(135deg,#f0fdf4 0%,#dcfce7 100%)}
+        .tool-card.green .tool-card-bg::before{background:radial-gradient(circle,rgba(22,163,74,.12) 0%,transparent 70%)}
+        .tool-card.green .tool-card-bg::after{background:radial-gradient(circle,rgba(34,197,94,.08) 0%,transparent 70%)}
+
+        /* Cyan variant for ملفات المرضى */
+        .tool-card.cyan .tool-card-bg{background:linear-gradient(135deg,#ecfeff 0%,#cffafe 100%)}
+        .tool-card.cyan .tool-card-bg::before{background:radial-gradient(circle,rgba(6,182,212,.12) 0%,transparent 70%)}
+        .tool-card.cyan .tool-card-bg::after{background:radial-gradient(circle,rgba(14,165,233,.08) 0%,transparent 70%)}
+
+        /* Decorative wave shape */
+        .tool-card-wave{position:absolute;top:0;left:0;right:0;height:120px;overflow:hidden;pointer-events:none}
+        .tool-card.purple .tool-card-wave{background:linear-gradient(135deg,#7c3aed 0%,#6d28d9 50%,#8b5cf6 100%);clip-path:polygon(0 0,100% 0,100% 40%,60% 100%,0 80%);opacity:.9}
+        .tool-card.blue .tool-card-wave{background:linear-gradient(135deg,#2563eb 0%,#1d4ed8 50%,#3b82f6 100%);clip-path:polygon(0 0,100% 0,100% 80%,40% 100%,0 50%);opacity:.9}
+        .tool-card.green .tool-card-wave{background:linear-gradient(135deg,#16a34a 0%,#15803d 50%,#22c55e 100%);clip-path:polygon(0 0,100% 0,100% 50%,70% 100%,0 75%);opacity:.9}
+        .tool-card.cyan .tool-card-wave{background:linear-gradient(135deg,#06b6d4 0%,#0891b2 50%,#22d3ee 100%);clip-path:polygon(0 0,100% 0,100% 55%,65% 100%,0 70%);opacity:.9}
+
+        /* Content wrapper */
+        .tool-card-content{position:relative;z-index:2;padding:22px 20px 20px;display:flex;flex-direction:column;height:100%}
+
+        /* Icon area */
+        .tool-icon-wrap{display:flex;justify-content:center;margin-bottom:12px}
+        .tool-icon{width:84px;height:84px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:42px;margin-bottom:0;background:rgba(255,255,255,.9);box-shadow:0 8px 32px rgba(0,0,0,.1);border:3px solid rgba(255,255,255,.8);transition:transform .4s cubic-bezier(.4,0,.2,1);font-family:'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji','Segoe UI Symbol',sans-serif;line-height:1}
+        .tool-card:hover .tool-icon{transform:scale(1.08)}
+
+        .tool-card h3{font-size:22px;font-weight:900;color:var(--ink);margin-bottom:6px;text-align:center}
+        .tool-card.purple h3{color:#4c1d95}
+        .tool-card.blue h3{color:#1e40af}
+        .tool-card.green h3{color:#166534}
+        .tool-card.cyan h3{color:#155e75}
+        .tool-card p{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:14px;text-align:center}
+
+        /* Decorative line */
+        .tool-card-line{width:36px;height:3px;border-radius:3px;margin:0 auto 14px}
+        .tool-card.purple .tool-card-line{background:linear-gradient(90deg,#7c3aed,#a78bfa)}
+        .tool-card.blue .tool-card-line{background:linear-gradient(90deg,#2563eb,#60a5fa)}
+        .tool-card.green .tool-card-line{background:linear-gradient(90deg,#16a34a,#22c55e)}
+        .tool-card.cyan .tool-card-line{background:linear-gradient(90deg,#06b6d4,#67e8f9)}
+
+        /* Steps — 2x2 grid with icons */
+        .tool-steps{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;flex:1}
+        .tool-step{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:var(--ink);background:rgba(255,255,255,.8);backdrop-filter:blur(8px);padding:6px 9px;border-radius:10px;border:1px solid rgba(226,232,240,.6);transition:all .2s}
+        .tool-step:hover{background:#fff;transform:translateX(-3px);box-shadow:0 4px 12px rgba(0,0,0,.06)}
+        .tool-step-icon{width:25px;height:25px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12.5px;flex-shrink:0;font-family:'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji','Segoe UI Symbol',sans-serif;line-height:1}
+        .tool-card.purple .tool-step-icon{background:linear-gradient(135deg,#ede9fe,#ddd6fe);color:#7c3aed}
+        .tool-card.blue .tool-step-icon{background:linear-gradient(135deg,#dbeafe,#bfdbfe);color:#2563eb}
+        .tool-card.green .tool-step-icon{background:linear-gradient(135deg,#dcfce7,#bbf7d0);color:#16a34a}
+        .tool-card.cyan .tool-step-icon{background:linear-gradient(135deg,#cffafe,#a5f3fc);color:#0e7490}
+        .tool-step-text{flex:1;min-width:0}
+        .tool-step-arrow{color:var(--blue-light);font-size:14px;margin-inline-start:auto;flex-shrink:0}
+
+        /* Button — gradient with pulse line */
+        .tool-btn-wrap{position:relative;margin-top:auto}
+        .tool-btn{display:flex;align-items:center;justify-content:center;gap:10px;font-family:inherit;font-weight:900;font-size:14.5px;color:#fff;border:none;padding:12px 20px;border-radius:14px;cursor:pointer;transition:all .3s cubic-bezier(.4,0,.2,1);box-shadow:0 6px 24px rgba(0,0,0,.15);text-decoration:none;width:100%;position:relative;overflow:hidden}
+        .tool-card.purple .tool-btn{background:linear-gradient(135deg,#7c3aed,#6d28d9);box-shadow:0 6px 24px rgba(124,58,237,.3)}
+        .tool-card.blue .tool-btn{background:linear-gradient(135deg,#2563eb,#1d4ed8);box-shadow:0 6px 24px rgba(37,99,235,.3)}
+        .tool-card.green .tool-btn{background:linear-gradient(135deg,#16a34a,#15803d);box-shadow:0 6px 24px rgba(22,163,74,.3)}
+        .tool-card.cyan .tool-btn{background:linear-gradient(135deg,#06b6d4,#0891b2);box-shadow:0 6px 24px rgba(6,182,212,.3)}
+        .tool-btn:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(0,0,0,.2)}
+        .tool-btn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);transition:left .5s}
+        .tool-card:hover .tool-btn::before{left:100%}
+
+        /* Pulse line decoration */
+        .tool-pulse{position:absolute;top:50%;right:20px;transform:translateY(-50%);opacity:.3;pointer-events:none}
+        .tool-pulse svg{width:60px;height:24px}
+
+        /* ===== Footer ===== */
+        .footer{background:var(--ink);color:#fff;padding:56px 0 0}
+        .footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:36px}
+        .footer-brand{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+        .footer-brand img{width:54px;height:54px;border-radius:16px;object-fit:cover}
+        .footer-brand .fname{font-size:21px;font-weight:900;background:linear-gradient(120deg,var(--blue),var(--sky));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .footer-brand .fsub{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+        .footer-col p{font-size:14px;color:#94a3b8;line-height:1.9}
+        .footer-col h4{font-size:16px;font-weight:800;margin-bottom:18px;color:#fff}
+        .footer-col a{display:block;color:#94a3b8;text-decoration:none;font-size:14px;padding:5px 0;transition:color .2s}
+        .footer-col a:hover{color:var(--blue-light)}
+        .footer-bottom{text-align:center;padding:22px 0;margin-top:40px;border-top:1px solid rgba(255,255,255,.08);font-size:13px;color:#64748b}
+
+        /* ===== Responsive ===== */
+        /* Short windows: compact chrome and hide the decorative step chips so all four tools stay visible */
+        @media(max-height:900px){
+            .tool-steps{display:none}
+            .page-hero{padding:16px 0 20px}
+            .breadcrumb{margin-bottom:6px}
+            .back-btn{margin-top:6px;padding:5px 14px}
+            .tools-section{padding:20px 0 44px}
+        }
+        @media(max-height:720px){
+            .breadcrumb,.back-btn{display:none}
+            .page-hero{padding:12px 0 14px}
+            .page-hero h1{font-size:22px;margin:0}
+        }
+        @media(max-height:640px){
+            .tool-card p{display:none}
+            .tool-card-content{padding:16px}
+            .tool-icon{width:64px;height:64px;font-size:30px}
+            .tool-icon-wrap{margin-bottom:8px}
+            .tools-section{padding:14px 0 28px}
+            .tools-grid{gap:14px}
+        }
+        @media(max-height:540px){
+            .page-hero{display:none}
+            .tools-section{padding:14px 0 24px}
+        }
+        @media(max-width:1020px){
+            .nav-links{display:none}
+            .nav-inner{padding-inline:4%}
+        }
+        @media(max-width:620px){
+            .nav-inner{height:auto;min-height:72px;padding-inline:2%;gap:8px}
+            .brand-logo{width:40px;height:40px;border-radius:12px}
+            .brand-name{font-size:16px}
+            .brand-sub{font-size:9.5px}
+            .brand{gap:8px}
+            .nav-cta{padding:8px 12px;font-size:12px;border-radius:8px}
+            .page-hero{padding:22px 0 26px}
+            .page-hero h1{font-size:23px}
+            .page-hero p{font-size:14px}
+            .tools-section{padding:24px 0 44px}
+            .tools-grid{grid-template-columns:1fr;gap:16px;padding:0 14px}
+            .tool-card{min-height:auto}
+            .tool-card-content{padding:20px 16px 18px}
+            .tool-icon{width:72px;height:72px;font-size:36px}
+            .tool-card h3{font-size:20px}
+            .tool-card p{font-size:12.5px}
+            .tool-steps{gap:7px}
+            .tool-step{padding:6px 9px;font-size:11.5px}
+            .tool-btn{padding:11px 18px;font-size:14px}
+            .footer-grid{grid-template-columns:1fr;gap:28px}
+        }
+        @media(max-width:430px){
+            .tool-steps{grid-template-columns:1fr}
+            .tool-step{padding:6px 8px;font-size:11px}
+            .tool-btn{padding:10px 14px;font-size:13px}
+            .tool-card-content{padding:18px 14px 16px}
+            .tool-icon{width:64px;height:64px;font-size:30px}
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== شريط التنقل ===== -->
+    <header class="nav">
+        <div class="container nav-inner">
+            <a class="brand" href="index.html">
+                <img class="brand-logo" src="logo.jpg" alt="DIAGNO-ASSIST">
+                <span class="brand-text">
+                    <span class="brand-name">DIAGNO-ASSIST</span>
+                    <span class="brand-sub">للأخصائيين النفسيين</span>
+                </span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html"><span class="ico">🏠</span> الرئيسية</a>
+                <a href="index.html#how"><span class="ico">🔬</span> كيف يعمل</a>
+                <a href="index.html#features"><span class="ico">🩺</span> المميزات</a>
+                <a href="pricing.html"><span class="ico">💰</span> الأسعار</a>
+            </nav>
+            <button class="btn btn-primary nav-cta" id="authBtn">تسجيل الدخول</button>
+        </div>
+    </header>
+
+    <!-- ===== Hero ===== -->
+    <section class="page-hero">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="index.html">الرئيسية</a>
+                <span class="sep">←</span>
+                <span>اختر أداة التقييم</span>
+            </div>
+            <h1>اختر أداة التقييم</h1>
+            <a href="index.html" class="back-btn">← العودة للرئيسية</a>
+        </div>
+    </section>
+
+    <!-- ===== Tools ===== -->
+    <section class="tools-section">
+        <div class="tools-grid">
+
+            <!-- التشخيص الفارقي -->
+            <a href="patient.html" class="tool-card purple">
+                <div class="tool-card-bg"></div>
+                <div class="tool-card-wave"></div>
+                <div class="tool-card-content">
+                    <div class="tool-icon-wrap">
+                        <div class="tool-icon">🧠</div>
+                    </div>
+                    <h3>التشخيص الفارقي</h3>
+                    <div class="tool-card-line"></div>
+                    <p>ابدأ رحلة تقييم متكاملة من ملف المريض إلى النتيجة والتقرير التشخيصي.</p>
+                    <div class="tool-steps">
+                        <div class="tool-step">
+                            <span class="tool-step-icon">📋</span>
+                            <span class="tool-step-text">التشخيص الفارقي</span>
+                            <span class="tool-step-arrow">←</span>
+                        </div>
+                        <div class="tool-step">
+                            <span class="tool-step-icon">📁</span>
+                            <span class="tool-step-text">ملفات المرضى</span>
+                            <span class="tool-step-arrow">←</span>
+                        </div>
+                        <div class="tool-step">
+                            <span class="tool-step-icon">🔍</span>
+                            <span class="tool-step-text">الاختبار</span>
+                            <span class="tool-step-arrow">←</span>
+                        </div>
+                        <div class="tool-step">
+                            <span class="tool-step-icon">📊</span>
+                            <span class="tool-step-text">التقييم النهائي</span>
+                            <span class="tool-step-arrow">←</span>
+                        </div>
+                    </div>
+                    <div class="tool-btn-wrap">
+                        <span class="tool-btn">ابدأ التشخيص الفارقي ←</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- حساب الشدة -->
+            <a href="tools-severity-scale.html" class="tool-card blue">
+                <div class="tool-card-bg"></div>
+                <div class="tool-card-wave"></div>
+                <div class="tool-card-content">
+                    <div class="tool-icon-wrap">
+                        <div class="tool-icon">📊</div>
+                    </div>
+                    <h3>حساب الشدة</h3>
+                    <div class="tool-card-line"></div>
+                    <p>قياس شدة الأعراض باستخدام الاختبارات والمقاييس المناسبة لمعرفة مستوى الخطورة.</p>
+                    <div class="tool-steps">
+                        <div class="tool-step">
+                            <span class="tool-step-icon">📋</span>
+                            <span class="tool-step-text">اختر المقياس</span>
+                            <span class="tool-step-arrow">←</span>
+                        </div>
+                        <div class="tool-step">
+                            <span class="tool-step-icon">📁</span>
+                            <span class="tool-step-text">ملفات المرضى</span>
+                            <span class="tool-step-arrow">←</span>
+                        </div>
+                        <div class="tool-step">
+                            <span class="tool-step-icon">📝</span>
+                            <span class="tool-step-text">تطبيق الاختبار</span>
+                            <span class="tool-step-arrow">←</span>
+                        </div>
+                        <div class="tool-step">
+                            <span class="tool-step-icon">📈</span>
+                            <span class="tool-step-text">ملخص التقييم</span>
+                            <span class="tool-step-arrow">←</span>
+                        </div>
+                    </div>
+                    <div class="tool-btn-wrap">
+                        <span class="tool-btn">ابدأ حساب الشدة ←</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- إضافة مقياس -->
+            <a href="scale-builder.html" class="tool-card green">
+                <div class="tool-card-bg"></div>
+                <div class="tool-card-wave"></div>
+                <div class="tool-card-content">
+                    <div class="tool-icon-wrap">
+                        <div class="tool-icon">➕</div>
+                    </div>
+                    <h3>إضافة مقياس</h3>
+                    <div class="tool-card-line"></div>
+                    <p>إنشاء مقاييس نفسية مخصصة بأسئلة وخيارات إجابة وحدود شدة من تصميمك.</p>
+                    <div class="tool-steps">
+                        <div class="tool-step">
+                            <span class="tool-step-icon">📝</span>
+                            <span class="tool-step-text">بيانات المقياس</span>
+                            <span class="tool-step-arrow">←</span>
+                        </div>
+                        <div class="tool-step">
+                            <span class="tool-step-icon">❓</span>
+                            <span class="tool-step-text">الأسئلة والبنود</span>
+                            <span class="tool-step-arrow">←</span>
+                        </div>
+                        <div class="tool-step">
+                            <span class="tool-step-icon">☑️</span>
+                            <span class="tool-step-text">خيارات الإجابة</span>
+                            <span class="tool-step-arrow">←</span>
+                        </div>
+                        <div class="tool-step">
+                            <span class="tool-step-icon">📊</span>
+                            <span class="tool-step-text">حدود الشدة</span>
+                        </div>
+                    </div>
+                    <div class="tool-btn-wrap">
+                        <span class="tool-btn">إنشاء مقياس جديد ←</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- ملفات المرضى -->
+            <a href="patient-files.html" class="tool-card cyan">
+                <div class="tool-card-bg"></div>
+                <div class="tool-card-wave"></div>
+                <div class="tool-card-content">
+                    <div class="tool-icon-wrap">
+                        <div class="tool-icon">📁</div>
+                    </div>
+                    <h3>ملفات المرضى</h3>
+                    <div class="tool-card-line"></div>
+                    <p>ملف لكل مريض يجمع جلسات التقييم ونتائجها وملاحظاتك المهنية في مكان واحد.</p>
+                    <div class="tool-steps">
+                        <div class="tool-step">
+                            <span class="tool-step-icon">🗂</span>
+                            <span class="tool-step-text">قائمة الملفات</span>
+                            <span class="tool-step-arrow">←</span>
+                        </div>
+                        <div class="tool-step">
+                            <span class="tool-step-icon">👤</span>
+                            <span class="tool-step-text">معلومات المريض</span>
+                            <span class="tool-step-arrow">←</span>
+                        </div>
+                        <div class="tool-step">
+                            <span class="tool-step-icon">🔬</span>
+                            <span class="tool-step-text">جلسات التقييم</span>
+                            <span class="tool-step-arrow">←</span>
+                        </div>
+                        <div class="tool-step">
+                            <span class="tool-step-icon">📈</span>
+                            <span class="tool-step-text">ملخص النتائج</span>
+                            <span class="tool-step-arrow">←</span>
+                        </div>
+                    </div>
+                    <div class="tool-btn-wrap">
+                        <span class="tool-btn">فتح ملفات المرضى ←</span>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- ===== Footer ===== -->
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <div class="footer-brand">
+                    <img src="logo.jpg" alt="DIAGNO-ASSIST">
+                    <div>
+                        <span class="fname">DIAGNO-ASSIST</span>
+                        <span class="fsub">للأخصائيين النفسيين</span>
+                    </div>
+                </div>
+                <p>منصة رقمية متكاملة لمساعدتك في التشخيص والاختبارات وتتبع رحلة تعافي مرضاك.</p>
+            </div>
+            <div class="footer-col">
+                <h4>عن المنصة</h4>
+                <a href="#">من نحن</a>
+                <a href="index.html#features">مميزات المنصة</a>
+                <a href="index.html#how">كيف يعمل</a>
+                <a href="pricing.html">الأسعار</a>
+            </div>
+            <div class="footer-col">
+                <h4>المساعدة والدعم</h4>
+                <a href="#">الأسئلة الشائعة</a>
+                <a href="#">تواصل معنا</a>
+                <a href="#">مركز المساعدة</a>
+                <a href="#">دليل الاستخدام</a>
+            </div>
+            <div class="footer-col">
+                <h4>البنود القانونية</h4>
+                <a href="#">الشروط والأحكام</a>
+                <a href="#">سياسة الخصوصية</a>
+                <a href="#">إخلاء المسؤولية الطبية</a>
+            </div>
+        </div>
+        <div class="footer-bottom container">
+            © 2026 DIAGNO-ASSIST — جميع الحقوق محفوظة
+        </div>
+    </footer>
+
+    <script>
+        (function(){
+            var btn=document.getElementById('authBtn');
+            var u=JSON.parse(localStorage.getItem('diagUser')||'null');
+            if(u){btn.textContent=(u.isAdmin?'👨‍💼 ':'👤 ')+(u.isAdmin?'المدير':u.name);btn.onclick=function(){location.href='profile.html'}}
+            else{btn.onclick=function(){location.href='login.html'}}
+        })();
+    </script>
+</body>
+</html>

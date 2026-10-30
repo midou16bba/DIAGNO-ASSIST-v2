@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ملف المريض | DIAGNO-ASSIST</title>
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{--blue:#2563eb;--blue-deep:#1d4ed8;--blue-light:#60a5fa;--sky:#06b6d4;--ink:#0b1c3f;--muted:#5b6b8c;--line:#e3ecfe;--bg:#fff;--danger:#dc2626;--ok:#16a34a}
+        body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;background:#f0f4f8;color:var(--ink);min-height:100vh;overflow-x:hidden}
+        .container{width:auto;max-width:none;padding-inline:3%}
+        a{text-decoration:none;color:inherit}
+
+        header.nav{background:linear-gradient(135deg,#0b1c3f 0%,#16337a 50%,#1d4ed8 100%);position:sticky;top:0;z-index:100;box-shadow:0 8px 32px rgba(11,28,63,.35)}
+        .nav-inner{display:flex;align-items:center;justify-content:space-between;height:96px;gap:24px}
+        .brand{display:flex;align-items:center;gap:16px;text-decoration:none;flex-shrink:0}
+        .brand-logo{width:64px;height:64px;border-radius:20px;object-fit:cover;box-shadow:0 10px 26px rgba(37,99,235,.30),0 0 0 4px rgba(37,99,235,.08)}
+        .brand-name{display:block;font-size:27px;font-weight:900;letter-spacing:.5px;background:linear-gradient(120deg,var(--blue-deep),var(--blue) 55%,var(--sky));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .brand-sub{display:block;font-size:13.5px;font-weight:700;color:#c8daff}
+        .nav-links{display:flex;gap:32px}
+        .nav-links a{color:#d6e4ff;text-decoration:none;font-weight:700;font-size:15px;position:relative;padding-block:8px;transition:color .25s}
+        .nav-links a::after{content:'';position:absolute;bottom:0;right:0;width:0;height:3px;border-radius:3px;background:linear-gradient(90deg,#22d3ee,#60a5fa);transition:width .3s}
+        .nav-links a:hover{color:#fff}
+        .nav-links a:hover::after{width:100%}
+        .nav-links .ico{margin-inline-start:4px}
+        .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-weight:700;border:none;border-radius:14px;cursor:pointer;text-decoration:none;transition:all .25s cubic-bezier(.4,0,.2,1)}
+        .btn-primary{background:linear-gradient(135deg,var(--blue),var(--blue-deep));color:#fff;padding:14px 30px;font-size:15.5px;box-shadow:0 6px 20px rgba(37,99,235,.35)}
+        .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(37,99,235,.45)}
+        .nav-cta{padding:12px 28px;font-size:15px;border-radius:14px}
+
+        .page-hero{background:linear-gradient(135deg,#0b1c3f 0%,#16337a 40%,#1d4ed8 100%);padding:44px 0 52px;text-align:center;color:#fff;position:relative;overflow:hidden}
+        .page-hero::before{content:'';position:absolute;top:-40%;right:-10%;width:400px;height:400px;background:radial-gradient(circle,rgba(255,255,255,.06) 0%,transparent 70%);border-radius:50%}
+        .page-hero::after{content:'';position:absolute;bottom:-30%;left:5%;width:300px;height:300px;background:radial-gradient(circle,rgba(255,255,255,.04) 0%,transparent 70%);border-radius:50%}
+        .breadcrumb{display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;color:rgba(255,255,255,.6);margin-bottom:16px;position:relative;z-index:1;flex-wrap:wrap}
+        .breadcrumb a{color:rgba(255,255,255,.7);text-decoration:none;transition:color .2s}
+        .breadcrumb a:hover{color:#fff}
+        .breadcrumb .sep{margin:0 4px}
+        .page-hero h1{font-size:clamp(25px,3.6vw,36px);font-weight:900;margin-bottom:10px;position:relative;z-index:1}
+        .hero-line{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1}
+        .hero-chip{font-size:12.5px;font-weight:800;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);padding:6px 14px;border-radius:999px;color:#e6efff}
+        .hero-chip.code{background:rgba(37,99,235,.35);border-color:rgba(147,197,253,.5);color:#fff}
+        .back-btn{display:inline-flex;align-items:center;gap:8px;color:rgba(255,255,255,.8);text-decoration:none;font-weight:700;font-size:14px;padding:8px 20px;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);backdrop-filter:blur(4px);transition:all .25s;margin-top:18px;position:relative;z-index:1}
+        .back-btn:hover{background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.35)}
+
+        .layout{max-width:1000px;margin:0 auto;padding:28px 16px 60px;display:grid;grid-template-columns:1fr;gap:20px}
+        .card{background:#fff;border-radius:20px;padding:22px;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid var(--line)}
+        .card-title{font-size:17px;font-weight:900;color:var(--ink);margin-bottom:16px;display:flex;align-items:center;gap:8px;justify-content:space-between;flex-wrap:wrap}
+        .card-title .ct-main{display:flex;align-items:center;gap:8px}
+
+        .privacy-box{display:flex;gap:11px;align-items:flex-start;background:#fffbeb;border:1px solid #fde68a;border-radius:16px;padding:13px 15px;font-size:13px;line-height:1.9;color:#92400e}
+        .privacy-box svg{flex-shrink:0;width:20px;height:20px;color:#d97706;margin-top:3px}
+
+        .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+        .info-item{background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+        .info-item .k{font-size:12px;font-weight:800;color:var(--muted);margin-bottom:5px}
+        .info-item .v{font-size:15px;font-weight:800;color:var(--ink);word-break:break-word}
+
+        .notes-area{width:100%;font-family:inherit;font-size:14.5px;padding:13px 15px;border:1.5px solid var(--line);border-radius:14px;background:#fbfdff;line-height:2;resize:vertical;min-height:92px;transition:all .2s;color:var(--ink)}
+        .notes-area:focus{outline:none;border-color:var(--blue-light);box-shadow:0 0 0 4px rgba(96,165,250,.15);background:#fff}
+        .field-label{font-size:13.5px;font-weight:800;color:#334155;margin:14px 0 7px;display:block}
+        .field-label:first-child{margin-top:0}
+
+        .side-actions{display:flex;flex-direction:column;gap:10px}
+        .side-actions .btn{width:100%;padding:14px 16px;font-size:15px}
+        .btn-soft{background:#eef4ff;color:var(--blue-deep);border:1.5px solid var(--line)}
+        .btn-soft:hover{background:#e0ecff}
+        .btn-danger-ghost{background:#fff;color:#b91c1c;border:1.5px solid #fecaca}
+        .btn-danger-ghost:hover{background:#fef2f2}
+        .btn-ok{background:linear-gradient(135deg,var(--ok),#15803d);color:#fff;box-shadow:0 6px 18px rgba(22,163,74,.3)}
+        .btn-ok:hover{transform:translateY(-2px)}
+
+        .stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:16px}
+        .stat{background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center}
+        .stat .sv{font-size:20px;font-weight:900;color:var(--blue-deep)}
+        .stat .sl{font-size:11.5px;font-weight:800;color:var(--muted);margin-top:3px}
+
+        .sess-list{display:flex;flex-direction:column;gap:12px}
+        .sess{border:1.5px solid var(--line);border-radius:16px;overflow:hidden;background:#fff;transition:box-shadow .25s}
+        .sess:hover{box-shadow:0 8px 24px rgba(11,28,63,.08)}
+        .sess-head{display:flex;align-items:center;gap:10px;padding:14px 15px;cursor:pointer;background:linear-gradient(180deg,#fbfdff,#fff);flex-wrap:wrap}
+        .sess-num{width:36px;height:36px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;color:#fff;background:linear-gradient(135deg,var(--blue),var(--sky))}
+        .sess-title{flex:1;min-width:150px}
+        .sess-scale{font-size:14.5px;font-weight:900;color:var(--ink)}
+        .sess-date{font-size:12.5px;color:var(--muted);font-weight:700}
+        .chip{font-size:12px;font-weight:800;padding:5px 11px;border-radius:999px;background:#eef4ff;color:var(--blue-deep);border:1px solid #d7e5ff}
+        .chip.sev{background:#fef2f2;color:#b91c1c;border-color:#fecaca}
+        .chip.sev.mid{background:#fff7ed;color:#c2410c;border-color:#fed7aa}
+        .chip.sev.low{background:#f0fdf4;color:#15803d;border-color:#bbf7d0}
+        .chip.sev.na{background:#f1f5f9;color:#475569;border-color:#e2e8f0}
+        .chip.toggle{background:#fff;color:var(--muted);border-color:var(--line);cursor:pointer}
+        .sess-body{display:none;padding:0 15px 15px;border-top:1px dashed var(--line)}
+        .sess.open .sess-body{display:block}
+        .sess-body h5{font-size:13.5px;font-weight:900;color:var(--ink);margin:14px 0 8px}
+        .ans-table{width:100%;border-collapse:collapse;font-size:13px}
+        .ans-table th,.ans-table td{padding:8px 9px;text-align:right;border-bottom:1px solid var(--line)}
+        .ans-table th{font-size:12px;font-weight:900;color:#334a75;background:#f4f8ff}
+        .ans-table td.score{font-weight:900;color:var(--blue-deep)}
+        .summary-box{background:#f0f7ff;border:1px solid #bfdbfe;border-radius:14px;padding:13px 15px;font-size:13.5px;line-height:2;color:#1e40af;margin-top:12px}
+        .sess-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
+        .sess-actions .btn{font-size:13.5px;padding:11px 18px;border-radius:12px}
+        .table-scroll{overflow-x:auto}
+
+        .empty{padding:26px 16px;text-align:center;color:var(--muted);font-size:14px;line-height:2.1;background:#fbfdff;border:1.5px dashed #c9dcff;border-radius:16px}
+        .empty .e-ico{font-size:36px;display:block;margin-bottom:8px}
+
+        .modal{position:fixed;inset:0;background:rgba(11,28,63,.55);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:18px;z-index:1000}
+        .modal.show{display:flex}
+        .modal-card{background:#fff;border-radius:22px;width:100%;max-width:560px;max-height:92vh;overflow:auto;padding:26px;box-shadow:0 30px 80px rgba(11,28,63,.35);animation:pop .25s ease}
+        .modal-card.small{max-width:470px}
+        @keyframes pop{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+        .modal-title{font-size:20px;font-weight:900;color:var(--ink);margin-bottom:6px;display:flex;align-items:center;gap:9px}
+        .modal-sub{font-size:13.5px;color:var(--muted);line-height:1.9;margin-bottom:16px}
+        .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+        .field{display:flex;flex-direction:column;gap:6px}
+        .field.full{grid-column:1/-1}
+        .field label{font-size:13.5px;font-weight:800;color:#334155}
+        .field label .req{color:var(--danger)}
+        .field input,.field select,.field textarea{font-family:inherit;font-size:14.5px;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;background:#fbfdff;transition:all .2s;color:var(--ink)}
+        .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--blue-light);box-shadow:0 0 0 4px rgba(96,165,250,.15);background:#fff}
+        .field input[readonly]{background:#f1f5f9;color:var(--muted);cursor:not-allowed}
+        .field textarea{min-height:84px;resize:vertical;line-height:1.8}
+        .field .hint{font-size:12px;color:var(--muted)}
+        .form-error{display:none;background:#fef2f2;border:1px solid #fecaca;color:#b91c1c;font-size:13.5px;font-weight:700;padding:11px 14px;border-radius:12px;margin-bottom:14px;line-height:1.8}
+        .form-error.show{display:block}
+        .modal-actions{display:flex;gap:10px;margin-top:20px}
+        .modal-actions .btn{flex:1;padding:14px 18px;font-size:15px;border-radius:14px}
+        .warn-list{background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:13px 15px;font-size:13.5px;color:#92400e;line-height:2;margin-top:12px}
+        .warn-list b{color:#78350f}
+
+        .scale-opt{display:flex;align-items:center;gap:12px;width:100%;text-align:right;font-family:inherit;background:#fbfdff;border:1.5px solid var(--line);border-radius:16px;padding:15px;cursor:pointer;transition:all .2s;margin-bottom:10px}
+        .scale-opt:hover{border-color:var(--blue-light);background:#f0f7ff;transform:translateY(-2px)}
+        .scale-opt .so-ico{width:44px;height:44px;border-radius:13px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:21px;background:linear-gradient(135deg,#dbeafe,#bfdbfe);color:var(--blue-deep)}
+        .scale-opt .so-name{font-size:15px;font-weight:900;color:var(--ink)}
+        .scale-opt .so-sub{font-size:12.5px;color:var(--muted);font-weight:700;margin-top:3px}
+        .scale-opt .so-go{margin-inline-start:auto;color:var(--blue);font-weight:900;font-size:14px}
+
+        .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(120px);background:#0b1c3f;color:#fff;padding:13px 28px;border-radius:14px;font-weight:800;font-size:14px;z-index:2000;transition:transform .35s cubic-bezier(.68,-.55,.27,1.55),opacity .3s;opacity:0;box-shadow:0 14px 40px rgba(11,28,63,.4);max-width:90vw;text-align:center}
+        .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+        .toast.ok{background:linear-gradient(135deg,#16a34a,#15803d)}
+        .toast.err{background:linear-gradient(135deg,#dc2626,#b91c1c)}
+
+        .footer{background:var(--ink);color:#fff;padding:48px 0 0}
+        .footer-bottom{text-align:center;padding:22px 0;font-size:13px;color:#64748b}
+        .footer-bottom a{color:var(--blue-light);font-weight:800}
+
+        @media(max-width:1020px){.nav-links{display:none}.nav-inner{padding-inline:4%}}
+        @media(max-width:760px){.form-grid{grid-template-columns:1fr}}
+        @media(max-width:620px){
+            .nav-inner{height:auto;min-height:72px;padding-inline:2%;gap:8px}
+            .brand-logo{width:40px;height:40px;border-radius:12px}
+            .brand-name{font-size:16px}
+            .brand-sub{font-size:9.5px}
+            .btn-primary{padding:10px 18px;font-size:13.5px}
+            .page-hero{padding:28px 0 34px}
+            .layout{padding:18px 12px 46px}
+            .card{padding:16px;border-radius:16px}
+            .modal-card{padding:18px;border-radius:18px}
+            .sess-head{padding:12px}
+        }
+    </style>
+</head>
+<body>
+
+    <header class="nav">
+        <div class="container nav-inner">
+            <a class="brand" href="index.html">
+                <img class="brand-logo" src="logo.jpg" alt="DIAGNO-ASSIST">
+                <span class="brand-text">
+                    <span class="brand-name">DIAGNO-ASSIST</span>
+                    <span class="brand-sub">للأخصائيين النفسيين</span>
+                </span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html"><span class="ico">🏠</span> الرئيسية</a>
+                <a href="index.html#how"><span class="ico">🔬</span> كيف يعمل</a>
+                <a href="index.html#features"><span class="ico">🩺</span> المميزات</a>
+                <a href="pricing.html"><span class="ico">💰</span> الأسعار</a>
+            </nav>
+            <button class="btn btn-primary nav-cta" id="authBtn">تسجيل الدخول</button>
+        </div>
+    </header>
+
+    <section class="page-hero">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="index.html">الرئيسية</a><span class="sep">←</span>
+                <a href="tools.html">اختر أداة التقييم</a><span class="sep">←</span>
+                <a href="patient-files.html">ملفات المرضى</a><span class="sep">←</span>
+                <span id="bcName">ملف المريض</span>
+            </div>
+            <h1 id="pName">ملف المريض</h1>
+            <div class="hero-line" id="heroChips"></div>
+            <a href="patient-files.html" class="back-btn">← العودة لملفات المرضى</a>
+        </div>
+    </section>
+
+    <div class="layout">
+        <div class="privacy-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <div>البيانات محفوظة محليًا في متصفح هذا الجهاز فقط (localStorage) ولا تُرفع إلى أي خادم — لا تُدخل بيانات مرضى حقيقية.</div>
+        </div>
+
+        <!-- معلومات المريض -->
+        <div class="card" id="infoCard">
+            <div class="card-title">
+                <span class="ct-main">👤 معلومات المريض الأساسية</span>
+                <button class="btn btn-soft" id="btnEditInfo" style="padding:9px 16px;font-size:13.5px">✏️ تعديل المعلومات</button>
+            </div>
+            <div class="info-grid" id="infoGrid"></div>
+        </div>
+
+        <!-- الملاحظات والسجل المهني -->
+        <div class="card" id="notesCard">
+            <div class="card-title"><span class="ct-main">📝 الملاحظات والسجل المهني</span></div>
+            <label class="field-label" for="reasonArea">السبب أو التشخيص المبدئي</label>
+            <textarea class="notes-area" id="reasonArea" placeholder="سبب الإحالة / التشخيص المبدئي..."></textarea>
+            <label class="field-label" for="notesArea">الملاحظات المهنية</label>
+            <textarea class="notes-area" id="notesArea" placeholder="ملاحظاتك المهنية أثناء الجلسات..."></textarea>
+            <label class="field-label" for="visitArea">السجل المهني / سير الجلسات</label>
+            <textarea class="notes-area" id="visitArea" placeholder="خلاصة المتابعة..."></textarea>
+            <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+                <button class="btn btn-ok" id="btnSaveNotes">💾 حفظ الملاحظات</button>
+                <button class="btn btn-soft" id="btnResetNotes">تراجع عن التعديل</button>
+            </div>
+        </div>
+
+        <!-- سجل جلسات التقييم -->
+        <div class="card" id="sessionsCard">
+            <div class="card-title">
+                <span class="ct-main">📈 سجل جلسات التقييم</span>
+                <span class="chip" id="sessCount">0 جلسة</span>
+            </div>
+            <div class="sess-list" id="sessList"></div>
+        </div>
+    </div>
+
+    <!-- بطاقة الملخص الجانبية -->
+    <div class="layout" style="padding-top:0">
+        <div class="card" id="sideCard">
+            <div class="card-title"><span class="ct-main">⚡ ملخص الملف</span></div>
+            <div class="stats-row" id="statsRow"></div>
+            <div class="side-actions">
+                <button class="btn btn-primary" id="btnStartTest">＋ إضافة جلسة تقييم</button>
+                <button class="btn btn-soft" id="btnArchive">📦 أرشفة الملف</button>
+                <button class="btn btn-danger-ghost" id="btnDelete">🗑 حذف الملف نهائيًا</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نموذج تعديل المعلومات -->
+    <div class="modal" id="formModal" role="dialog" aria-modal="true">
+        <div class="modal-card">
+            <div class="modal-title">✏️ تعديل معلومات المريض</div>
+            <div class="modal-sub">رمز الملف ثابت. الحقل المطلوب: الاسم أو الاسم المستعار.</div>
+            <div class="form-error" id="formError"></div>
+            <form id="editForm" novalidate>
+                <div class="form-grid">
+                    <div class="field">
+                        <label>رمز الملف</label>
+                        <input type="text" id="fFileNum" readonly>
+                    </div>
+                    <div class="field">
+                        <label for="fName">الاسم أو الاسم المستعار <span class="req">*</span></label>
+                        <input type="text" id="fName" maxlength="80">
+                    </div>
+                    <div class="field">
+                        <label for="fAge">العمر أو تاريخ الميلاد</label>
+                        <input type="text" id="fAge">
+                    </div>
+                    <div class="field">
+                        <label for="fSex">الجنس</label>
+                        <select id="fSex">
+                            <option value="">— غير محدد —</option>
+                            <option value="ذكر">ذكر</option>
+                            <option value="أنثى">أنثى</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="fOpened">تاريخ فتح الملف</label>
+                        <input type="text" id="fOpened">
+                    </div>
+                    <div class="field">
+                        <label for="fPhone">رقم الهاتف</label>
+                        <input type="text" id="fPhone">
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-ok" id="btnSaveInfo">💾 حفظ التعديلات</button>
+                    <button type="button" class="btn btn-soft" id="btnCancelInfo">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- اختيار المقياس لبدء جلسة -->
+    <div class="modal" id="scaleModal" role="dialog" aria-modal="true">
+        <div class="modal-card small">
+            <div class="modal-title">🔬 اختر مقياسًا لبدء جلسة</div>
+            <div class="modal-sub">ستُربط الجلسة بملف: <b id="scaleFor">—</b> وتظهر في سجل جلسات هذا الملف بعد حفظها.</div>
+            <div id="scaleList"></div>
+            <div class="modal-actions">
+                <button class="btn btn-soft" id="btnScaleCancel">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- تأكيد -->
+    <div class="modal" id="confirmModal" role="dialog" aria-modal="true">
+        <div class="modal-card small">
+            <div class="modal-title" id="confirmTitle">تأكيد</div>
+            <div class="modal-sub" id="confirmText"></div>
+            <div id="confirmWarn"></div>
+            <div class="modal-actions">
+                <button class="btn btn-danger" id="confirmYes">تأكيد</button>
+                <button class="btn btn-soft" id="confirmNo">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <footer class="footer">
+        <div class="footer-bottom container">DIAGNO-ASSIST © 2026 — <a href="patient-files.html">ملفات المرضى</a> · <a href="tools.html">اختر أداة التقييم</a> · <a href="index.html">الرئيسية</a></div>
+    </footer>
+
+    <script src="scale-engine.js"></script>
+    <script src="patient-store.js"></script>
+    <script src="patient-file.js"></script>
+</body>
+</html>

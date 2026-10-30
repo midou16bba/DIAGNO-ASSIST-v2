@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تقرير التقييم النفسي - DIAGNO-ASSIST</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+@page{size:A4 portrait;margin:10mm}
+:root{
+--blue:#2563eb;--blue-dark:#0b1c3f;--blue-light:#1d4ed8;
+--green:#16a34a;--green-light:#dcfce7;
+--orange:#d97706;--orange-light:#fef3c7;
+--red:#dc2626;--red-light:#fee2e2;
+--gray:#64748b;--gray-light:#f1f5f9;--gray-border:#e2e8f0;
+--yellow:#eab308;--yellow-light:#fef9c3;
+}
+@media print{body{margin:0;padding:0}.page{page-break-after:always}.no-print{display:none!important}}
+body{font-family:'Cairo',sans-serif;font-size:11px;color:#1e293b;background:#fff;direction:rtl;line-height:1.6;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.page{width:210mm;min-height:297mm;max-height:297mm;margin:0 auto;padding:8mm 10mm;overflow:hidden;display:flex;flex-direction:column;gap:3px}
+.no-data{text-align:center;padding:60px 20px;font-size:18px;color:var(--gray)}
+.print-bar{position:fixed;top:0;left:0;right:0;z-index:999;background:#fff;border-bottom:2px solid var(--blue);padding:10px 20px;display:flex;align-items:center;justify-content:center;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.print-bar button{padding:10px 28px;border-radius:10px;font-family:'Cairo',sans-serif;font-weight:700;font-size:14px;cursor:pointer;border:none;transition:.2s}
+.print-bar .btn-p{background:var(--blue);color:#fff}.print-bar .btn-p:hover{background:var(--blue-dark)}
+.print-bar .btn-c{background:#f1f5f9;color:#475569;border:1px solid #e2e8f0}.print-bar .btn-c:hover{background:#e2e8f0}
+@media print{.print-bar{display:none!important}}
+.hdr{background:linear-gradient(135deg,var(--blue-dark),var(--blue-light));color:#fff;border-radius:8px;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.hdr-l{display:flex;align-items:center;gap:10px}
+.hdr-brand{display:flex;flex-direction:column}
+.hdr-brand strong{font-size:15px;letter-spacing:-.5px}
+.hdr-brand small{font-size:9px;opacity:.85}
+.hdr-r{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.hdr-badge{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:6px;padding:4px 14px;font-size:11px;font-weight:600}
+.hdr-meta{font-size:9.5px;opacity:.9;display:flex;gap:12px}
+.sec{margin-bottom:2px;flex-shrink:0}
+.sec-t{font-size:12px;font-weight:700;color:var(--blue-dark);border-bottom:2px solid var(--blue);padding-bottom:2px;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.sec-t .n{background:var(--blue);color:#fff;border-radius:50%;width:19px;height:19px;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px 14px;background:var(--gray-light);border-radius:6px;padding:8px 12px;border:1px solid var(--gray-border)}
+.pi{display:flex;flex-direction:column;gap:1px}
+.pi label{font-size:8.5px;color:var(--gray);font-weight:600}
+.pi span{font-size:10.5px;font-weight:500;color:#1e293b;word-break:break-word}
+.rcard{background:linear-gradient(135deg,var(--blue-dark),var(--blue-light));border-radius:8px 8px 0 0;padding:10px 14px;color:#fff;display:flex;gap:14px;align-items:flex-start}
+.rcw{display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0}
+.rcirc{width:70px;height:70px;border-radius:50%;background:rgba(255,255,255,.12);border:3px solid rgba(255,255,255,.4);display:flex;flex-direction:column;align-items:center;justify-content:center}
+.rcirc .pct{font-size:20px;font-weight:800;line-height:1}
+.rcirc .ps{font-size:10px;opacity:.8}
+.rbadge{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.25);border-radius:6px;padding:2px 10px;font-size:10px;font-weight:600}
+.rinfo{flex:1}
+.rinfo h3{font-size:15px;font-weight:700;margin-bottom:2px}
+.rinfo p{font-size:10px;opacity:.9;line-height:1.5}
+.dcont{background:linear-gradient(135deg,var(--blue-dark),#1e3a5f);border-radius:0 0 8px 8px;padding:6px 14px 8px}
+.drow{display:flex;align-items:center;gap:8px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.drow:last-child{border-bottom:none}
+.dlbl{width:110px;font-size:9.5px;font-weight:500;text-align:right;color:#fff}
+.dbarw{flex:1;height:8px;background:rgba(255,255,255,.15);border-radius:4px;overflow:hidden}
+.dbar{height:100%;border-radius:4px}
+.dpct{width:36px;font-size:10px;font-weight:700;text-align:left;color:#fff}
+.stbl-w{background:var(--gray-light);border-radius:6px;border:1px solid var(--gray-border);overflow:hidden}
+.stbl{width:100%;border-collapse:collapse;font-size:10px}
+.stbl thead{background:var(--blue);color:#fff}
+.stbl th{padding:5px 6px;font-weight:600;text-align:center;font-size:9px}
+.stbl td{padding:4px 6px;text-align:center;border-bottom:1px solid var(--gray-border)}
+.stbl tbody tr:nth-child(even){background:rgba(255,255,255,.5)}
+.stbl tbody tr:nth-child(odd){background:#fff}
+.sb{display:inline-block;padding:1px 8px;border-radius:10px;font-size:8.5px}
+.sb.h{background:var(--green-light);color:var(--green)}
+.sb.m{background:var(--orange-light);color:var(--orange)}
+.sb.s{background:var(--red-light);color:var(--red)}
+.sh{color:var(--green);font-weight:700}
+.sm{color:var(--orange);font-weight:700}
+.ss{color:var(--red);font-weight:700}
+.dsec-t{font-size:10px;font-weight:700;color:var(--blue-dark);margin-bottom:3px}
+.dgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.di{text-align:center}
+.dbw{width:100%;height:38px;background:var(--gray-border);border-radius:4px;overflow:hidden;position:relative;margin-bottom:2px}
+.db{position:absolute;bottom:0;width:100%;border-radius:4px 4px 0 0}
+.db span{position:absolute;top:2px;left:50%;transform:translateX(-50%);font-size:8px;font-weight:700;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.3)}
+.dlb{font-size:8px;color:var(--gray);font-weight:600;line-height:1.2}
+.nbox{background:var(--yellow-light);border:1px solid #fde68a;border-radius:6px;padding:7px 12px;font-size:10px;line-height:1.6}
+.sgrow{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:4px}
+.sgbox{border:1.5px dashed var(--gray-border);border-radius:6px;padding:8px;text-align:center}
+.sgbox .sglbl{font-size:10.5px;font-weight:700;color:var(--blue-dark);margin-bottom:3px}
+.sgbox .sgname{font-size:10px;color:var(--gray)}
+.sgbox .sgline{border-bottom:1px solid var(--gray-border);margin:6px 20px 3px}
+.disc{background:var(--orange-light);border:1px solid #f59e0b;border-radius:6px;padding:5px 10px;font-size:8.5px;color:#92400e;line-height:1.5}
+.ftr{display:flex;align-items:center;justify-content:space-between;border-top:2px solid var(--blue);padding-top:4px;margin-top:auto;flex-shrink:0}
+.ftr-brand{font-size:9px;color:var(--gray);display:flex;align-items:center;gap:6px}
+.ftr-brand strong{color:var(--blue-dark);font-size:10px}
+.ftr-copy{font-size:7.5px;color:var(--gray);text-align:left}
+</style>
+</head>
+<body>
+<div class="print-bar no-print">
+  <button class="btn-p" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
+  <button class="btn-c" onclick="window.close()">✖ إغلاق</button>
+</div>
+<div class="page" id="page"></div>
+<script>
+(function(){
+var P = document.getElementById('page');
+var A = JSON.parse(localStorage.getItem('diagActivePatient') || 'null');
+if(!A){ P.innerHTML = '<div class="no-data">\u0644\u0627 \u062a\u0648\u062c\u062f \u0628\u064a\u0627\u0646\u0627\u062a \u0645\u0631\u064a\u0636 \u062d\u0627\u0644\u064a\u0627\u064b.<br>\u064a\u0631\u062c\u0649 \u0627\u062e\u062a\u064a\u0627\u0631 \u0645\u0631\u064a\u0636 \u0623\u0648\u0644\u0627\u064b \u0645\u0646 \u0627\u0644\u0628\u0631\u0646\u0627\u0645\u062c.</div>'; return; }
+function pk(b){ return A ? b + '_' + A.id : b; }
+var R = JSON.parse(localStorage.getItem(pk('diagResult')) || 'null');
+var T = localStorage.getItem(pk('activeChartTest')) || 'ptsd';
+var sk = T === 'mdd' ? pk('diagSessionsMddV2') : pk('diagSessionsV2');
+var S = []; try{ S = JSON.parse(localStorage.getItem(sk) || '[]'); }catch(e){}
+var U = JSON.parse(localStorage.getItem('diagUser') || 'null');
+var lim = T === 'mdd' ? {mx:256,mid:129,hi:193} : {mx:376,mid:189,hi:283};
+var DL = ['\u0627\u0644\u0623\u0639\u0631\u0627\u0636 \u0627\u0644\u0625\u0642\u062a\u062d\u0627\u0645\u064a\u0629','\u0627\u0644\u062a\u062c\u0646\u0628','\u0627\u0644\u062a\u0623\u062b\u064a\u0631 \u0627\u0644\u0645\u0639\u0631\u0641\u064a','\u0627\u0644\u0627\u0646\u0641\u0639\u0627\u0644\u064a\u0629','\u0627\u0644\u062c\u0633\u0645\u064a\u0629'];
+var PI = ['\u0627\u0633\u062a\u0639\u0627\u062f\u0629 \u0627\u0644\u0645\u0634\u0647\u062f \u0627\u0644\u0633\u0644\u0628\u064a','\u062a\u062c\u0646\u0628 \u0627\u0644\u062a\u0630\u0643\u064a\u0631\u0627\u062a','\u0627\u0644\u0625\u062b\u0627\u0631\u0629 \u0627\u0644\u0632\u0627\u0626\u062f\u0629','\u0627\u0644\u0645\u0639\u062a\u0642\u062f\u0627\u062a \u0627\u0644\u0633\u0644\u0628\u064a\u0629','\u0627\u0644\u0643\u0648\u0627\u0628\u0633','\u0627\u0644\u0636\u064a\u0642 \u0627\u0644\u0645\u0628\u0627\u0644\u063a','\u0627\u0644\u0631\u062f \u0627\u0644\u0645\u0628\u0627\u0644\u063a','\u0627\u0644\u0633\u0644\u0648\u0643 \u0627\u0644\u0645\u062a\u0647\u0648\u0631','\u062a\u062c\u0646\u0628 \u0627\u0644\u0623\u0641\u0643\u0627\u0631','\u062a\u062c\u0646\u0628 \u0627\u0644\u062a\u0630\u0643\u064a\u0631\u0627\u062a','\u0627\u0644\u0636\u0645\u0648\u0631 \u0627\u0644\u0639\u0637\u0627\u0641\u064a','\u0641\u0642\u062f\u0627\u0646 \u0627\u0644\u0627\u0647\u062a\u0645\u0627\u0645','\u0645\u0639\u062a\u0642\u062f\u0627\u062a \u0633\u0644\u0628\u064a\u0629','\u0644\u0648\u0645 \u0627\u0644\u0630\u0627\u062a','\u0645\u0634\u0627\u0639\u0631 \u0633\u0644\u0628\u064a\u0629 \u0645\u0633\u062a\u0645\u0631\u0629','\u0641\u0642\u062f\u0627\u0646 \u0627\u0644\u0645\u0634\u0627\u0639\u0631 \u0627\u0644\u0625\u062c\u0628\u0627\u0626\u064a\u0629','\u0635\u0639\u0648\u0628\u0629 \u0627\u0644\u062a\u0631\u0643\u064a\u0632','\u0627\u0644\u062d\u0631\u0627\u0633\u0629 \u0627\u0644\u0632\u0627\u0626\u062f\u0629','\u0627\u0644\u0631\u062f \u0627\u0644\u0645\u0628\u0627\u0644\u063a','\u0627\u0644\u0633\u0644\u0648\u0643 \u0627\u0644\u0645\u062a\u0647\u0648\u0631','\u0627\u0644\u0636\u064a\u0642 \u0627\u0644\u0645\u0628\u0627\u0644\u063a','\u0641\u0642\u062f\u0627\u0646 \u0627\u0644\u0627\u0647\u062a\u0645\u0627\u0645','\u0644\u0648\u0645 \u0627\u0644\u0630\u0627\u062a','\u0645\u0639\u062a\u0642\u062f\u0627\u062a \u0633\u0644\u0628\u064a\u0629 \u0645\u0633\u062a\u0645\u0631\u0629','\u0635\u0639\u0648\u0628\u0629 \u0627\u0644\u062a\u0631\u0643\u064a\u0632'];
+var MI = ['\u0632\u0645\u0646 \u0627\u0644\u062d\u0632\u0646','\u0627\u0646\u062e\u0641\u0627\u0636 \u0627\u0644\u0627\u0647\u062a\u0645\u0627\u0645','\u0641\u0642\u062f\u0627\u0646 \u0627\u0644\u0648\u0632\u0646 \u0627\u0644\u0645\u0644\u062d\u0648\u0638','\u0627\u0644\u0623\u0631\u0642','\u0641\u0631\u0637 \u0627\u0644\u0646\u0648\u0645','\u0627\u0644\u062e\u0645\u0648\u0644 \u0627\u0644\u062d\u0631\u0643\u064a','\u0628\u0637\u0621 \u0627\u0644\u062d\u0631\u0643\u064a','\u0625\u0631\u0647\u0627\u0642','\u0627\u0644\u0634\u0639\u0648\u0631 \u0628\u0627\u0644\u0646\u0642\u0635','\u0627\u0644\u0634\u0639\u0648\u0631 \u0628\u0627\u0644\u0630\u0646\u0628 \u0627\u0644\u0645\u0641\u0631\u0637','\u0636\u0639\u0641 \u0627\u0644\u062a\u0631\u0643\u064a\u0632','\u0623\u0641\u0643\u0627\u0631 \u0645\u062a\u0643\u0631\u0631\u0629 \u0639\u0646 \u0627\u0644\u0645\u0648\u062a','\u0627\u0644\u0623\u0641\u0643\u0627\u0631 \u0627\u0644\u0627\u0646\u062a\u062d\u0627\u0631\u064a\u0629','\u0632\u064a\u0627\u062f\u0629 \u0627\u0644\u0648\u0632\u0646','\u0641\u0642\u062f\u0627\u0646 \u0627\u0644\u0634\u0647\u064a\u0629','\u0636\u0639\u0641 \u0627\u0644\u062a\u0631\u0643\u064a\u0632','\u0646\u0638\u0631\u0629 \u0633\u0644\u0628\u064a\u0629 \u0644\u0644\u0630\u0627\u062a','\u064a\u0623\u0633','\u0630\u0646\u0628','\u0627\u0646\u0633\u062d\u0627\u0628 \u0627\u062c\u062a\u0645\u0627\u0639\u064a','\u0627\u0636\u0637\u0631\u0627\u0628 \u0627\u0644\u0646\u0648\u0645','\u0641\u0642\u062f\u0627\u0646 \u0627\u0644\u0637\u0627\u0642\u0629','\u0635\u0639\u0648\u0628\u0629 \u0627\u062a\u062e\u0627\u0630 \u0627\u0644\u0642\u0631\u0627\u0631\u0627\u062a','\u0628\u0637\u0621 \u0625\u062f\u0631\u0627\u0643\u064a','\u0641\u0642\u062f\u0627\u0646 \u0627\u0644\u0645\u062a\u0639\u0629','\u062d\u0632\u0646','\u062f\u0645\u0648\u0639','\u0639\u0632\u0644\u0629','\u062e\u0636\u0631','\u0627\u0636\u0637\u0631\u0627\u0628 \u0627\u0644\u0646\u0648\u0645'];
+function cd(sess){
+var items = T === 'mdd' ? MI : PI;
+var cs = Math.ceil(items.length / 5);
+var d = [];
+for(var c = 0; c < 5; c++){
+var ch = sess.answers.slice(c * cs, (c+1) * cs);
+var s = 0;
+for(var i = 0; i < ch.length; i++) s += (ch[i].score || 0);
+var ms = cs * 4;
+d.push({name: DL[c], pct: ms > 0 ? Math.round(s / ms * 100) : 0});
+}
+return d;
+}
+function gsv(p){ return p >= 70 ? {l:'\u0635\u062d\u064a',c:'sh'} : p >= 40 ? {l:'\u062e\u0641\u064a\u0641',c:'sm'} : {l:'\u062d\u0627\u062f',c:'ss'}; }
+function gsb(p){ return p >= 70 ? '<span class="sb h">\u0635\u062d\u064a\u064a\u0646</span>' : p >= 40 ? '<span class="sb m">\u062e\u0641\u064a\u0641\u064a\u0646</span>' : '<span class="sb s">\u062d\u0627\u062f\u064a\u0646</span>'; }
+var diff = T === 'mdd' ? [
+{n:'\u0627\u0636\u0637\u0631\u0627\u0628 \u0627\u0644\u0642\u0637\u0628 bipolar',p:62},
+{n:'\u0627\u0644\u0627\u0636\u0637\u0631\u0627\u0628 \u0627\u0644\u0627\u0643\u062a\u0626\u0627\u0628\u064a \u0627\u0644\u0645\u0633\u062a\u0645\u0631',p:55},
+{n:'\u0627\u0636\u0637\u0631\u0627\u0628 \u0627\u0644\u062a\u0643\u064a\u0641',p:48},
+{n:'\u0627\u0644\u0642\u0644\u0642 \u0627\u0644\u0639\u0627\u0645',p:44},
+{n:'\u0627\u0636\u0637\u0631\u0627\u0628 \u0637\u0628\u064a',p:36}
+] : [
+{n:'\u0627\u0636\u0637\u0631\u0627\u0628 \u0645\u0627 \u0628\u0639\u062f \u0627\u0644\u0635\u062f\u0645\u0629 ASD',p:72},
+{n:'\u0627\u0644\u0642\u0644\u0642 \u0627\u0644\u0639\u0627\u0645 GAD',p:64},
+{n:'\u0627\u0644\u0647\u062c\u0645\u0627\u062a \u0627\u0644\u0647\u0639\u0648\u064a\u0629',p:46},
+{n:'\u0627\u0636\u0637\u0631\u0627\u0628 \u0627\u0644\u0634\u062e\u0635\u064a\u0629 \u0627\u0644\u062d\u062f\u064a\u0629 BPD',p:38},
+{n:'\u0627\u0644\u0648\u0633\u0648\u0627\u0633 \u0627\u0644\u0642\u0647\u0631\u064a OCD',p:31}
+];
+function sc(p){ return p >= 70 ? 'var(--green)' : p >= 40 ? 'var(--orange)' : 'var(--red)'; }
+function e(s){ return s == null ? '\u2014' : String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function pi(l,v){ return '<div class="pi"><label>'+e(l)+'</label><span>'+e(v||'\u2014')+'</span></div>'; }
+var h = '';
+h += '<div class="hdr"><div class="hdr-l"><div style="font-size:20px;line-height:1">\uD83E\uDDE0</div><div class="hdr-brand"><strong>DIAGNO-ASSIST</strong><small>\u0644\u0644\u0623\u062e\u0635\u0627\u0626\u064a\u064a\u0646 \u0627\u0644\u0646\u0641\u0633\u064a\u064a\u0646</small></div></div><div class="hdr-r"><div class="hdr-badge">\u062a\u0642\u0631\u064a\u0631 \u062d\u0627\u0644\u0629 \u0645\u0631\u0636\u064a\u0629</div><div class="hdr-meta"><span>\u0631\u0642\u0645 \u0627\u0644\u0645\u0644\u0641: '+e(A.fileNum||'\u2014')+'</span><span>|</span><span>\u0627\u0644\u062a\u0627\u0631\u064a\u062e: '+(R?R.date:'\u2014')+'</span></div></div></div>';
+h += '<div class="sec"><div class="sec-t"><span class="n">\u0661</span> \u0628\u064a\u0627\u0646\u0627\u062a \u0627\u0644\u0645\u0631\u064a\u0636</div><div class="pgrid">';
+h += pi('\u0627\u0644\u0627\u0633\u0645 \u0627\u0644\u0643\u0627\u0645\u0644',A.name); h += pi('\u0631\u0642\u0645 \u0627\u0644\u0645\u0644\u0641',A.fileNum); h += pi('\u062a\u0627\u0631\u064a\u062e \u0627\u0644\u062a\u0633\u062c\u064a\u0644',A.tag||'\u2014');
+h += pi('\u062a\u0627\u0631\u064a\u062e \u0627\u0644\u0645\u064a\u0644\u0627\u062f',A.birth); h += pi('\u0627\u0644\u062c\u0646\u0633',A.sex); h += pi('\u0627\u0644\u062d\u0627\u0644\u0629 \u0627\u0644\u0627\u062c\u062a\u0645\u0627\u0639\u064a\u0629',A.marital);
+h += pi('\u0627\u0644\u0645\u0633\u062a\u0648\u0649 \u0627\u0644\u062a\u0639\u0644\u064a\u0645\u064a',A.edu); h += pi('\u0627\u0644\u0645\u0647\u0646\u0629',A.job); h += pi('\u0627\u0644\u0639\u0646\u0648\u0627\u0646',A.address);
+h += pi('\u0627\u0644\u0628\u0631\u064a\u062f \u0627\u0644\u0625\u0644\u0643\u062a\u0631\u0648\u0646\u064a',A.email||'\u2014'); h += pi('\u0633\u0628\u0628 \u0627\u0644\u0632\u064a\u0627\u0631\u0629',A.reason||'\u2014'); h += pi('\u0645\u0644\u0627\u062d\u0638\u0627\u062a \u0639\u0627\u0645\u0629',A.notes||'\u2014');
+h += '</div></div>';
+if(R && R.winner){
+var w=R.winner, wp=parseInt(w.pct)||0;
+h += '<div class="sec"><div class="sec-t"><span class="n">\u0662</span> \u0646\u062a\u064a\u062c\u0629 \u0627\u0644\u062a\u062d\u0644\u064a\u0644 \u0648\u0627\u0644\u062a\u0634\u062e\u064a\u0635 \u0627\u0644\u0641\u0627\u0631\u0642\u064a</div>';
+h += '<div class="rcard"><div class="rcw"><div class="rcirc"><div class="pct">'+wp+'<span class="ps">%</span></div></div><div class="rbadge">'+e(w.name)+' '+w.ico+'</div></div>';
+h += '<div class="rinfo"><h3>'+e(w.name)+' '+w.ico+'</h3><p>\u0645\u0637\u0627\u0628\u0642\u0629 '+e(w.matched)+' \u0645\u0646 '+e(w.total)+' \u0645\u0639\u064a\u0627\u0631\u0627\u064b DIAGNOSTIC Criteria ('+wp+'% \u062a\u0637\u0627\u0628\u0642).</p></div></div>';
+h += '<div class="dcont">';
+for(var d=0;d<diff.length;d++){var dd=diff[d],cl=sc(dd.p);h+='<div class="drow"><div class="dlbl">'+e(dd.n)+'</div><div class="dbarw"><div class="dbar" style="width:'+dd.p+'%;background:'+cl+'"></div></div><div class="dpct" style="color:'+cl+'">'+dd.p+'%</div></div>';}
+h += '</div></div>';
+if(S.length>0){var ls=S[S.length-1],dm=cd(ls);h+='<div class="sec"><div class="dsec-t">\u0645\u0642\u064a\u0627\u0633 \u0627\u0644\u0623\u0628\u0639\u0627\u062f \u0627\u0644\u062e\u0645\u0633\u0629 (\u0627\u0644\u062c\u0644\u0633\u0629 \u0627\u0644\u0622\u062e\u0631\u0629)</div><div class="dgrid">';for(var i=0;i<dm.length;i++){var dd=dm[i],cl=dd.pct>=70?'var(--green)':dd.pct>=40?'var(--orange)':'var(--red)';h+='<div class="di"><div class="dbw"><div class="db" style="height:'+dd.pct+'%;background:'+cl+'"><span>'+dd.pct+'%</span></div></div><div class="dlb">'+e(dd.name)+'</div></div>';}h+='</div></div>';}
+}
+if(S.length>0){h+='<div class="sec"><div class="sec-t"><span class="n">\u0663</span> \u062c\u0644\u0633\u0627\u062a \u0627\u0644\u062a\u0642\u064a\u064a\u0645 \u0627\u0644\u0646\u0641\u0633\u064a \u0648\u062a\u0637\u0648\u0631 \u0627\u0644\u062d\u0627\u0644\u0629</div><div class="stbl-w"><table class="stbl"><thead><tr><th>\u0627\u0644\u062c\u0644\u0633\u0629</th><th>\u0627\u0644\u062a\u0627\u0631\u064a\u062e</th><th>\u0627\u0644\u062f\u0631\u062c\u0629 \u0627\u0644\u0643\u0644\u064a\u0629</th><th>\u0645\u0646 \u0623\u0635\u0644</th><th>\u0627\u0644\u0645\u062a\u0648\u0633\u0637</th><th>\u0627\u0644\u0646\u0633\u0628\u0629 %</th><th>\u062d\u0627\u0644\u0629 \u0627\u0644\u0623\u0639\u0631\u0627\u0636</th></tr></thead><tbody>';for(var s=0;s<S.length;s++){var ss=S[s],pv=parseInt(ss.pct)||0,mx=parseInt(ss.max)||lim.mx,sv=gsv(pv),sb=gsb(pv);h+='<tr><td style="font-weight:700">'+e(ss.number)+'</td><td>'+e(ss.date)+'</td><td style="font-weight:700">'+e(ss.total)+'</td><td>'+e(mx)+'</td><td>'+e(ss.avg)+'</td><td class="'+sv.c+'">'+pv+'%</td><td>'+sb+'</td></tr>';}
+h += '</tbody></table></div></div>';}
+h += '<div class="sec"><div class="sec-t"><span class="n">\u0664</span> \u0645\u0644\u0627\u062d\u0638\u0627\u062a \u0627\u0644\u0645\u062e\u062a\u0635</div><div class="nbox">'+e(A.notes||'\u0644\u0645 \u062a\u064f\u0633\u062c\u0651\u0644 \u0645\u0644\u0627\u062d\u0638\u0627\u062a \u062d\u064a\u0627\u0644 \u0647\u0630\u0627 \u0627\u0644\u0645\u0644\u0641.')+'</div></div>';
+h += '<div class="sgrow"><div class="sgbox"><div class="sglbl">\u062a\u0648\u0642\u064a\u0639 \u0627\u0644\u0623\u062e\u0635\u0627\u0626\u064a \u0627\u0644\u0646\u0641\u0633\u064a</div><div class="sgline"></div><div class="sgname">'+e(U?U.name:'\u2014')+'</div></div><div class="sgbox"><div class="sglbl">\u0627\u0644\u062e\u062a\u0645</div><div class="sgline"></div><div class="sgname" style="font-size:8.5px;color:var(--gray)">\u0645\u0648\u0642\u0639 \u0627\u0644\u062e\u062a\u0645 \u0627\u0644\u0631\u0633\u0645\u064a</div></div></div>';
+h += '<div class="disc">\u26A0\u06FE \u0647\u0630\u0647 \u0627\u0644\u0646\u062A\u0627\u0626\u062C \u0627\u0633\u062A\u0631\u0634\u0627\u062F\u064A\u0629 \u0645\u0628\u0646\u064A\u0629 \u0639\u0644\u0649 \u0645\u0637\u0627\u0628\u0642\u0629 \u0627\u0644\u0643\u0644\u0645\u0627\u062A \u0627\u0644\u0645\u0641\u062A\u0627\u062D\u064A\u0629 \u0648\u0644\u0627 \u062a\u063a\u0646\u064A \u0639\u0646 \u0627\u0644\u062a\u0634\u062E\u064A\u0635 \u0627\u0644\u0633\u0631\u064A\u0631\u064A \u0627\u0644\u0634\u0627\u0645\u0644. \u064A\u062C\u0628 \u062F\u0627\u0626\u0645\u0627\u064B \u0623\u0646 \u062A\u0643\u0648\u0646 \u0647\u0630\u0647 \u0627\u0644\u0646\u062A\u0627\u0626\u062C \u062C\u0632\u0621\u0627\u064B \u0645\u0646 \u062A\u0642\u064A\u064A\u0645 \u0623\u0634\u0645\u0644 \u064A\u062A\u0636\u0645\u0646 \u0627\u0644\u0645\u0642\u0627\u0628\u0644\u0629 \u0627\u0644\u0633\u0631\u064A\u0631\u064A\u0629 \u0648\u0627\u0644\u0645\u0634\u0627\u0647\u062F\u0629 \u0627\u0644\u0645\u0628\u0627\u0634\u0631\u0629 \u0648\u0627\u0644\u062A\u0627\u0631\u064A\u062E \u0627\u0644\u0645\u0631\u0636\u064A \u0627\u0644\u0643\u0627\u0645\u0644.</div>';
+h += '<div class="ftr"><div class="ftr-brand"><strong>\uD83E\uDDE0 DIAGNO-ASSIST</strong> <span>\u0644\u0644\u0623\u062E\u0635\u0627\u0626\u064A\u064A\u0646 \u0627\u0644\u0646\u0641\u0633\u064A\u064A\u0646</span></div><div class="ftr-copy">\u00A9 '+new Date().getFullYear()+' DIAGNO-ASSIST. All rights reserved.</div></div>';
+P.innerHTML = h;
+})();
+if(new URLSearchParams(window.location.search).get('autoPrint')==='1'){
+  setTimeout(function(){window.print()},800);
+}
+</script>
+</body>
+</html>

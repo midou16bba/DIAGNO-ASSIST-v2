@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>التشخيص | DIAGNO-ASSIST</title>
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="nav-bar.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --blue: #2563eb;
+            --blue-deep: #1e3a8a;
+            --blue-mid: #3b82f6;
+            --blue-light: #60a5fa;
+            --sky: #06b6d4;
+            --ink: #0b1c3f;
+            --muted: #5b6b8c;
+            --line: #e3ecfe;
+            --bg: #f0f4fa;
+            --card-radius: 20px;
+        }
+        body {
+            font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container { width: min(1440px, 92%); margin-inline: auto; }
+
+        /* ===== شريط التنقل ===== */
+        header.nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(16px);background:linear-gradient(120deg,#0b1c3f,#16337a 45%,#1d4ed8);border-bottom:1px solid rgba(255,255,255,.14);box-shadow:0 12px 36px rgba(11,28,63,.35)}
+        header.nav .brand-name{background:linear-gradient(120deg,#fff,#bfdbfe);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        header.nav .brand-sub{color:#c8daff}
+        header.nav .nav-links a{color:#d6e4ff}
+        header.nav .nav-links a::after{background:linear-gradient(90deg,#22d3ee,#60a5fa)}
+        header.nav .nav-links a:hover{color:#fff}
+        .nav-inner{display:flex;align-items:center;justify-content:space-between;height:96px;gap:24px;width:auto;max-width:none;padding-inline:3%}
+        .brand{display:flex;align-items:center;gap:16px;text-decoration:none;flex-shrink:0}
+        .brand-logo{width:64px;height:64px;border-radius:20px;object-fit:cover;box-shadow:0 10px 26px rgba(37,99,235,.30),0 0 0 4px rgba(37,99,235,.08)}
+        .brand-text{line-height:1.15}
+        .brand-name{display:block;font-size:27px;font-weight:900;letter-spacing:.5px;background:linear-gradient(120deg,#1d4ed8,#2563eb 55%,#06b6d4);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .brand-sub{display:block;font-size:13.5px;font-weight:700;letter-spacing:.3px;margin-top:3px}
+        .nav-links{display:flex;gap:34px;align-items:center}
+        .nav-links a{text-decoration:none;font-weight:700;font-size:15.5px;position:relative;padding:6px 0;transition:color .25s}
+        .nav-links a::after{content:"";position:absolute;bottom:-2px;right:0;width:0;height:3px;border-radius:3px;transition:width .3s}
+        .nav-links a:hover::after{width:100%}
+        .nav-links a .ico{font-size:17px}
+        .nav-cta{padding:12px 28px;font-size:15px;border-radius:14px;background:linear-gradient(135deg,#2563eb,#60a5fa);color:#fff;border:none;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 8px 24px rgba(37,99,235,.35);transition:all .25s}
+        .nav-cta:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(37,99,235,.45)}
+
+        /* ===== البطل الأزرق ===== */
+        .page-hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 40%, #2563eb 100%);
+            padding: 52px 0 56px;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+        .page-hero::before {
+            content: ""; position: absolute; inset: 0;
+            background:
+                radial-gradient(circle at 85% 20%, rgba(34,211,238,.12), transparent 45%),
+                radial-gradient(circle at 15% 85%, rgba(96,165,250,.15), transparent 45%);
+        }
+        .page-hero::after {
+            content: ""; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, transparent, rgba(34,211,238,.5), transparent);
+        }
+        .hero-title {
+            font-size: clamp(30px, 4vw, 42px);
+            font-weight: 900; color: #fff; line-height: 1.3;
+            margin-bottom: 10px; position: relative; z-index: 1;
+        }
+        .hero-title .grad {
+            background: linear-gradient(120deg, #60a5fa, #22d3ee);
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-subtitle {
+            font-size: 15px; color: rgba(255,255,255,.65); line-height: 1.8;
+            max-width: 560px; margin: 0 auto 32px;
+            position: relative; z-index: 1;
+        }
+
+        /* ===== المحتوى الرئيسي ===== */
+        .main-content { padding: 40px 0 60px; }
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1.55fr 1fr;
+            gap: 26px;
+            align-items: start;
+        }
+
+        /* ===== بطاقة الكتابة (العمود الأيمن) ===== */
+        .write-card {
+            background: #fff;
+            border-radius: var(--card-radius);
+            padding: 30px;
+            box-shadow: 0 2px 20px rgba(11,28,63,.05);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #eef2f9;
+        }
+        .write-card::before {
+            content: ""; position: absolute; top: 0; right: 0; left: 0; height: 4px;
+            background: linear-gradient(90deg, var(--blue), var(--sky), var(--blue-mid));
+        }
+        .write-header {
+            display: flex; align-items: center; gap: 14px; margin-bottom: 6px;
+        }
+        .write-icon {
+            width: 48px; height: 48px; border-radius: 14px;
+            background: linear-gradient(135deg, var(--blue), var(--blue-light));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 21px; color: #fff;
+            box-shadow: 0 6px 16px rgba(37,99,235,.22);
+        }
+        .write-header h2 { font-size: 19px; font-weight: 900; color: var(--ink); }
+        .write-sub { font-size: 13.5px; color: var(--muted); margin-bottom: 18px; padding-right: 62px; }
+
+        .symptoms-area {
+            width: 100%;
+            border: 2px solid #eef2f9;
+            border-radius: 14px;
+            padding: 16px 18px;
+            font-size: 14.5px;
+            color: var(--ink);
+            background: #f8fafc;
+            outline: none;
+            resize: vertical;
+            min-height: 190px;
+            line-height: 2;
+            transition: border-color .3s, box-shadow .3s;
+            font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif;
+        }
+        .symptoms-area:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 4px rgba(37,99,235,.06);
+        }
+        .symptoms-area::placeholder { color: #93a6c9; font-size: 13.5px; }
+
+        .counter-row {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-top: 12px;
+        }
+        .counter-hint { font-size: 12px; color: #93a6c9; }
+        .count-pill {
+            font-size: 13px; font-weight: 700; color: #41547f;
+            background: #e9f1ff; border-radius: 20px; padding: 5px 14px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .count-pill .count-bar {
+            width: 72px; height: 5px; background: #e3ecfe; border-radius: 10px; overflow: hidden;
+        }
+        .count-pill .count-fill {
+            height: 100%; background: var(--blue); border-radius: 10px; transition: width .3s;
+        }
+        .count-pill.warn { background: #fdf0d9; color: #b45309; }
+        .count-pill.warn .count-fill { background: #f59e0b; }
+        .count-pill.ok { background: #dff6e8; color: #15803d; }
+        .count-pill.ok .count-fill { background: #16a34a; }
+
+        .suggest-section { margin-top: 20px; }
+        .suggest-label {
+            font-size: 13px; font-weight: 700; color: var(--muted);
+            margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
+        }
+        .suggest-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+        .chip {
+            background: #e9f1ff; border: 1.5px solid #c8daff;
+            color: #41547f; font-size: 12.5px; font-weight: 700;
+            padding: 7px 15px; border-radius: 20px;
+            cursor: pointer; transition: all .25s;
+            font-family: inherit;
+        }
+        .chip:hover {
+            background: #dbe7fe; border-color: #93bbff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(37,99,235,.1);
+        }
+
+        .btn-analyze {
+            width: 100%;
+            background: linear-gradient(135deg, var(--blue), var(--blue-light));
+            color: #fff; border: none;
+            padding: 16px; border-radius: 14px;
+            font-weight: 900; font-size: 17px;
+            cursor: pointer; margin-top: 22px;
+            font-family: inherit;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            box-shadow: 0 10px 28px rgba(37,99,235,.3);
+            transition: all .3s;
+            position: relative; overflow: hidden;
+        }
+        .btn-analyze::before {
+            content: ""; position: absolute; top: 0; right: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(100deg, transparent, rgba(255,255,255,.22), transparent);
+            transform: skewX(-20deg);
+            animation: btnShine 3s ease-in-out infinite;
+        }
+        @keyframes btnShine {
+            0% { right: -100%; }
+            50%, 100% { right: 150%; }
+        }
+        .btn-analyze:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 36px rgba(37,99,235,.4);
+        }
+        .btn-analyze .analyze-ico {
+            width: 38px; height: 38px; border-radius: 11px;
+            background: rgba(255,255,255,.2);
+            display: flex; align-items: center; justify-content: center; font-size: 19px;
+        }
+
+        /* ===== العمود الأيسر ===== */
+        .side-stack { display: flex; flex-direction: column; gap: 22px; }
+
+        /* ===== بطاقة نظرة عامة ===== */
+        .overview-card {
+            background: #fff;
+            border-radius: var(--card-radius);
+            padding: 26px;
+            box-shadow: 0 2px 20px rgba(11,28,63,.05);
+            border: 1px solid #eef2f9;
+        }
+        .overview-title {
+            display: flex; align-items: center; gap: 10px;
+            font-size: 17px; font-weight: 900; color: var(--ink);
+            margin-bottom: 20px;
+        }
+        .overview-title .ot-icon {
+            width: 38px; height: 38px; border-radius: 11px;
+            background: linear-gradient(135deg, #eaf2ff, #e6f7ff);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px;
+        }
+        .stat-row {
+            display: flex; align-items: center; gap: 14px;
+            padding: 14px 0;
+            border-bottom: 1px solid #f2f5fb;
+        }
+        .stat-row:last-child { border-bottom: none; }
+        .stat-circle {
+            width: 46px; height: 46px; border-radius: 50%;
+            background: linear-gradient(135deg, #eaf2ff, #dbeafe);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .stat-circle svg { width: 20px; height: 20px; }
+        .stat-num {
+            font-size: 24px; font-weight: 900; color: var(--blue-deep);
+            line-height: 1;
+        }
+        .stat-label {
+            font-size: 12.5px; color: var(--muted); font-weight: 700;
+            margin-top: 2px;
+        }
+
+        /* ===== بطاقة التجربة السريعة ===== */
+        .quick-card {
+            background: #fff;
+            border-radius: var(--card-radius);
+            padding: 26px;
+            box-shadow: 0 2px 20px rgba(11,28,63,.05);
+            border: 1px solid #eef2f9;
+        }
+        .quick-title {
+            display: flex; align-items: center; gap: 10px;
+            font-size: 17px; font-weight: 900; color: var(--ink);
+            margin-bottom: 8px;
+        }
+        .quick-title .qt-icon {
+            width: 38px; height: 38px; border-radius: 11px;
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px;
+        }
+        .quick-desc {
+            font-size: 13px; color: var(--muted); line-height: 1.9;
+            margin-bottom: 18px;
+        }
+        .btn-demo {
+            width: 100%;
+            color: #fff; border: none;
+            padding: 13px 18px; border-radius: 13px;
+            font-weight: 800; font-size: 13.5px;
+            cursor: pointer; font-family: inherit;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            transition: all .25s;
+            margin-bottom: 10px;
+        }
+        .btn-demo:last-of-type { margin-bottom: 0; }
+        .btn-demo:hover { transform: translateY(-3px); }
+        .btn-demo-green {
+            background: linear-gradient(135deg, #059669, #10b981);
+            box-shadow: 0 6px 20px rgba(5,150,105,.25);
+        }
+        .btn-demo-blue {
+            background: linear-gradient(135deg, var(--blue), var(--blue-light));
+            box-shadow: 0 6px 20px rgba(37,99,235,.25);
+        }
+        .btn-demo .demo-ico {
+            width: 30px; height: 30px; border-radius: 8px;
+            background: rgba(255,255,255,.2);
+            display: flex; align-items: center; justify-content: center; font-size: 15px;
+        }
+        .quick-footer {
+            font-size: 11.5px; color: #93a6c9; line-height: 1.8;
+            margin-top: 14px;
+        }
+
+        /* ===== طبقة التحليل ===== */
+        .analyzing-overlay {
+            display: none;
+            position: fixed; inset: 0;
+            background: rgba(11,28,63,.96);
+            backdrop-filter: blur(20px);
+            z-index: 2000;
+            align-items: center; justify-content: center;
+            flex-direction: column; text-align: center;
+            padding: 20px;
+        }
+        .analyzing-overlay.show { display: flex; }
+        .an-spinner {
+            width: 110px; height: 110px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--blue), var(--sky));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 50px; color: #fff;
+            margin-bottom: 28px;
+            box-shadow: 0 20px 60px rgba(37,99,235,.5);
+            animation: pulse 2s ease-in-out infinite;
+            position: relative;
+        }
+        .an-spinner::before {
+            content: ""; position: absolute; inset: -8px;
+            border: 3px dashed rgba(255,255,255,.25);
+            border-radius: 50%;
+            animation: spinLoader 8s linear infinite;
+        }
+        @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
+        @keyframes spinLoader { to { transform: rotate(360deg); } }
+        .an-title { color: #fff; font-size: 26px; font-weight: 900; margin-bottom: 8px; }
+        .an-sub { color: #c8daff; font-size: 14px; margin-bottom: 28px; max-width: 460px; line-height: 1.8; }
+        .an-progress-wrap { width: 360px; max-width: 80vw; margin-bottom: 22px; }
+        .an-progress-bar {
+            width: 100%; height: 8px;
+            background: rgba(255,255,255,.1);
+            border-radius: 10px; overflow: hidden;
+        }
+        .an-progress-fill {
+            height: 100%; width: 0;
+            background: linear-gradient(90deg, #60a5fa, #34d399);
+            border-radius: 10px;
+            animation: fillProgress 10s linear forwards;
+        }
+        @keyframes fillProgress { from{width:0} to{width:100%} }
+        .an-steps { color: #c8daff; font-size: 13px; line-height: 2.2; }
+        .an-step {
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            padding: 6px 0; transition: color .3s;
+        }
+        .an-step.active { color: #fff; font-weight: 700; }
+        .an-step .step-dot {
+            width: 26px; height: 26px; border-radius: 50%;
+            background: rgba(255,255,255,.08);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: 800;
+        }
+        .an-step.active .step-dot {
+            background: var(--blue);
+            box-shadow: 0 4px 12px rgba(37,99,235,.4);
+        }
+
+        /* ===== التذييل ===== */
+        footer {
+            background: #0b1c3f; color: #c8daff;
+        }
+        .footer-grid {
+            display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            gap: 30px; padding: 50px 0 30px;
+        }
+        .footer-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+        .footer-brand img {
+            width: 48px; height: 48px; border-radius: 13px; object-fit: cover;
+            box-shadow: 0 6px 18px rgba(0,0,0,.3);
+        }
+        .footer-brand .fname { font-size: 18px; font-weight: 900; color: #fff; }
+        .footer-brand .fsub { display: block; font-size: 10.5px; color: #93aede; margin-top: 2px; }
+        .footer-col p { font-size: 12.5px; line-height: 1.9; }
+        .footer-col h4 { color: #fff; font-size: 14px; margin-bottom: 12px; }
+        .footer-col a {
+            display: block; color: #93aede; text-decoration: none;
+            font-size: 12.5px; margin-bottom: 9px; transition: color .25s;
+        }
+        .footer-col a:hover { color: #fff; }
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,.08);
+            text-align: center; padding: 18px 0; color: #7f92b5; font-size: 12.5px;
+        }
+
+        /* ===== ظهور تدريجي ===== */
+        .reveal { opacity: 0; transform: translateY(30px); transition: opacity .6s ease, transform .6s ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        /* ===== استجابة ===== */
+        @media (max-width: 1020px) {
+            .content-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 620px) {
+            .footer-grid { grid-template-columns: 1fr; }
+            .write-card, .overview-card, .quick-card { padding: 22px; }
+        }
+        @media(max-width:800px){.nav-links{display:none}.nav-inner{padding-inline:4%}}
+        @media(max-width:430px){
+          .nav-inner{height:auto;min-height:60px;gap:8px;padding-inline:2%}
+          .brand-logo{width:36px;height:36px;border-radius:10px}
+          .brand-name{font-size:16px}
+          .brand-sub{font-size:9px}
+          .brand{gap:6px}
+          .nav-cta{padding:7px 12px;font-size:11px;border-radius:8px}
+          .write-card,.overview-card,.quick-card{padding:16px}
+          .an-progress-wrap{width:100%;max-width:90vw}
+          .an-title{font-size:18px}
+          .an-sub{font-size:11px}
+          .footer-grid{gap:16px;padding:22px 0 18px}
+          .write-sub{padding-right:0;font-size:12px}
+          .progress-nav .step{padding:5px 7px}
+          .progress-nav .step .step-icon{width:20px;height:20px;font-size:9px}
+          .progress-nav .step-connector{width:6px}
+        }
+        /* ===== التشخيص الفارقي: خطوات ولوحات ===== */
+        .dx-progress{display:flex;justify-content:center;gap:8px;margin:0 auto 20px;max-width:780px;flex-wrap:wrap;grid-column:1/-1}
+        #dxPanels{grid-column:1/-1;width:100%}
+        .dx-pstep{display:flex;align-items:center;gap:7px;font-size:11.5px;font-weight:800;color:#8b9bb8;background:#fff;border:1px solid #e3ebf7;padding:7px 13px;border-radius:99px;transition:.2s}
+        .dx-pstep b{width:18px;height:18px;border-radius:50%;background:#eef3fb;color:#8b9bb8;display:grid;place-items:center;font-size:10px}
+        .dx-pstep.on{color:#1d4ed8;border-color:#bcd3fb;background:#eff5ff}
+        .dx-pstep.on b{background:#2563eb;color:#fff}
+        .dx-pstep.done{color:#0f766e;border-color:#c7ece4;background:#f0fdf9}
+        .dx-pstep.done b{background:#0f766e;color:#fff}
+        .dx-panel{background:#fff;border:1px solid #e5edf8;border-radius:20px;padding:26px;box-shadow:0 18px 40px rgba(16,49,107,.07);animation:dxIn .35s ease;margin-top:18px}
+        @keyframes dxIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+        .dx-panel h2{font-size:19px;font-weight:900;color:#0f2a5c;margin-bottom:4px}
+        .dx-sub{font-size:12.5px;color:#7186a6;line-height:1.8;margin-bottom:16px}
+        .dx-reco{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+        .dx-chip{font-size:11px;font-weight:700;color:#1e40af;background:#eff5ff;border:1px solid #dbe7fb;border-radius:99px;padding:4px 10px}
+        .hypo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:20px}
+        .hypo-card{position:relative;border:1.5px solid #e3ebf7;border-radius:16px;padding:18px;background:linear-gradient(180deg,#fbfdff,#f6faff);transition:.2s}
+        .hypo-card:hover{border-color:#a9c7f5;box-shadow:0 10px 24px rgba(37,99,235,.08)}
+        .hypo-card .hc-ico{font-size:26px;line-height:1}
+        .hypo-card h3{font-size:14.5px;font-weight:900;color:#0f2a5c;margin:8px 0 4px}
+        .hypo-card .hc-en{font-size:10.5px;color:#8ba0bf;direction:ltr;text-align:right}
+        .hypo-card .hc-cat{display:inline-block;margin-top:10px;font-size:10.5px;font-weight:800;color:#4338ca;background:#eef0ff;border-radius:8px;padding:3px 8px}
+        .hypo-card .hc-code{position:absolute;top:14px;left:14px;font-size:10px;font-weight:800;color:#94a3b8;background:#fff;border:1px solid #e6edf7;border-radius:6px;padding:2px 6px;direction:ltr}
+        .dx-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;border-top:1px solid #eef3fb;padding-top:18px}
+        .dx-btn{border:0;cursor:pointer;font-family:inherit;font-weight:800;font-size:13.5px;padding:12px 22px;border-radius:12px;background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;box-shadow:0 8px 20px rgba(37,99,235,.25);transition:.2s}
+        .dx-btn:hover{transform:translateY(-1px)}
+        .dx-btn:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
+        .dx-btn.ghost{background:#fff;color:#1d4ed8;border:1.5px solid #c9dcfb;box-shadow:none}
+        .q-list{display:grid;gap:14px}
+        .q-item{border:1px solid #e6edf8;border-radius:14px;padding:16px;background:#fbfdff}
+        .q-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:4px}
+        .q-title{font-size:13px;font-weight:900;color:#0f2a5c}
+        .q-badge{font-size:10px;font-weight:800;color:#64748b;background:#eef3f9;border-radius:6px;padding:2px 7px;white-space:nowrap}
+        .q-hint{font-size:11.5px;color:#7d90ae;line-height:1.7;margin-bottom:10px}
+        .q-opts{display:flex;flex-wrap:wrap;gap:8px}
+        .q-opt{font-family:inherit;font-size:12px;font-weight:700;color:#33456b;background:#fff;border:1.5px solid #dde7f6;border-radius:10px;padding:8px 12px;cursor:pointer;transition:.15s}
+        .q-opt:hover{border-color:#9dc0f2}
+        .q-opt.on{background:#2563eb;border-color:#2563eb;color:#fff;box-shadow:0 6px 16px rgba(37,99,235,.22)}
+        .q-free{display:flex;gap:8px;margin-top:10px}
+        .q-free input{flex:1;font-family:inherit;font-size:12px;padding:9px 12px;border:1.5px solid #e2eaf6;border-radius:10px;background:#fff;color:#1e293b}
+        .q-free input:focus{outline:none;border-color:#93b8f0}
+        .q-free button{font-family:inherit;font-size:11.5px;font-weight:800;padding:0 14px;border-radius:10px;border:1.5px solid #cfe0fa;background:#eef4ff;color:#1d4ed8;cursor:pointer}
+        .q-status{font-size:10.5px;font-weight:700;margin-top:8px;color:#0f766e}
+        .dx-warn{font-size:12px;font-weight:700;color:#b45309;background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:9px 12px;margin-bottom:14px}
+        .final-card{border:1.5px solid #d7ecdf;background:linear-gradient(180deg,#f4fdf8,#eefaf3);border-radius:18px;padding:22px;margin-bottom:18px}
+        .final-card .fc-top{display:flex;align-items:center;gap:14px}
+        .final-card .fc-ico{width:56px;height:56px;border-radius:16px;background:#fff;display:grid;place-items:center;font-size:26px;box-shadow:0 8px 20px rgba(6,95,70,.1)}
+        .final-card h3{font-size:19px;font-weight:900;color:#065f46}
+        .final-card .fc-en{font-size:11px;color:#6b8f83;direction:ltr;text-align:right}
+        .final-card .fc-meta{margin-top:8px;display:flex;gap:8px;flex-wrap:wrap}
+        .final-card .fc-tag{font-size:10.5px;font-weight:800;color:#0f766e;background:#fff;border:1px solid #cdeee0;border-radius:7px;padding:3px 8px}
+        .dx-list{display:grid;gap:9px;margin:0 0 18px}
+        .dx-li{display:flex;gap:9px;font-size:12px;line-height:1.8;color:#33456b;background:#f8fbff;border:1px solid #e9f0fa;border-radius:11px;padding:10px 12px}
+        .dx-li b{color:#0f2a5c}
+        .dx-li .x{color:#b91c1c;font-weight:900}
+        .dx-li .ok{color:#0f766e;font-weight:900}
+        .dx-sec-title{font-size:13px;font-weight:900;color:#0f2a5c;margin:0 0 10px}
+        @media (max-width:620px){.dx-panel{padding:18px}.dx-progress{gap:6px}.dx-pstep{font-size:10px;padding:6px 9px}}
+    </style>
+</head>
+<body>
+
+    <!-- ===== شريط التنقل ===== -->
+    <header class="nav">
+        <div class="nav-inner">
+            <a class="brand" href="index.html">
+                <img class="brand-logo" src="logo.jpg" alt="DIAGNO-ASSIST">
+                <span class="brand-text">
+                    <span class="brand-name">DIAGNO-ASSIST</span>
+                    <span class="brand-sub" data-i18n="brand_sub">للأخصائيين النفسيين</span>
+                </span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html"><span class="ico">🏠</span> <span data-i18n="nav_home">الرئيسية</span></a>
+                <a href="index.html#how"><span class="ico">🔬</span> <span data-i18n="nav_how">كيف يعمل</span></a>
+                <a href="index.html#features"><span class="ico">🩺</span> <span data-i18n="nav_features">المميزات</span></a>
+                <a href="pricing.html"><span class="ico">💰</span> <span data-i18n="nav_pricing">الأسعار</span></a>
+            </nav>
+            <button class="nav-cta" id="authBtn">تسجيل الدخول</button>
+        </div>
+    </header>
+
+    <nav class="progress-nav">
+        <div class="nav-steps">
+            <a class="step completed" href="patient.html">
+                <span class="step-icon">✓</span>
+                <span>التجهيز</span>
+            </a>
+            <div class="step-connector"></div>
+            <a class="step completed" href="patient.html">
+                <span class="step-icon">👤</span>
+                <span>ملف المريض</span>
+            </a>
+            <div class="step-connector"></div>
+            <a class="step active" href="diagnosis.html">
+                <span class="step-icon">📊</span>
+                <span>التشخيص الفارقي</span>
+            </a>
+            <div class="step-connector"></div>
+            <a class="step" href="test.html">
+                <span class="step-icon">🔍</span>
+                <span>المقياس</span>
+            </a>
+            <div class="step-connector"></div>
+            <a class="step" href="charts.html">
+                <span class="step-icon">📈</span>
+                <span>التقرير</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- ===== البطل الأزرق + خطوات ===== -->
+    <section class="page-hero">
+        <div class="container">
+            <h1 class="hero-title"><span data-i18n="diagnosis_title">التشخيص</span> <span class="grad" data-i18n="diagnosis_title_grad">الفارقي</span></h1>
+            <p class="hero-subtitle" data-i18n="diagnosis_subtitle">أدخل أعراض المريض لاستخراج الاضطرابات الأكثر احتمالاً — دون ترتيب أو نسب</p>
+        </div>
+    </section>
+
+    <!-- ===== المحتوى الرئيسي ===== -->
+    <section class="main-content">
+        <div class="container">
+            <div class="content-grid">
+
+                <!-- العمود الأيمن: كتابة الأعراض -->
+                <div class="write-card reveal" id="diagForm">
+                    <div class="write-header">
+                        <div class="write-icon">🩺</div>
+                        <h2 data-i18n="diagnosis_form_title">كتابة الأعراض</h2>
+                    </div>
+                    <div class="write-sub" data-i18n="diagnosis_form_sub">اكتب الأعراض بالمصطلحات النفسية العلمية بدقة</div>
+
+                    <textarea id="symptoms" class="symptoms-area" data-i18n-placeholder="diagnosis_form_ph" placeholder="أدخل ما لا يقل عن 15 عرضًا بمصطلحات ذات علاقة بعلم النفس..."></textarea>
+
+                    <div class="counter-row">
+                        <span class="counter-hint" data-i18n="diagnosis_counter_hint">تختفي الملاحظة تلقائيًا عند بدء الكتابة</span>
+                        <div id="countPill" class="count-pill">
+                            <span id="countText">0 / 15 عرض</span>
+                            <div class="count-bar"><div class="count-fill" id="countFill" style="width:0%"></div></div>
+                        </div>
+                    </div>
+
+                    <div class="suggest-section">
+                        <div class="suggest-label" data-i18n="diagnosis_suggest_label">💡 اقتراحات جاهزة</div>
+                        <div class="suggest-grid">
+                            <span class="chip">فقدان مزاج</span>
+                            <span class="chip">تجنب</span>
+                            <span class="chip">استرجاع مؤلم</span>
+                            <span class="chip">فرط يقظة</span>
+                            <span class="chip">عزلة اجتماعية</span>
+                            <span class="chip">اضطراب نوم</span>
+                            <span class="chip">فقدان مزاج</span>
+                        </div>
+                    </div>
+
+                    <button class="btn-analyze" id="analyzeBtn">
+                        <span class="analyze-ico">🔍</span>
+                        <span data-i18n="diagnosis_analyze_btn">تحليل الأعراض</span>
+                    </button>
+                </div>
+
+                <!-- العمود الأيسر -->
+                <div class="side-stack">
+                    <!-- نظرة عامة على الحالة -->
+                    <div class="overview-card reveal">
+                        <div class="overview-title">
+                            <div class="ot-icon">📊</div>
+                            <span data-i18n="diagnosis_overview">نظرة عامة على الحالة</span>
+                        </div>
+                        <div class="stat-row">
+                            <div class="stat-circle">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="stat-num">3</div>
+                                <div class="stat-label" data-i18n="diagnosis_total_sessions">إجمالي الجلسات</div>
+                            </div>
+                        </div>
+                        <div class="stat-row">
+                            <div class="stat-circle">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                                    <line x1="9" y1="12" x2="15" y2="12"></line>
+                                    <line x1="9" y1="16" x2="15" y2="16"></line>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="stat-num">2</div>
+                                <div class="stat-label" data-i18n="diagnosis_available_tests">الاختبارات المتاحة</div>
+                            </div>
+                        </div>
+                        <div class="stat-row">
+                            <div class="stat-circle">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="18" y1="20" x2="18" y2="10"></line>
+                                    <line x1="12" y1="20" x2="12" y2="4"></line>
+                                    <line x1="6" y1="20" x2="6" y2="14"></line>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="stat-num">35%</div>
+                                <div class="stat-label" data-i18n="diagnosis_rate">نسبة التشخيص المحدودة</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- تجربة سريعة -->
+                    <div class="quick-card reveal">
+                        <div class="quick-title">
+                            <div class="qt-icon">⚡</div>
+                            <span data-i18n="diagnosis_quick_title">تجربة سريعة</span>
+                        </div>
+                        <p class="quick-desc" data-i18n="diagnosis_quick_desc">جرب النظام بملء بيانات تجريبية افتراضية لاضطراب ما بعد الصدمة أو الاكتئاب الشديد.</p>
+                        <button class="btn-demo btn-demo-green" id="demoPtsd">
+                            <span class="demo-ico">⚡</span>
+                            <span data-i18n="diagnosis_demo_ptsd">تجربة سريعة: أعراض PTSD</span>
+                        </button>
+                        <button class="btn-demo btn-demo-blue" id="demoMdd">
+                            <span class="demo-ico">⚡</span>
+                            <span data-i18n="diagnosis_demo_mdd">تجربة سريعة: أعراض الاكتئاب</span>
+                        </button>
+                        <p class="quick-footer" data-i18n="diagnosis_quick_footer">سيتم ملء حقل الأعراض تلقائيًا بمجموعة من الأعراض التجريبية لاختبار النظام.</p>
+                    </div>
+                </div>
+
+                <div class="dx-progress" id="dxProgress" hidden>
+                    <div class="dx-pstep on" data-s="1"><b>1</b> الأعراض</div>
+                    <div class="dx-pstep" data-s="2"><b>2</b> الفرضيات</div>
+                    <div class="dx-pstep" data-s="3"><b>3</b> التشخيص الفارقي</div>
+                    <div class="dx-pstep" data-s="4"><b>4</b> النتيجة</div>
+                </div>
+
+                <div id="dxPanels"></div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== طبقة التحليل ===== -->
+    <div class="analyzing-overlay" id="analyzingOverlay">
+        <div class="an-spinner">🔍</div>
+        <div class="an-title" data-i18n="diagnosis_analyzing">جارٍ تحليل الأعراض...</div>
+        <div class="an-sub" id="anSub">مطابقة الأعراض مع محكات قاعدة معارف DSM-5-TR المحلية</div>
+        <div class="an-progress-wrap">
+            <div class="an-progress-bar">
+                <div class="an-progress-fill" id="anBar"></div>
+            </div>
+        </div>
+        <div class="an-steps">
+            <div class="an-step active" id="step1">
+                <span class="step-dot">1</span>
+                <span data-i18n="diagnosis_step1">تحليل المعايير والمطابقات...</span>
+            </div>
+            <div class="an-step" id="step2">
+                <span class="step-dot">2</span>
+                <span data-i18n="diagnosis_step2">فحص حضور الكلمات المفتاحية...</span>
+            </div>
+            <div class="an-step" id="step3">
+                <span class="step-dot">3</span>
+                <span data-i18n="diagnosis_step3">مقارنة المحكات مع قاعدة معارف DSM-5-TR...</span>
+            </div>
+            <div class="an-step" id="step4">
+                <span class="step-dot">4</span>
+                <span data-i18n="diagnosis_step4">إعداد نتيجة التحليل النهائية...</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== التذييل ===== -->
+    <footer>
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <div class="footer-brand">
+                    <img src="logo.jpg" alt="DIAGNO-ASSIST">
+                    <div>
+                        <span class="fname">DIAGNO-ASSIST</span>
+                        <span class="fsub">للأخصائيين النفسيين</span>
+                    </div>
+                </div>
+                <p>منصة رقمية متكاملة لمساعدتك في التشخيص والاختبارات وتتبع رحلة تعافي مرضاك.</p>
+            </div>
+            <div class="footer-col">
+                <h4>عن المنصة</h4>
+                <a href="#">من نحن</a>
+                <a href="#">مميزات المنصة</a>
+                <a href="index.html#how">كيف يعمل</a>
+                <a href="pricing.html">الأسعار</a>
+            </div>
+            <div class="footer-col">
+                <h4 data-i18n="footer_help">المساعدة والدعم</h4>
+                <a href="#" data-i18n="footer_faq">الأسئلة الشائعة</a>
+                <a href="#" data-i18n="footer_contact">تواصل معنا</a>
+                <a href="#" data-i18n="footer_help_center">مركز المساعدة</a>
+                <a href="#" data-i18n="footer_guide">دليل الاستخدام</a>
+            </div>
+            <div class="footer-col">
+                <h4 data-i18n="footer_legal">البنود القانونية</h4>
+                <a href="#" data-i18n="footer_terms">الشروط والأحكام</a>
+                <a href="#" data-i18n="footer_privacy">سياسة الخصوصية</a>
+                <a href="#" data-i18n="footer_disclaimer">إخلاء المسؤولية الطبية</a>
+            </div>
+        </div>
+        <div class="footer-bottom container" data-i18n="footer_copyright">© 2026 DIAGNO-ASSIST — جميع الحقوق محفوظة</div>
+    </footer>
+
+    <script src="translations.js?v=20261030"></script>
+    <script src="i18n.js?v=20261030"></script>
+    <script src="dsm-db.js"></script>
+    <script src="differential-engine.js"></script>
+    <script>
+        const area = document.getElementById('symptoms');
+        const pill = document.getElementById('countPill');
+        const countText = document.getElementById('countText');
+        const countFill = document.getElementById('countFill');
+
+        function normalize(t) { return (t || '').replace(/[\u064B-\u0652\u0670]/g, ''); }
+
+        function countSymptoms() {
+            const text = area.value.trim();
+            if (!text) {
+                countText.textContent = '0 كلمة';
+                pill.className = 'count-pill';
+                countFill.style.width = '0%';
+                return;
+            }
+            const words = text.split(/[\s،,؛;\n]+/).filter(w => w.length > 0);
+            const n = words.length;
+            const pct = Math.min((n / 15) * 100, 100);
+            countText.textContent = n + ' كلمة';
+            countFill.style.width = pct + '%';
+            pill.className = n >= 5 ? 'count-pill ok' : 'count-pill warn';
+        }
+        area.addEventListener('input', countSymptoms);
+
+        /* ============================================================
+         * التشخيص الفارقي — يعمل محلياً بالكامل (dsm-db.js + differential-engine.js)
+         * المسار: الأعراض ← الفرضيات ← الأسئلة الفارقية ← النتيجة الواحدة
+         * ========================================================== */
+        var Engine = window.DifferentialEngine;
+        var panels = document.getElementById('dxPanels');
+        var progress = document.getElementById('dxProgress');
+        var contentGrid = document.getElementById('diagForm').parentNode;
+        var sideStack = document.querySelector('.side-stack');
+        var AP = JSON.parse(localStorage.getItem('diagActivePatient') || 'null');
+        function pk(base) { return AP ? base + '_' + AP.id : base; }
+        function esc(s) {
+            return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        var state = { text: '', recognized: [], candidates: [], questions: [], answers: {}, fit: {} };
+
+        function scrollToCards() {
+            var top = contentGrid.getBoundingClientRect().top + window.pageYOffset - 90;
+            window.scrollTo({ top: top < 0 ? 0 : top, behavior: 'smooth' });
+        }
+
+        function setStep(step) {
+            progress.hidden = step <= 1;
+            Array.prototype.forEach.call(progress.querySelectorAll('.dx-pstep'), function (el) {
+                var s = Number(el.getAttribute('data-s'));
+                el.classList.toggle('on', s === step);
+                el.classList.toggle('done', s < step);
+            });
+            scrollToCards();
+        }
+
+        function showInput(show) {
+            document.getElementById('diagForm').style.display = show ? '' : 'none';
+            if (sideStack) sideStack.style.display = show ? '' : 'none';
+            if (show) { panels.innerHTML = ''; progress.hidden = true; }
+        }
+
+        /* ---------------- 1) تحليل الأعراض ---------------- */
+        document.getElementById('analyzeBtn').addEventListener('click', function () {
+            if (!Engine) {
+                alert('تعذر تحميل قاعدة معارف DSM-5-TR. تأكد من وجود الملفين dsm-db.js و differential-engine.js.');
+                return;
+            }
+            var text = area.value.trim();
+            var words = text.split(/[\s،,؛;.\n]+/).filter(function (w) { return w.length > 1; });
+            if (words.length < 3) {
+                alert('اكتب وصفاً للأعراض أولاً (ثلاث كلمات على الأقل) بصيغة علمية أو وصفية أو عامية.');
+                area.focus();
+                return;
+            }
+
+            var res = Engine.analyzeSymptoms(text);
+            state = {
+                text: text,
+                recognized: res.recognized,
+                candidates: res.candidates,
+                questions: [],
+                answers: {},
+                fit: res.fit || {}
+            };
+
+            var overlay = document.getElementById('analyzingOverlay');
+            var steps = [1, 2, 3, 4].map(function (i) { return document.getElementById('step' + i); });
+            overlay.classList.add('show');
+            document.body.style.overflow = 'hidden';
+            var s = 0;
+            var timer = setInterval(function () {
+                steps.forEach(function (st) { st.classList.remove('active'); });
+                s = Math.min(s + 1, steps.length - 1);
+                steps[s].classList.add('active');
+            }, 380);
+
+            setTimeout(function () {
+                clearInterval(timer);
+                overlay.classList.remove('show');
+                document.body.style.overflow = '';
+                steps.forEach(function (st) { st.classList.remove('active'); });
+                steps[0].classList.add('active');
+                if (!state.candidates.length) renderNoMatch();
+                else renderHypotheses();
+            }, 1500);
+        });
+
+        function renderNoMatch() {
+            showInput(false);
+            setStep(2);
+            panels.innerHTML =
+                '<div class="dx-panel">' +
+                '<h2>لم تُطابق الأعراض أي اضطراب في قاعدة المعارف</h2>' +
+                '<p class="dx-sub">لم يتعرف النظام على محكات تشخيصية كافية. أعد صياغة الأعراض بجمل وصفية أوضح، أو أضف تفاصيل عن المدة، والعمر عند البداية، والبيئات التي تظهر فيها الأعراض، وأثرها على الأداء.</p>' +
+                '<div class="dx-reco">' +
+                '<span class="dx-chip">مثال: «هلاوس سمعية وأوهام اضطهادية منذ سنة وشهرين»</span>' +
+                '<span class="dx-chip">مثال: «حزن مستمر وفقدان اهتمام وأرق منذ ثلاثة أشهر»</span>' +
+                '<span class="dx-chip">مثال: «نوبات هلع مع خفقان وخوف من الموت»</span>' +
+                '</div>' +
+                '<div class="dx-actions"><button class="dx-btn ghost" id="dxBack1">↩ العودة إلى الأعراض</button></div>' +
+                '</div>';
+            document.getElementById('dxBack1').onclick = function () { showInput(true); };
+        }
+
+        /* ---------------- 2) الفرضيات الأكثر احتمالاً ---------------- */
+        function renderHypotheses() {
+            showInput(false);
+            setStep(2);
+            var many = state.candidates.length > 1;
+            var html = '<div class="dx-panel">' +
+                '<h2>الفرضيات التشخيصية الأكثر احتمالاً</h2>' +
+                '<p class="dx-sub">' + (many
+                    ? 'هذه الاضطرابات مطروحة كاحتمالات متكافئة دون ترتيب أو درجة أو نسبة. انتقل إلى التشخيص الفارقي للفصل بينها.'
+                    : 'لم تُسند الأعراض سوى فرضية واحدة بهذا المستوى من التفصيل. أضف تفاصيل أكثر (المدة، العمر عند البداية، السياق) لفتح مقارنة فارقية.') +
+                '</p>';
+
+            if (state.recognized.length) {
+                html += '<div class="dx-reco">' + state.recognized.slice(0, 10).map(function (l) {
+                    return '<span class="dx-chip">✓ ' + esc(l) + '</span>';
+                }).join('') + '</div>';
+            }
+
+            html += '<div class="hypo-grid">' + state.candidates.map(function (c) {
+                return '<div class="hypo-card">' +
+                    '<span class="hc-code">' + esc(c.code) + '</span>' +
+                    '<div class="hc-ico">' + esc(c.ico) + '</div>' +
+                    '<h3>' + esc(c.ar) + '</h3>' +
+                    '<div class="hc-en">' + esc(c.en) + '</div>' +
+                    '<span class="hc-cat">' + esc(c.catAr) + '</span>' +
+                    '</div>';
+            }).join('') + '</div>';
+
+            html += '<div class="dx-actions">' +
+                '<button class="dx-btn" id="dxToDiff">' + (many ? '⚖️ التشخيص الفارقي' : '✅ متابعة إلى النتيجة') + '</button>' +
+                '<button class="dx-btn ghost" id="dxEditSymptoms">✏️ تعديل الأعراض</button>' +
+                '</div></div>';
+
+            panels.innerHTML = html;
+            document.getElementById('dxEditSymptoms').onclick = function () { showInput(true); };
+            document.getElementById('dxToDiff').onclick = function () {
+                if (!many) return showFinal();
+                state.questions = Engine.buildQuestions(state.candidates.map(function (c) { return c.id; }));
+                if (!state.questions.length) return showFinal();
+                renderQuestions();
+            };
+        }
+
+        /* ---------------- 3) الأسئلة الفارقية الديناميكية ---------------- */
+        function renderQuestions() {
+            setStep(3);
+            var html = '<div class="dx-panel">' +
+                '<h2>أسئلة التشخيص الفارقي</h2>' +
+                '<p class="dx-sub">هذه الأسئلة مولّدة من الفروق بين الفرضيات المعروضة فقط، بهدف حسم اضطراب واحد. أجب بالخيارات أو اكتب الإجابة بحرية ثم اضغط «تثبيت».</p>' +
+                '<div id="dxQWarn" class="dx-warn" style="display:none"></div>' +
+                '<div class="q-list">' + state.questions.map(function (q) {
+                    return '<div class="q-item" data-key="' + esc(q.key) + '">' +
+                        '<div class="q-head"><span class="q-title">' + esc(q.q) + '</span>' +
+                        '<span class="q-badge">' + esc(q.label) + '</span></div>' +
+                        (q.hint ? '<div class="q-hint">' + esc(q.hint) + '</div>' : '') +
+                        '<div class="q-opts">' + q.opts.map(function (o) {
+                            return '<button type="button" class="q-opt" data-v="' + esc(o.v) + '">' + esc(o.l) + '</button>';
+                        }).join('') + '</div>' +
+                        '<div class="q-free"><input type="text" data-free="' + esc(q.key) + '" placeholder="أو اكتب الإجابة بحرية… مثل: منذ ثلاثة أشهر">' +
+                        '<button type="button" data-parse="' + esc(q.key) + '">تثبيت</button></div>' +
+                        '<div class="q-status" id="qs_' + esc(q.key) + '"></div>' +
+                        '</div>';
+                }).join('') + '</div>' +
+                '<div class="dx-actions">' +
+                '<button class="dx-btn" id="dxShowResult">📋 إظهار النتيجة</button>' +
+                '<button class="dx-btn ghost" id="dxBackHypo">↩ الفرضيات</button>' +
+                '</div></div>';
+            panels.innerHTML = html;
+
+            panels.querySelectorAll('.q-item').forEach(function (item) {
+                var key = item.getAttribute('data-key');
+                item.querySelectorAll('.q-opt').forEach(function (btn) {
+                    btn.addEventListener('click', function () {
+                        item.querySelectorAll('.q-opt').forEach(function (b) { b.classList.remove('on'); });
+                        btn.classList.add('on');
+                        state.answers[key] = btn.getAttribute('data-v');
+                        var st = document.getElementById('qs_' + key);
+                        if (st) st.textContent = 'تم اختيار: ' + btn.textContent;
+                    });
+                });
+            });
+
+            panels.querySelectorAll('[data-parse]').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var key = btn.getAttribute('data-parse');
+                    var input = panels.querySelector('[data-free="' + key + '"]');
+                    var txt = (input && input.value || '').trim();
+                    var st = document.getElementById('qs_' + key);
+                    if (!txt) { if (st) st.textContent = ''; return; }
+                    var hit = Engine.interpretFreeText(key, txt);
+                    if (!hit) {
+                        if (st) { st.style.color = '#b45309'; st.textContent = 'لم أتعرف على الإجابة — اختر أحد الخيارات أو أعد الصياغة.'; }
+                        return;
+                    }
+                    state.answers[key] = hit.v;
+                    var item = btn.closest('.q-item');
+                    item.querySelectorAll('.q-opt').forEach(function (b) {
+                        b.classList.toggle('on', b.getAttribute('data-v') === hit.v);
+                    });
+                    if (st) { st.style.color = '#0f766e'; st.textContent = 'تم فهم الإجابة: ' + hit.l; }
+                });
+            });
+
+            panels.querySelectorAll('[data-free]').forEach(function (input) {
+                input.addEventListener('keydown', function (e) {
+                    if (e.key !== 'Enter') return;
+                    e.preventDefault();
+                    var key = input.getAttribute('data-free');
+                    var b = panels.querySelector('[data-parse="' + key + '"]');
+                    if (b) b.click();
+                });
+            });
+
+            document.getElementById('dxBackHypo').onclick = function () { renderHypotheses(); };
+
+            document.getElementById('dxShowResult').onclick = function () {
+                var missing = state.questions.filter(function (q) { return !state.answers[q.key]; });
+                var warn = document.getElementById('dxQWarn');
+                if (missing.length) {
+                    warn.style.display = 'block';
+                    warn.textContent = 'بقيت ' + missing.length + ' من ' + state.questions.length +
+                        ' أسئلة دون إجابة. أجب عنها جميعاً (اختر «لا أعرف» عند عدم توفر المعلومة) ليصدر الحسم التشخيصي.';
+                    var first = panels.querySelector('.q-item[data-key="' + missing[0].key + '"]');
+                    if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    return;
+                }
+                showFinal();
+            };
+        }
+
+        /* ---------------- 4) النتيجة النهائية ---------------- */
+        function winnerLabels(text, id) {
+            var ex = Engine.explain(text);
+            for (var i = 0; i < ex.length; i++) {
+                if (ex[i].id === id) return { labels: ex[i].hits.map(function (h) { return h.label; }), total: null };
+            }
+            return { labels: [], total: null };
+        }
+
+        function showFinal() {
+            setStep(4);
+            var ids = state.candidates.map(function (c) { return c.id; });
+            var res = Engine.resolve(ids, state.answers, state.fit);
+            var w = res.winner;
+            if (!w) { renderNoMatch(); return; }
+
+            var d = Engine.getDisorder(w.id);
+            var lab = winnerLabels(state.text, w.id);
+            var date = new Date().toLocaleString('ar');
+
+            var html = '<div class="dx-panel">' +
+                '<h2>النتيجة التشخيصية</h2>' +
+                '<p class="dx-sub">' + (state.questions.length
+                    ? 'بعد تطبيق إجابات الأسئلة الفارقية على محكات الفرضيات، لم يبقَ سوى اضطراب واحد مطابق.'
+                    : 'لم تُطرح أسئلة فارقية لعدم ظهور فرضية منافسة مدعومة بالأعراض — هذا هو الاضطراب الوحيد المطابق للمحكات. أضف تفاصيل أكثر لفتح مقارنة فارقية.') + '</p>' +
+                '<div class="final-card"><div class="fc-top">' +
+                '<div class="fc-ico">' + esc(w.ico) + '</div>' +
+                '<div><h3>' + esc(w.ar) + '</h3>' +
+                '<div class="fc-en">' + esc(w.en) + '</div>' +
+                '<div class="fc-meta"><span class="fc-tag">' + esc(w.code) + '</span>' +
+                '<span class="fc-tag">' + esc(w.catAr) + '</span>' +
+                '<span class="fc-tag">✓ تشخيص واحد محسوم</span></div></div></div></div>';
+
+            if (res.decisions.length) {
+                html += '<div class="dx-sec-title">الإجابات التي رجّحت هذا الاضطراب</div><div class="dx-list">' +
+                    res.decisions.map(function (x) {
+                        return '<div class="dx-li"><span class="ok">✓</span><div><b>' + esc(x.label) + ':</b> ' + esc(x.answer) + '</div></div>';
+                    }).join('') + '</div>';
+            }
+
+            if (res.excluded.length) {
+                html += '<div class="dx-sec-title">لماذا استُبعدت الفرضيات الأخرى</div><div class="dx-list">' +
+                    res.excluded.map(function (x) {
+                        return '<div class="dx-li"><span class="x">✕</span><div><b>' + esc(x.ar) + ':</b> ' + esc(x.reason) + '</div></div>';
+                    }).join('') + '</div>';
+            }
+
+            if (lab.labels.length) {
+                html += '<div class="dx-sec-title">المحكات المتعرف عليها في الأعراض</div><div class="dx-reco">' +
+                    lab.labels.map(function (l) { return '<span class="dx-chip">✓ ' + esc(l) + '</span>'; }).join('') + '</div>';
+            }
+
+            html += '<div class="dx-actions">' +
+                '<button class="dx-btn" id="dxOpenResults">📄 صفحة النتائج والتقرير</button>' +
+                '<button class="dx-btn ghost" id="dxAgain">↩ تعديل الأعراض وإعادة التحليل</button>' +
+                '</div></div>';
+
+            panels.innerHTML = html;
+
+            var payload = {
+                winner: {
+                    id: w.id, name: w.ar, ico: w.ico, code: w.code, cat: w.cat, catAr: w.catAr,
+                    en: w.en, labels: lab.labels, matched: lab.labels.length, total: (d && d.c.length) || lab.labels.length,
+                    pct: Math.round(lab.labels.length / Math.max(1, (d && d.c.length) || lab.labels.length) * 100)
+                },
+                other: res.excluded[0] ? {
+                    id: res.excluded[0].id, name: res.excluded[0].ar, ico: res.excluded[0].ico,
+                    code: res.excluded[0].code, pct: 0, matched: 0, total: 0
+                } : null,
+                text: state.text,
+                date: date,
+                recognized: state.recognized,
+                differential: {
+                    candidates: state.candidates,
+                    questions: state.questions,
+                    answers: state.answers,
+                    decisions: res.decisions,
+                    excluded: res.excluded
+                }
+            };
+            try { localStorage.setItem(pk('diagResult'), JSON.stringify(payload)); } catch (e) { }
+
+            document.getElementById('dxOpenResults').onclick = function () { location.href = 'results.html'; };
+            document.getElementById('dxAgain').onclick = function () { showInput(true); };
+        }
+
+        document.querySelectorAll('.suggest-grid .chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                area.value += (area.value.trim() ? '، ' : '') + chip.textContent;
+                countSymptoms();
+            });
+        });
+
+        const DEMO_TEXTS = {
+            ptsd:'استرجاع متكرر ومؤلم للحدث الصادم دون رغبة، كوابيس مزعجة ومتكررة مرتبطة بالحدث، ذكريات مفاجئة تعيد إحياء الصدمة، شعور وكأن الحدث يحدث الآن مجددًا، ضيق نفسي شديد عند التعرض لأي مذكّر بالصدمة، تجنّب الأماكن أو الأشخاص المرتبطين بالحدث، تجنّب الأفكار والمشاعر المذكّرة بالصدمة، صعوبة في تذكر تفاصيل مهمة من الحدث، أفكار سلبية مستمرة عن الذات أو العالم، لوم النفس أو الآخرين على ما حدث، انخفاض الاهتمام بالأنشطة التي كانت ممتعة، الشعور بالانفصال والغربة عن الآخرين، عدم القدرة على الشعور بمشاعر إيجابية، اضطراب النوم وصعوبة الدخول أو الاستمرار فيه، نوبات غضب وتهيّج مفرط، صعوبة التركيز، فرط اليقظة والترقب الدائم للخطر، استجابة جفل مفرطة والانتفاض من الأصوات المفاجئة، سلوك متهور أو مدمر للذات، خدر عاطفي، فقدان الأمل ونظرة سلبية للمستقبل، الحساسية الزائدة للمثيرات البيئية، الخوف من تكرار الصدمة، الانسحاب الاجتماعي والعزلة',
+            mdd:'مزاج منخفض معظم اليوم كل يوم تقريبًا، انخفاض واضح في الاهتمام أو الاستمتاع في كل الأنشطة، فقدان وزن بارز أو زيادة مع انخفاض أو ارتفاع الشهية، أرق أو فرط نوم كل يوم تقريبًا، هياج نفسي حركي أو خمول، تعب أو فقدان الطاقة كل يوم تقريبًا، أحاسيس بانعدام القيمة أو شعور مفرط بالذنب، انخفاض القدرة على التفكير أو التركيز أو عدم الحسم، أفكار متكررة عن الموت أو تفكير انتحاري'
+        };
+
+        document.getElementById('demoPtsd').addEventListener('click', () => { area.value = DEMO_TEXTS.ptsd; countSymptoms(); area.focus(); });
+        document.getElementById('demoMdd').addEventListener('click', () => { area.value = DEMO_TEXTS.mdd; countSymptoms(); area.focus(); });
+    </script>
+    <script>
+        (function() {
+            var btn = document.getElementById('authBtn');
+            if (!btn) return;
+            var u = JSON.parse(localStorage.getItem('diagUser') || 'null');
+            if (u) {
+                btn.textContent = (u.isAdmin ? '👨‍💼 ' : '👤 ') + (u.isAdmin ? 'المدير' : u.name);
+                btn.onclick = function() { location.href = 'profile.html'; };
+            } else {
+                btn.onclick = function() { location.href = 'login.html'; };
+            }
+        })();
+
+        const io = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+        }, { threshold: .12 });
+        document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+    </script>
+    <div id="i18n-toast" class="i18n-toast"></div>
+    <style>.i18n-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:#1e3a8a;color:#fff;padding:12px 28px;border-radius:12px;font-weight:700;font-size:14px;z-index:99999;transition:transform .4s cubic-bezier(.68,-.55,.27,1.55),opacity .4s;opacity:0;font-family:'Cairo',sans-serif}.i18n-toast.show{transform:translateX(-50%) translateY(0);opacity:1}</style>
+</body>
+</html>

@@ -1,0 +1,690 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الأسعار | DIAGNO-ASSIST</title>
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --blue: #2563eb;
+            --blue-deep: #1d4ed8;
+            --blue-light: #60a5fa;
+            --blue-pale: #dbeafe;
+            --golden: #f59e0b;
+            --golden-deep: #d97706;
+            --dark: #0b1c3f;
+            --dark-mid: #12294e;
+            --text: #1e3a5f;
+            --text-light: #7f92b5;
+            --bg: #f0f5ff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ─── NAV ─── */
+        header.nav {
+            position: sticky; top: 0; z-index: 200;
+            backdrop-filter: blur(20px);
+            background: linear-gradient(120deg, #0b1c3f, #16337a 45%, #1d4ed8);
+            border-bottom: 1px solid rgba(255,255,255,.14);
+            box-shadow: 0 12px 36px rgba(11,28,63,.35);
+        }
+        header.nav .brand-name { background: linear-gradient(120deg,#fff,#bfdbfe); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+        header.nav .brand-sub { color:#c8daff; }
+        header.nav .nav-links a { color:#d6e4ff; }
+        header.nav .nav-links a::after { background: linear-gradient(90deg,#22d3ee,#60a5fa); }
+        header.nav .nav-links a:hover { color:#fff; }
+        .nav-inner { display:flex; align-items:center; justify-content:space-between; height:96px; gap:24px; padding-inline:3%; }
+        .brand { display:flex; align-items:center; gap:16px; text-decoration:none; flex-shrink:0; }
+        .brand-logo { width:64px; height:64px; border-radius:20px; object-fit:cover; box-shadow: 0 10px 26px rgba(37,99,235,.30), 0 0 0 4px rgba(37,99,235,.08); }
+        .brand-text { line-height:1.15; }
+        .brand-name { display:block; font-size:27px; font-weight:900; letter-spacing:.5px; background:linear-gradient(120deg,#1d4ed8,#2563eb 55%,#06b6d4); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+        .brand-sub { display:block; font-size:13.5px; font-weight:700; letter-spacing:.3px; margin-top:3px; }
+        .nav-links { display:flex; gap:34px; align-items:center; }
+        .nav-links a { text-decoration:none; font-weight:700; font-size:15.5px; position:relative; padding:6px 0; transition:color .25s; }
+        .nav-links a::after { content:""; position:absolute; bottom:-2px; right:0; width:0; height:3px; border-radius:3px; transition:width .3s; }
+        .nav-links a:hover::after { width:100%; }
+        .nav-links a .ico { font-size:17px; }
+        .nav-cta { padding:12px 28px; font-size:15px; border-radius:14px; background:linear-gradient(135deg,#2563eb,#60a5fa); color:#fff; border:none; font-weight:800; cursor:pointer; font-family:inherit; box-shadow:0 8px 24px rgba(37,99,235,.35); transition:all .25s; }
+        .nav-cta:hover { transform:translateY(-2px); box-shadow:0 12px 32px rgba(37,99,235,.45); }
+
+        /* ─── HERO ─── */
+        .hero {
+            position: relative;
+            width: 100%;
+            padding: 50px 20px 60px;
+            text-align: center;
+            background: linear-gradient(160deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%);
+            overflow: hidden;
+        }
+        .hero::before {
+            content: "";
+            position: absolute; inset: 0;
+            background:
+                radial-gradient(ellipse 600px 600px at 15% 20%, rgba(245,158,11,.2), transparent),
+                radial-gradient(ellipse 500px 500px at 85% 75%, rgba(217,119,6,.15), transparent),
+                radial-gradient(ellipse 400px 400px at 50% 50%, rgba(245,214,122,.1), transparent);
+            pointer-events: none;
+        }
+        .hero::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, transparent, #f59e0b, #fbbf24, #f59e0b, transparent);
+        }
+
+        .particles {
+            position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0;
+            animation: floatUp linear infinite;
+        }
+        .particle:nth-child(1) { width:6px; height:6px; left:10%; background:rgba(245,158,11,.6); animation-duration:12s; animation-delay:0s; }
+        .particle:nth-child(2) { width:4px; height:4px; left:25%; background:rgba(251,191,36,.5); animation-duration:15s; animation-delay:2s; }
+        .particle:nth-child(3) { width:8px; height:8px; left:40%; background:rgba(255,255,255,.3); animation-duration:18s; animation-delay:1s; }
+        .particle:nth-child(4) { width:5px; height:5px; left:55%; background:rgba(245,158,11,.4); animation-duration:14s; animation-delay:3s; }
+        .particle:nth-child(5) { width:7px; height:7px; left:70%; background:rgba(251,191,36,.3); animation-duration:16s; animation-delay:0.5s; }
+        .particle:nth-child(6) { width:4px; height:4px; left:85%; background:rgba(255,255,255,.4); animation-duration:13s; animation-delay:4s; }
+        .particle:nth-child(7) { width:6px; height:6px; left:92%; background:rgba(245,158,11,.5); animation-duration:17s; animation-delay:1.5s; }
+        .particle:nth-child(8) { width:5px; height:5px; left:5%; background:rgba(251,191,36,.4); animation-duration:11s; animation-delay:2.5s; }
+        .particle:nth-child(9) { width:3px; height:3px; left:50%; background:rgba(255,255,255,.5); animation-duration:19s; animation-delay:0s; }
+        .particle:nth-child(10) { width:6px; height:6px; left:35%; background:rgba(245,158,11,.35); animation-duration:14s; animation-delay:3.5s; }
+
+        .floating-shape {
+            position: absolute;
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            opacity: 0.06;
+            animation: morphFloat 20s ease-in-out infinite;
+        }
+        .floating-shape:nth-child(1) { width:300px; height:300px; top:-50px; right:-80px; background:rgba(245,158,11,.3); animation-duration:18s; }
+        .floating-shape:nth-child(2) { width:200px; height:200px; bottom:-40px; left:-60px; background:rgba(251,191,36,.2); animation-duration:22s; animation-delay:3s; }
+        .floating-shape:nth-child(3) { width:150px; height:150px; top:40%; left:10%; background:rgba(255,255,255,.15); animation-duration:25s; animation-delay:6s; }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-20vh) scale(1); opacity: 0; }
+        }
+        @keyframes morphFloat {
+            0%, 100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; transform: rotate(0deg) scale(1); }
+            33% { border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%; transform: rotate(60deg) scale(1.05); }
+            66% { border-radius: 50% 50% 20% 80% / 25% 75% 50% 50%; transform: rotate(120deg) scale(0.95); }
+        }
+
+        .hero-content { position: relative; z-index: 10; }
+        .hero h1 {
+            font-size: 36px; font-weight: 900; margin-bottom: 12px; line-height: 1.5; color: #fff;
+        }
+        .hero h1 .gradient-text {
+            background: linear-gradient(135deg, #f59e0b, #fbbf24, #f5d47a, #f59e0b);
+            -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+            text-shadow: none;
+        }
+        .hero p {
+            font-size: 15px; color: rgba(255,255,255,.7); max-width: 600px; margin: 0 auto 28px; line-height: 1.8;
+        }
+
+        /* ─── PRICING CARDS ─── */
+        .pricing-section {
+            padding: 70px 20px 90px;
+            background: linear-gradient(180deg, #e8f0fe 0%, var(--bg) 40%, #f5f8ff 100%);
+            position: relative;
+        }
+        .pricing-grid {
+            max-width: 1100px; margin: 0 auto;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+            align-items: stretch;
+        }
+
+        .plan {
+            position: relative;
+            background: rgba(255,255,255,.7);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(229,237,255,.8);
+            border-radius: 24px;
+            padding: 36px 24px 28px;
+            text-align: center;
+            transition: all .4s cubic-bezier(.25,.46,.45,.94);
+            display: flex; flex-direction: column;
+            min-height: 520px;
+            overflow: hidden;
+            opacity: 0; transform: translateY(40px);
+        }
+        .plan.revealed {
+            opacity: 1; transform: translateY(0);
+        }
+        .plan::before {
+            content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            border-radius: 24px 24px 0 0;
+        }
+        .plan:nth-child(1)::before { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+        .plan:nth-child(2)::before { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+        .plan:nth-child(3)::before { background: linear-gradient(90deg, #8b5cf6, #a78bfa); }
+
+        .plan::after {
+            content: ""; position: absolute; inset: 0;
+            background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,.6) 45%, transparent 50%);
+            transform: translateX(-100%); transition: transform .6s; pointer-events: none;
+            border-radius: 24px;
+        }
+        .plan:hover::after { transform: translateX(100%); }
+
+        .plan:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(37,99,235,.15), 0 0 0 1px rgba(37,99,235,.1);
+            border-color: rgba(37,99,235,.2);
+        }
+
+        .plan .p-icon {
+            width: 68px; height: 68px; border-radius: 18px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 32px; margin: 0 auto 16px;
+            transition: transform .3s;
+        }
+        .plan:hover .p-icon { transform: scale(1.1) rotate(-3deg); }
+        .plan:nth-child(1) .p-icon { background: linear-gradient(135deg, #dbeafe, #bfdbfe); }
+        .plan:nth-child(2) .p-icon { background: linear-gradient(135deg, #fef3c7, #fde68a); }
+        .plan:nth-child(3) .p-icon { background: linear-gradient(135deg, #ede9fe, #ddd6fe); }
+
+        .plan h2 { font-size: 19px; color: var(--dark-mid); margin-bottom: 4px; font-weight: 800; }
+        .plan .p-type { font-size: 13px; color: var(--text-light); font-weight: 600; margin-bottom: 20px; }
+
+        .plan .p-price-wrap { margin-bottom: 4px; }
+        .plan .p-price {
+            font-size: 42px; font-weight: 900; color: var(--blue);
+            line-height: 1.1; display: inline-block;
+        }
+        .plan .p-price .currency { font-size: 18px; font-weight: 600; color: var(--text-light); margin-inline-start: 4px; }
+        .plan.golden .p-price { color: var(--golden); }
+
+        .plan .p-period { font-size: 14px; font-weight: 600; color: var(--text-light); margin-bottom: 2px; }
+        .plan .p-monthly { font-size: 13px; color: #a0aec0; margin-bottom: 6px; }
+        .plan .p-discount {
+            display: inline-block; font-size: 12px; font-weight: 800;
+            padding: 4px 14px; border-radius: 20px; margin-bottom: 16px;
+        }
+        .plan .p-discount.green { background: #dcfce7; color: #16a34a; }
+        .plan .p-discount.yellow { background: #fef3c7; color: #d97706; }
+
+        .plan .p-feats { list-style: none; margin: 0 0 24px; padding: 0; text-align: right; flex-grow: 1; }
+        .plan .p-feats li {
+            font-size: 13.5px; color: #41547f; padding: 8px 0;
+            border-bottom: 1px solid #f0f4fa;
+            display: flex; align-items: center; gap: 10px; line-height: 1.6;
+        }
+        .plan .p-feats li:last-child { border-bottom: none; }
+        .plan .p-feats .tick {
+            width: 22px; height: 22px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--blue), var(--blue-light));
+            color: #fff; display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: 900; flex-shrink: 0;
+            animation: checkPop .4s ease backwards;
+        }
+        .plan.golden .p-feats .tick { background: linear-gradient(135deg, var(--golden), var(--golden-deep)); }
+
+        @keyframes checkPop {
+            0% { transform: scale(0) rotate(-45deg); opacity: 0; }
+            60% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .btn-buy {
+            display: block; width: 100%; padding: 14px; border-radius: 14px;
+            font-weight: 800; font-size: 16px; cursor: pointer; transition: all .3s;
+            font-family: inherit; border: none; position: relative; overflow: hidden;
+        }
+        .plan:not(.golden) .btn-buy {
+            background: linear-gradient(135deg, var(--blue), var(--blue-deep));
+            color: #fff; box-shadow: 0 6px 20px rgba(37,99,235,.3);
+        }
+        .plan:not(.golden) .btn-buy:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(37,99,235,.4);
+        }
+        .plan.golden {
+            border-color: rgba(245,158,11,.4);
+            background: rgba(255,255,255,.85);
+            box-shadow: 0 8px 30px rgba(245,158,11,.1);
+        }
+        .plan.golden:hover {
+            box-shadow: 0 20px 50px rgba(245,158,11,.2), 0 0 0 2px rgba(245,158,11,.3);
+            border-color: rgba(245,158,11,.6);
+        }
+        .plan.golden .p-icon { background: linear-gradient(135deg, #fef3c7, #fde68a); }
+        .plan.golden .p-price { color: var(--golden); }
+        .plan.golden .btn-buy {
+            background: linear-gradient(135deg, var(--golden), var(--golden-deep));
+            color: #fff; padding: 14px; box-shadow: 0 6px 20px rgba(245,158,11,.3);
+        }
+        .plan.golden .btn-buy:hover {
+            transform: translateY(-2px); box-shadow: 0 10px 30px rgba(245,158,11,.4);
+        }
+        .plan.golden .btn-buy::after {
+            content: ""; position: absolute; inset: 0;
+            background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,.3) 45%, transparent 50%);
+            transform: translateX(-100%); transition: transform .5s;
+        }
+        .plan.golden .btn-buy:hover::after { transform: translateX(100%); }
+
+        .tag-golden {
+            position: absolute; top: 18px; left: 50%; transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--golden), #fbbf24);
+            color: #fff; font-size: 12px; font-weight: 800;
+            padding: 6px 20px; border-radius: 30px; white-space: nowrap;
+            box-shadow: 0 4px 15px rgba(245,158,11,.3);
+            z-index: 5; letter-spacing: .3px;
+            animation: badgePulse 2s ease-in-out infinite;
+        }
+        @keyframes badgePulse {
+            0%, 100% { box-shadow: 0 4px 15px rgba(245,158,11,.3); }
+            50% { box-shadow: 0 4px 25px rgba(245,158,11,.5); }
+        }
+
+        /* ─── FAQ ─── */
+        .faq-section {
+            padding: 80px 20px;
+            background: linear-gradient(180deg, #fff 0%, #f0f5ff 100%);
+        }
+        .faq-section h2 {
+            text-align: center; font-size: 34px; font-weight: 900; color: var(--dark-mid);
+            margin-bottom: 12px;
+        }
+        .faq-section .section-sub {
+            text-align: center; font-size: 16px; color: var(--text-light); margin-bottom: 50px;
+        }
+        .faq-list { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+        .faq-item {
+            background: rgba(255,255,255,.8); backdrop-filter: blur(10px);
+            border: 1px solid #e5edff; border-radius: 16px;
+            overflow: hidden; transition: all .3s;
+        }
+        .faq-item:hover { border-color: var(--blue-light); box-shadow: 0 4px 20px rgba(37,99,235,.08); }
+        .faq-item.active { border-color: var(--blue); box-shadow: 0 8px 30px rgba(37,99,235,.12); }
+        .faq-q {
+            width: 100%; padding: 20px 24px; display: flex; align-items: center;
+            justify-content: space-between; gap: 16px;
+            background: none; border: none; cursor: pointer;
+            font-family: inherit; font-size: 16px; font-weight: 700;
+            color: var(--dark-mid); text-align: right;
+        }
+        .faq-q .icon {
+            width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+            background: var(--blue-pale); color: var(--blue);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; font-weight: 900; transition: all .3s;
+        }
+        .faq-item.active .faq-q .icon { background: var(--blue); color: #fff; transform: rotate(45deg); }
+        .faq-a {
+            max-height: 0; overflow: hidden; transition: max-height .4s ease, padding .3s;
+        }
+        .faq-item.active .faq-a { max-height: 300px; }
+        .faq-a-inner {
+            padding: 0 24px 20px; font-size: 15px; color: #4a6080; line-height: 1.9;
+        }
+
+        /* ─── TRUST ─── */
+        .trust-section {
+            padding: 70px 20px;
+            background: linear-gradient(180deg, #f0f5ff 0%, #fff 100%);
+        }
+        .trust-section h2 { text-align: center; font-size: 30px; font-weight: 900; color: var(--dark-mid); margin-bottom: 50px; }
+        .trust-grid {
+            max-width: 1000px; margin: 0 auto;
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+        }
+        .trust-card {
+            text-align: center; padding: 30px 16px; border-radius: 20px;
+            background: rgba(255,255,255,.7); backdrop-filter: blur(10px);
+            border: 1px solid #e5edff; transition: all .3s;
+        }
+        .trust-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(37,99,235,.08); border-color: var(--blue-light); }
+        .trust-card .t-icon {
+            width: 60px; height: 60px; border-radius: 16px; margin: 0 auto 16px;
+            background: linear-gradient(135deg, var(--blue-pale), #e0ecff);
+            display: flex; align-items: center; justify-content: center; font-size: 28px;
+        }
+        .trust-card h4 { font-size: 16px; font-weight: 800; color: var(--dark-mid); margin-bottom: 8px; }
+        .trust-card p { font-size: 13px; color: var(--text-light); line-height: 1.7; }
+
+        /* ─── CTA ─── */
+        .cta-section {
+            padding: 80px 20px;
+            background: linear-gradient(160deg, #0b1c3f, #1d4ed8 60%, #2563eb);
+            text-align: center; position: relative; overflow: hidden;
+        }
+        .cta-section::before {
+            content: ""; position: absolute; inset: 0;
+            background: radial-gradient(ellipse 500px 500px at 50% 50%, rgba(96,165,250,.2), transparent);
+            pointer-events: none;
+        }
+        .cta-content { position: relative; z-index: 10; }
+        .cta-section h2 { font-size: 34px; font-weight: 900; color: #fff; margin-bottom: 16px; }
+        .cta-section p { font-size: 17px; color: #c8daff; max-width: 600px; margin: 0 auto 36px; line-height: 1.8; }
+        .cta-btn {
+            display: inline-block; padding: 16px 40px; border-radius: 16px;
+            background: linear-gradient(135deg, var(--golden), var(--golden-deep));
+            color: #fff; font-size: 18px; font-weight: 800; text-decoration: none;
+            font-family: inherit; border: none; cursor: pointer; transition: all .3s;
+            box-shadow: 0 8px 30px rgba(245,158,11,.35);
+        }
+        .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(245,158,11,.45); }
+
+        /* ─── FOOTER ─── */
+        footer { width:100%; background:#0e1f3d; color:#c8daff; }
+        .footer-grid { max-width:1200px; margin:0 auto; padding:50px 3% 34px; display:grid; grid-template-columns:1.5fr 1fr 1fr 1fr; gap:40px; }
+        .footer-col h4 { color:#fff; font-size:16px; margin-bottom:18px; font-weight:700; }
+        .footer-col a { display:block; color:#a0b4d4; text-decoration:none; font-size:14px; margin-bottom:11px; transition:color 0.3s; }
+        .footer-col a:hover { color:#fff; }
+        .footer-brand { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+        .footer-brand img { width:44px; height:44px; border-radius:12px; object-fit:cover; border:1.5px solid rgba(255,255,255,.15); }
+        .footer-brand .brand-name { color:#fff; font-weight:800; letter-spacing:1px; font-size:16px; }
+        .footer-brand .brand-sub { display:block; font-size:11px; color:#a0b4d4; margin-top:2px; }
+        .footer-col p { font-size:14px; line-height:1.9; color:#a0b4d4; }
+        .footer-bottom { border-top:1px solid rgba(255,255,255,.08); text-align:center; padding:20px; color:#6b82a8; font-size:13px; }
+
+        /* ─── RESPONSIVE ─── */
+        @media(max-width:1100px) {
+            .pricing-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
+            .plan.golden { transform: none; }
+            .trust-grid { grid-template-columns: repeat(2,1fr); }
+        }
+        @media(max-width:700px) {
+            .nav-links { display: none; }
+            .nav-inner { padding-inline: 4%; }
+            .footer-grid { grid-template-columns: 1fr 1fr; padding: 36px 20px 28px; gap: 28px; }
+            .hero h1 { font-size: 32px; }
+            .hero p { font-size: 15px; }
+            .trust-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
+            .faq-section h2, .cta-section h2 { font-size: 26px; }
+        }
+        @media(max-width:500px) {
+            .footer-grid { grid-template-columns: 1fr; }
+        }
+        @media(max-width:430px){
+          .nav-inner{height:auto;min-height:60px;gap:8px;padding-inline:2%}
+          .brand-logo{width:36px;height:36px;border-radius:10px}
+          .brand-name{font-size:16px}
+          .brand-sub{font-size:9px}
+          .brand{gap:6px}
+          .nav-cta{padding:7px 12px;font-size:11px;border-radius:8px}
+          .hero{padding:28px 12px 36px}
+          .hero h1{font-size:22px}
+          .hero p{font-size:12px}
+          .plan{min-height:auto;padding:20px 14px 18px}
+          .plan .p-price{font-size:28px}
+          .plan .p-feats li{font-size:12px;padding:5px 0}
+          .plan .p-feats .tick{width:16px;height:16px;font-size:9px}
+          .faq-q{padding:12px 14px;font-size:13px}
+          .faq-a-inner{padding:0 14px 12px;font-size:12px}
+          .cta-section{padding:40px 12px}
+          .cta-section h2{font-size:20px}
+          .cta-btn{padding:10px 20px;font-size:14px}
+          .trust-card{padding:16px 10px}
+          .trust-card .t-icon{width:42px;height:42px;font-size:20px}
+          .pricing-section{padding:32px 12px 50px}
+          .faq-section{padding:40px 12px}
+          .trust-section{padding:32px 12px}
+          .tag-golden{font-size:10px;padding:4px 12px}
+          .pricing-grid{max-width:100%}
+          .footer-grid{grid-template-columns:1fr;gap:16px;padding:22px 16px}
+        }
+    </style>
+</head>
+<body>
+    <header class="nav">
+      <div class="nav-inner">
+        <a class="brand" href="index.html">
+          <img class="brand-logo" src="logo.jpg" alt="DIAGNO-ASSIST">
+          <span class="brand-text">
+            <span class="brand-name">DIAGNO-ASSIST</span>
+            <span class="brand-sub" data-i18n="brand_sub">للأخصائيين النفسيين</span>
+          </span>
+        </a>
+        <nav class="nav-links">
+          <a href="index.html"><span class="ico">🏠</span> الرئيسية</a>
+          <a href="index.html#how"><span class="ico">🔬</span> كيف يعمل</a>
+          <a href="index.html#features"><span class="ico">🩺</span> المميزات</a>
+          <a href="pricing.html"><span class="ico">💰</span> الأسعار</a>
+        </nav>
+        <button class="nav-cta" id="authBtn">تسجيل الدخول</button>
+      </div>
+    </header>
+
+    <!-- ═══ HERO ═══ -->
+    <section class="hero">
+        <div class="particles">
+            <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+            <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+            <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="hero-content">
+            <h1 data-i18n-html="pricing_hero_title">باقات <span class="gradient-text">الأسعار</span></h1>
+            <p data-i18n="pricing_hero_sub">اختر الباقة التي تناسب حجم عيادتك — من الأخصائي الفردي إلى المراكز الكبرى، مع كل أدوات التشخيص والمتابعة التي تحتاجها.</p>
+        </div>
+    </section>
+
+    <!-- ═══ PRICING CARDS ═══ -->
+    <section class="pricing-section">
+        <div class="pricing-grid">
+            <!-- الباقة الشهرية -->
+            <div class="plan" data-delay="0">
+                <div class="p-icon">📋</div>
+                <h2>الباقة الشهرية</h2>
+                <div class="p-type">للمتخصصين الأفراد</div>
+                <div class="p-price-wrap"><span class="p-price" data-count="2000">0</span><span class="currency">دج</span></div>
+                <div class="p-period">شهريًا</div>
+                <ul class="p-feats">
+                    <li><span class="tick">✓</span> مستخدم واحد</li>
+                    <li><span class="tick">✓</span> التشخيص لاضطرابين (PTSD + الكتئاب)</li>
+                    <li><span class="tick">✓</span> تطبيق اختبارين فقط</li>
+                    <li><span class="tick">✓</span> الاطلاع على نتائج الاختبارات</li>
+                    <li><span class="tick">✓</span> حفظ 5 ملفات مريض</li>
+                    <li><span class="tick">✓</span> 4 جلسات لكل مريض + رسوم بياني</li>
+                </ul>
+                <button class="btn-buy" onclick="location.href='payment.html?plan=monthly&price=2000&period=شهريًا'">اشترك الآن</button>
+            </div>
+
+            <!-- باقة 3 أشهر -->
+            <div class="plan golden" data-delay="100">
+                <div class="p-icon">📊</div>
+                <h2>باقة 3 أشهر</h2>
+                <div class="p-type">للممارسات والعيادات النشطة</div>
+                <div class="p-price-wrap"><span class="p-price" data-count="5500">0</span><span class="currency">دج</span></div>
+                <div class="p-period">شهريًا</div>
+                <ul class="p-feats">
+                    <li><span class="tick">✓</span> 3 مستخدمين</li>
+                    <li><span class="tick">✓</span> التشخيص الفارقي لـ 5 اضطرابات معتمدة</li>
+                    <li><span class="tick">✓</span> تطبيق عدد اختبارات معتمدة</li>
+                    <li><span class="tick">✓</span> نتائج الاختبارات مع امكانية ادخال ملاحظات</li>
+                    <li><span class="tick">✓</span> حفظ حتى 20 ملف مريض</li>
+                    <li><span class="tick">✓</span> 10 جلسات لكل مريض + رسوم بياني</li>
+                </ul>
+                <button class="btn-buy" onclick="location.href='payment.html?plan=quarterly&price=5500&period=شهريًا'">اشترك الآن</button>
+            </div>
+
+            <!-- الباقة السنوية -->
+            <div class="plan" data-delay="200">
+                <div class="p-icon">👑</div>
+                <h2>الباقة السنوية</h2>
+                <div class="p-type">للمتخصصين والمراكز الكبرى</div>
+                <div class="p-price-wrap"><span class="p-price" data-count="22000">0</span><span class="currency">دج</span></div>
+                <div class="p-period">شهريًا</div>
+                <ul class="p-feats">
+                    <li><span class="tick">✓</span> عدد مستخدمين غير محدود</li>
+                    <li><span class="tick">✓</span> التشخيص الفارقي لكل الاضطرابات المتاحة</li>
+                    <li><span class="tick">✓</span> كل الاختبارات + اختبارات حصرية جديدة</li>
+                    <li><span class="tick">✓</span> نتائج فحصة مع ملاحظات</li>
+                    <li><span class="tick">✓</span> عدد غير محدود من ملفات المريض</li>
+                    <li><span class="tick">✓</span> جلسات غير محدودة + رسوم بياني غير محدود</li>
+                </ul>
+                <button class="btn-buy" onclick="location.href='payment.html?plan=yearly&price=22000&period=شهريًا'">اشترك الآن</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ FAQ ═══ -->
+    <section class="faq-section">
+        <h2>الأسئلة الشائعة</h2>
+        <p class="section-sub">إجابات سريعة على أهم ما يهمك قبل الاشتراك</p>
+        <div class="faq-list">
+            <div class="faq-item">
+                <button class="faq-q">
+                    هل يمكنني ترقية الباقة لاحقًا؟
+                    <span class="icon">+</span>
+                </button>
+                <div class="faq-a"><div class="faq-a-inner">نعم، يمكنك الترقية في أي وقت. سنقوم بخصم المبلغ المتبقي من باقتك الحالية وتطبيق الفرق على الباقة الجديدة بشكل فوري.</div></div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q">
+                    ما هي طرق الدفع المتاحة؟
+                    <span class="icon">+</span>
+                </button>
+                <div class="faq-a"><div class="faq-a-inner">نقبل الدفع عبر CCP،inzid، والتحويل البنكي المباشر. جميع المعاملات آمنة ومشفرة بالكامل لحماية بياناتك.</div></div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q">
+                    هل توجد فترة تجريبية مجانية؟
+                    <span class="icon">+</span>
+                </button>
+                <div class="faq-a"><div class="faq-a-inner">نعم! نوفر لك 7 أيام تجريبية مجانية على أي باقة لتختبر جميع المميزات قبل اتخاذ قرارك.</div></div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q">
+                    كيف يتم تجديد الاشتراك؟
+                    <span class="icon">+</span>
+                </button>
+                <div class="faq-a"><div class="faq-a-inner">يتم التجديد تلقائيًا في نهاية كل فترة. سنرسل لك تذكيرًا قبل 7 أيام من انتهاء الاشتراك. يمكنك إلغاء التجديد التلقائي في أي وقت من لوحة التحكم.</div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ TRUST ═══ -->
+    <section class="trust-section">
+        <h2>لماذا تختارنا؟</h2>
+        <div class="trust-grid">
+            <div class="trust-card">
+                <div class="t-icon">🔒</div>
+                <h4>دفع آمن 100%</h4>
+                <p>جميع المعاملات مشفّرة بتقنية SSL المتقدمة لحماية بياناتك وبيانات مرضاك.</p>
+            </div>
+            <div class="trust-card">
+                <div class="t-icon">🎯</div>
+                <h4>أدوات احترافية</h4>
+                <p>اختبارات معايير عالمية مع تشخيص فارقي دقيق يساعدك على تقديم أفضل رعاية.</p>
+            </div>
+            <div class="trust-card">
+                <div class="t-icon">💬</div>
+                <h4>دعم فني متميز</h4>
+                <p>فريق دعم متخصص متاح لمساعدتك عبر البريد والهاتف وغرفة المحادثة المباشرة.</p>
+            </div>
+            <div class="trust-card">
+                <div class="t-icon">📊</div>
+                <h4>تقارير ذكية</h4>
+                <p>تصدير تقارير PDF احترافية مع رسوم بيانية تفاعلية لتتبع تقدم مرضاك.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══ CTA ═══ -->
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2>جاهز لتطوير ممارستك؟</h2>
+            <p>انضم لمئات الأخصائيين النفسيين الذين يثقون بـ DIAGNO-ASSIST في رعاية مرضاك.</p>
+            <button class="cta-btn" onclick="location.href='payment.html?plan=yearly&price=22000&period=سنويًا'">ابدأ الآن مجانًا</button>
+        </div>
+    </section>
+
+    <!-- ═══ FOOTER ═══ -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col"><div class="footer-brand"><img src="logo.jpg" alt="DIAGNO-ASSIST"><div><span class="brand-name">DIAGNO-ASSIST</span><span class="brand-sub" data-i18n="brand_sub">للأخصائيين النفسيين</span></div></div><p data-i18n="footer_desc">منصة رقمية متكاملة لمساعدتك في التشخيص والاختبارات وتتبع رحلة تعافي مرضاك.</p></div>
+            <div class="footer-col"><h4 data-i18n="footer_about">عن المنصة</h4><a href="#" data-i18n="footer_about_us">من نحن</a><a href="#" data-i18n="footer_features_link">مميزات المنصة</a><a href="#" data-i18n="footer_how">كيف يعمل</a><a href="#" data-i18n="nav_pricing">الأسعار</a><a href="#" data-i18n="footer_jobs">وظائف</a></div>
+            <div class="footer-col"><h4 data-i18n="footer_help">المساعدة والدعم</h4><a href="#" data-i18n="footer_faq">الأسئلة الشائعة</a><a href="#" data-i18n="footer_contact">تواصل معنا</a><a href="#" data-i18n="footer_help_center">مركز المساعدة</a><a href="#" data-i18n="footer_guide">دليل الاستخدام</a><a href="#" data-i18n="footer_status">الحالة التقنية</a></div>
+            <div class="footer-col"><h4 data-i18n="footer_legal">البنود القانونية</h4><a href="#" data-i18n="footer_terms">الشروط والأحكام</a><a href="#" data-i18n="footer_privacy">سياسة الخصوصية</a><a href="#" data-i18n="footer_cookies">سياسة ملفات تعريف الارتباط</a><a href="#" data-i18n="footer_disclaimer">إخلاء المسؤولية الطبية</a><a href="#" data-i18n="footer_refund">سياسة الاسترداد</a></div>
+        </div>
+        <div class="footer-bottom" data-i18n="footer_copyright">© 2026 DIAGNO-ASSIST — جميع الحقوق محفوظة</div>
+    </footer>
+
+    <script src="translations.js"></script>
+    <script src="i18n.js"></script>
+    <script>
+    (function(){
+      var btn=document.getElementById('authBtn');
+      if(!btn)return;
+      var u=JSON.parse(localStorage.getItem('diagUser')||'null');
+      if(u){
+        btn.textContent=(u.isAdmin?'👨‍💼 ':'👤 ')+(u.isAdmin?'المدير':u.name);
+        btn.onclick=function(){location.href='profile.html'};
+      }else{
+        btn.onclick=function(){location.href='login.html'};
+      }
+    })();
+    </script>
+    <script>
+    /* ── Price Counter Animation ── */
+    function animateCounters() {
+        document.querySelectorAll('.p-price[data-count]').forEach(function(el) {
+            if (el.dataset.animated) return;
+            var rect = el.getBoundingClientRect();
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
+                el.dataset.animated = '1';
+                var target = parseInt(el.dataset.count, 10);
+                var duration = 1200;
+                var start = performance.now();
+                function step(now) {
+                    var progress = Math.min((now - start) / duration, 1);
+                    var ease = 1 - Math.pow(1 - progress, 3);
+                    el.textContent = Math.floor(target * ease).toLocaleString('ar-DZ');
+                    if (progress < 1) requestAnimationFrame(step);
+                }
+                requestAnimationFrame(step);
+            }
+        });
+    }
+
+    /* ── Card Reveal on Scroll ── */
+    function revealCards() {
+        document.querySelectorAll('.plan').forEach(function(card) {
+            var delay = parseInt(card.dataset.delay || 0, 10);
+            var rect = card.getBoundingClientRect();
+            if (rect.top < window.innerHeight - 60) {
+                setTimeout(function() { card.classList.add('revealed'); }, delay);
+            }
+        });
+    }
+
+    window.addEventListener('scroll', function() { animateCounters(); revealCards(); });
+    window.addEventListener('load', function() { animateCounters(); revealCards(); });
+
+    /* ── FAQ Accordion ── */
+    document.querySelectorAll('.faq-q').forEach(function(q) {
+        q.addEventListener('click', function() {
+            var item = this.closest('.faq-item');
+            var wasActive = item.classList.contains('active');
+            document.querySelectorAll('.faq-item.active').forEach(function(a) { a.classList.remove('active'); });
+            if (!wasActive) item.classList.add('active');
+        });
+    });
+    </script>
+</body>
+</html>

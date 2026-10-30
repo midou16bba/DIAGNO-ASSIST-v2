@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ملفات المرضى | DIAGNO-ASSIST</title>
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{--blue:#2563eb;--blue-deep:#1d4ed8;--blue-light:#60a5fa;--sky:#06b6d4;--ink:#0b1c3f;--muted:#5b6b8c;--line:#e3ecfe;--bg:#fff;--danger:#dc2626;--ok:#16a34a}
+        body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;background:#f0f4f8;color:var(--ink);min-height:100vh;overflow-x:hidden}
+        .container{width:auto;max-width:none;padding-inline:3%}
+
+        header.nav{background:linear-gradient(135deg,#0b1c3f 0%,#16337a 50%,#1d4ed8 100%);position:sticky;top:0;z-index:100;box-shadow:0 8px 32px rgba(11,28,63,.35)}
+        .nav-inner{display:flex;align-items:center;justify-content:space-between;height:96px;gap:24px}
+        .brand{display:flex;align-items:center;gap:16px;text-decoration:none;flex-shrink:0}
+        .brand-logo{width:64px;height:64px;border-radius:20px;object-fit:cover;box-shadow:0 10px 26px rgba(37,99,235,.30),0 0 0 4px rgba(37,99,235,.08)}
+        .brand-text{line-height:1.15}
+        .brand-name{display:block;font-size:27px;font-weight:900;letter-spacing:.5px;background:linear-gradient(120deg,var(--blue-deep),var(--blue) 55%,var(--sky));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .brand-sub{display:block;font-size:13.5px;font-weight:700;color:#c8daff}
+        .nav-links{display:flex;gap:32px}
+        .nav-links a{color:#d6e4ff;text-decoration:none;font-weight:700;font-size:15px;position:relative;padding-block:8px;transition:color .25s}
+        .nav-links a::after{content:'';position:absolute;bottom:0;right:0;width:0;height:3px;border-radius:3px;background:linear-gradient(90deg,#22d3ee,#60a5fa);transition:width .3s}
+        .nav-links a:hover{color:#fff}
+        .nav-links a:hover::after{width:100%}
+        .nav-links .ico{margin-inline-start:4px}
+        .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-weight:700;border:none;border-radius:14px;cursor:pointer;text-decoration:none;transition:all .25s cubic-bezier(.4,0,.2,1)}
+        .btn-primary{background:linear-gradient(135deg,var(--blue),var(--blue-deep));color:#fff;padding:14px 34px;font-size:16px;box-shadow:0 6px 20px rgba(37,99,235,.35)}
+        .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(37,99,235,.45)}
+        .nav-cta{padding:12px 28px;font-size:15px;border-radius:14px}
+
+        .page-hero{background:linear-gradient(135deg,#0b1c3f 0%,#16337a 40%,#1d4ed8 100%);padding:48px 0 56px;text-align:center;color:#fff;position:relative;overflow:hidden}
+        .page-hero::before{content:'';position:absolute;top:-40%;right:-10%;width:400px;height:400px;background:radial-gradient(circle,rgba(255,255,255,.06) 0%,transparent 70%);border-radius:50%}
+        .page-hero::after{content:'';position:absolute;bottom:-30%;left:5%;width:300px;height:300px;background:radial-gradient(circle,rgba(255,255,255,.04) 0%,transparent 70%);border-radius:50%}
+        .breadcrumb{display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;color:rgba(255,255,255,.6);margin-bottom:16px;position:relative;z-index:1;flex-wrap:wrap}
+        .breadcrumb a{color:rgba(255,255,255,.7);text-decoration:none;transition:color .2s}
+        .breadcrumb a:hover{color:#fff}
+        .breadcrumb .sep{margin:0 4px}
+        .page-hero h1{font-size:clamp(28px,4vw,40px);font-weight:900;margin-bottom:12px;position:relative;z-index:1}
+        .page-hero p{font-size:16px;color:rgba(255,255,255,.75);max-width:620px;margin:0 auto;position:relative;z-index:1}
+        .back-btn{display:inline-flex;align-items:center;gap:8px;color:rgba(255,255,255,.8);text-decoration:none;font-weight:700;font-size:14px;padding:8px 20px;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);backdrop-filter:blur(4px);transition:all .25s;margin-top:20px;position:relative;z-index:1}
+        .back-btn:hover{background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.35)}
+
+        .section{max-width:960px;margin:0 auto;padding:32px 16px 60px}
+        .card{background:#fff;border-radius:20px;padding:22px;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid var(--line);margin-bottom:22px}
+        .card-title{font-size:17px;font-weight:900;color:var(--ink);margin-bottom:16px;display:flex;align-items:center;gap:8px;justify-content:space-between;flex-wrap:wrap}
+
+        .privacy-box{display:flex;gap:12px;align-items:flex-start;background:#fffbeb;border:1px solid #fde68a;border-radius:16px;padding:15px 16px;font-size:13.5px;line-height:1.9;color:#92400e;margin-bottom:22px}
+        .privacy-box svg{flex-shrink:0;width:22px;height:22px;color:#d97706;margin-top:3px}
+        .privacy-box b{color:#78350f}
+
+        .toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:20px}
+        .search-wrap{position:relative;flex:1;min-width:220px}
+        .search-wrap .s-ico{position:absolute;right:14px;top:50%;transform:translateY(-50%);opacity:.5;font-size:15px}
+        .search-input{width:100%;font-family:inherit;font-size:14.5px;padding:13px 42px 13px 16px;border:1.5px solid var(--line);border-radius:14px;background:#fff;transition:all .2s}
+        .search-input:focus{outline:none;border-color:var(--blue-light);box-shadow:0 0 0 4px rgba(96,165,250,.15)}
+        .sort-select{font-family:inherit;font-size:14.5px;padding:13px 16px;border:1.5px solid var(--line);border-radius:14px;background:#fff;cursor:pointer;transition:all .2s}
+        .sort-select:focus{outline:none;border-color:var(--blue-light);box-shadow:0 0 0 4px rgba(96,165,250,.15)}
+        .tabs{display:flex;gap:8px;background:#eef3fb;padding:6px;border-radius:14px}
+        .tab{font-family:inherit;font-size:13.5px;font-weight:800;padding:9px 18px;border-radius:10px;border:none;background:transparent;color:var(--muted);cursor:pointer;transition:all .2s}
+        .tab.active{background:#fff;color:var(--blue-deep);box-shadow:0 2px 8px rgba(0,0,0,.08)}
+        .add-btn{padding:13px 26px;font-size:15px}
+
+        .files-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+        .file-card{background:#fff;border:1.5px solid var(--line);border-radius:20px;padding:20px;position:relative;transition:all .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;gap:12px}
+        .file-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(11,28,63,.12);border-color:#c9dcff}
+        .file-card.archived{opacity:.72;background:#fafbff}
+        .fc-head{display:flex;align-items:center;gap:12px}
+        .fc-avatar{width:52px;height:52px;border-radius:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:#fff;background:linear-gradient(135deg,var(--blue),var(--sky));box-shadow:0 6px 16px rgba(37,99,235,.28)}
+        .file-card.archived .fc-avatar{background:linear-gradient(135deg,#94a3b8,#64748b);box-shadow:none}
+        .fc-id{min-width:0;flex:1}
+        .fc-name{font-size:17px;font-weight:900;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .fc-code{display:inline-block;font-size:12.5px;font-weight:800;color:var(--blue-deep);background:#eef4ff;border:1px solid #d7e5ff;padding:3px 10px;border-radius:999px;margin-top:5px}
+        .fc-badges{display:flex;gap:6px;flex-wrap:wrap}
+        .badge{font-size:11.5px;font-weight:800;padding:4px 10px;border-radius:999px;background:#f1f5f9;color:#475569;border:1px solid #e2e8f0}
+        .badge.active{background:#f0fdf4;color:#15803d;border-color:#bbf7d0}
+        .badge.arch{background:#f8fafc;color:#64748b;border-color:#e2e8f0}
+        .badge.sessions{background:#eef4ff;color:var(--blue-deep);border-color:#d7e5ff}
+        .fc-meta{font-size:13px;color:var(--muted);line-height:1.9}
+        .fc-meta b{color:#334155;font-weight:800}
+        .fc-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:6px;border-top:1px dashed var(--line)}
+        .fbtn{flex:1;min-width:74px;font-family:inherit;font-size:13px;font-weight:800;border:none;border-radius:12px;padding:10px 8px;cursor:pointer;transition:all .2s;background:#eef4ff;color:var(--blue-deep)}
+        .fbtn:hover{background:#dfeaff}
+        .fbtn.open{background:linear-gradient(135deg,var(--blue),var(--blue-deep));color:#fff;box-shadow:0 4px 14px rgba(37,99,235,.3)}
+        .fbtn.open:hover{transform:translateY(-2px)}
+        .fbtn.ghost{background:#fff;border:1.5px solid var(--line);color:var(--muted)}
+        .fbtn.ghost:hover{border-color:#c9dcff;color:var(--blue-deep)}
+        .fbtn.danger{background:#fef2f2;color:#b91c1c;border:1.5px solid #fecaca}
+        .fbtn.danger:hover{background:#fee2e2}
+
+        .empty-state{text-align:center;padding:52px 24px;background:#fff;border:1.5px dashed #c9dcff;border-radius:20px;color:var(--muted)}
+        .empty-state .e-ico{font-size:44px;display:block;margin-bottom:12px}
+        .empty-state h3{font-size:19px;font-weight:900;color:var(--ink);margin-bottom:8px}
+        .empty-state p{font-size:14px;line-height:2;margin-bottom:18px}
+
+        .modal{position:fixed;inset:0;background:rgba(11,28,63,.55);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:18px;z-index:1000}
+        .modal.show{display:flex}
+        .modal-card{background:#fff;border-radius:22px;width:100%;max-width:560px;max-height:92vh;overflow:auto;padding:26px;box-shadow:0 30px 80px rgba(11,28,63,.35);animation:pop .25s ease}
+        .modal-card.small{max-width:470px}
+        @keyframes pop{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+        .modal-title{font-size:20px;font-weight:900;color:var(--ink);margin-bottom:6px;display:flex;align-items:center;gap:9px}
+        .modal-sub{font-size:13.5px;color:var(--muted);line-height:1.9;margin-bottom:18px}
+        .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+        .field{display:flex;flex-direction:column;gap:6px}
+        .field.full{grid-column:1/-1}
+        .field label{font-size:13.5px;font-weight:800;color:#334155}
+        .field label .req{color:var(--danger)}
+        .field input,.field select,.field textarea{font-family:inherit;font-size:14.5px;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;background:#fbfdff;transition:all .2s;color:var(--ink)}
+        .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--blue-light);box-shadow:0 0 0 4px rgba(96,165,250,.15);background:#fff}
+        .field input[readonly]{background:#f1f5f9;color:var(--muted);cursor:not-allowed}
+        .field textarea{min-height:88px;resize:vertical;line-height:1.8}
+        .field .hint{font-size:12px;color:var(--muted)}
+        .form-error{display:none;background:#fef2f2;border:1px solid #fecaca;color:#b91c1c;font-size:13.5px;font-weight:700;padding:11px 14px;border-radius:12px;margin-bottom:14px;line-height:1.8}
+        .form-error.show{display:block}
+        .modal-actions{display:flex;gap:10px;margin-top:20px}
+        .modal-actions .btn{flex:1;padding:14px 18px;font-size:15px;border-radius:14px}
+        .btn-soft{background:#eef4ff;color:var(--blue-deep);border:1.5px solid var(--line)}
+        .btn-soft:hover{background:#e0ecff}
+        .btn-danger{background:linear-gradient(135deg,#dc2626,#b91c1c);color:#fff;box-shadow:0 6px 18px rgba(220,38,38,.3)}
+        .btn-danger:hover{transform:translateY(-2px)}
+        .btn-ok{background:linear-gradient(135deg,var(--ok),#15803d);color:#fff;box-shadow:0 6px 18px rgba(22,163,74,.3)}
+        .btn-ok:hover{transform:translateY(-2px)}
+        .warn-list{background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:13px 15px;font-size:13.5px;color:#92400e;line-height:2;margin-top:12px}
+        .warn-list b{color:#78350f}
+
+        .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(120px);background:#0b1c3f;color:#fff;padding:13px 28px;border-radius:14px;font-weight:800;font-size:14px;z-index:2000;transition:transform .35s cubic-bezier(.68,-.55,.27,1.55),opacity .3s;opacity:0;box-shadow:0 14px 40px rgba(11,28,63,.4);max-width:90vw;text-align:center}
+        .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+        .toast.ok{background:linear-gradient(135deg,#16a34a,#15803d)}
+        .toast.err{background:linear-gradient(135deg,#dc2626,#b91c1c)}
+
+        .footer{background:var(--ink);color:#fff;padding:56px 0 0}
+        .footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:36px}
+        .footer-brand{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+        .footer-brand img{width:54px;height:54px;border-radius:16px;object-fit:cover}
+        .footer-brand .fname{font-size:21px;font-weight:900;background:linear-gradient(120deg,var(--blue),var(--sky));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .footer-brand .fsub{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+        .footer-col p{font-size:14px;color:#94a3b8;line-height:1.9}
+        .footer-col h4{font-size:16px;font-weight:800;margin-bottom:18px;color:#fff}
+        .footer-col a{display:block;color:#94a3b8;text-decoration:none;font-size:14px;padding:5px 0;transition:color .2s}
+        .footer-col a:hover{color:var(--blue-light)}
+        .footer-bottom{text-align:center;padding:22px 0;margin-top:40px;border-top:1px solid rgba(255,255,255,.08);font-size:13px;color:#64748b}
+
+        @media(max-width:1020px){.nav-links{display:none}.nav-inner{padding-inline:4%}}
+        @media(max-width:760px){
+            .form-grid{grid-template-columns:1fr}
+            .footer-grid{grid-template-columns:1fr;gap:26px}
+        }
+        @media(max-width:620px){
+            .nav-inner{height:auto;min-height:72px;padding-inline:2%;gap:8px}
+            .brand-logo{width:40px;height:40px;border-radius:12px}
+            .brand-name{font-size:16px}
+            .brand-sub{font-size:9.5px}
+            .btn-primary{padding:10px 18px;font-size:13.5px}
+            .page-hero{padding:32px 0 40px}
+            .page-hero h1{font-size:24px}
+            .section{padding:22px 12px 46px}
+            .card{padding:16px;border-radius:16px}
+            .toolbar{gap:9px}
+            .add-btn{width:100%}
+            .files-grid{grid-template-columns:1fr}
+            .modal-card{padding:18px;border-radius:18px}
+        }
+        @media(max-width:430px){
+            .tabs{width:100%}
+            .tab{flex:1;padding:9px 8px;font-size:12.5px}
+            .search-wrap{min-width:100%}
+            .sort-select{width:100%}
+            .fbtn{min-width:64px;font-size:12px}
+        }
+    </style>
+</head>
+<body>
+
+    <header class="nav">
+        <div class="container nav-inner">
+            <a class="brand" href="index.html">
+                <img class="brand-logo" src="logo.jpg" alt="DIAGNO-ASSIST">
+                <span class="brand-text">
+                    <span class="brand-name">DIAGNO-ASSIST</span>
+                    <span class="brand-sub">للأخصائيين النفسيين</span>
+                </span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html"><span class="ico">🏠</span> الرئيسية</a>
+                <a href="index.html#how"><span class="ico">🔬</span> كيف يعمل</a>
+                <a href="index.html#features"><span class="ico">🩺</span> المميزات</a>
+                <a href="pricing.html"><span class="ico">💰</span> الأسعار</a>
+            </nav>
+            <button class="btn btn-primary nav-cta" id="authBtn">تسجيل الدخول</button>
+        </div>
+    </header>
+
+    <section class="page-hero">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="index.html">الرئيسية</a>
+                <span class="sep">←</span>
+                <a href="tools.html">اختر أداة التقييم</a>
+                <span class="sep">←</span>
+                <span>ملفات المرضى</span>
+            </div>
+            <h1>ملفات المرضى</h1>
+            <p>أنشئ ملفات مرضى، ابحث ورتّب، وافتح أي ملف لعرض معلوماته وسجل جلسات التقييم ونتائجها.</p>
+            <a href="tools.html" class="back-btn">← العودة لاختيار أداة التقييم</a>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="privacy-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <div><b>تنبيه الخصوصية:</b> هذه المنصة واجهة أمامية فقط (لا يوجد خادم ولا قاعدة بيانات)، والبيانات تُحفظ محليًا في <b>متصفح هذا الجهاز</b> (localStorage) ولا تُرفع إلى أي خادم أو مستودع. لا تُدخل بيانات مرضى حقيقية أو معلومات حساسة. البيانات قد تُفقد عند مسح بيانات المتصفح ولن تكون متاحة من جهاز آخر. لحفظ آمن وتسجيل دخول وصلاحيات يلزم إعداد خادم وقاعدة بيانات.</div>
+        </div>
+
+        <div class="toolbar">
+            <div class="search-wrap">
+                <span class="s-ico">🔍</span>
+                <input type="text" class="search-input" id="searchInput" placeholder="ابحث بالاسم أو رمز الملف...">
+            </div>
+            <select class="sort-select" id="sortSelect" aria-label="ترتيب الملفات">
+                <option value="updated">ترتيب: آخر تحديث</option>
+                <option value="created">ترتيب: تاريخ الإنشاء</option>
+                <option value="name">ترتيب: الاسم</option>
+            </select>
+            <div class="tabs" role="tablist">
+                <button class="tab active" data-tab="active">النشطة</button>
+                <button class="tab" data-tab="archived">المؤرشفة</button>
+                <button class="tab" data-tab="all">الكل</button>
+            </div>
+            <button class="btn btn-primary add-btn" id="btnNewFile">＋ إضافة ملف جديد</button>
+        </div>
+
+        <div id="countLine" style="font-size:13.5px;color:var(--muted);font-weight:700;margin-bottom:14px"></div>
+        <div class="files-grid" id="filesGrid"></div>
+        <div id="emptyState" style="display:none">
+            <div class="empty-state">
+                <span class="e-ico">📁</span>
+                <h3 id="emptyTitle">لا توجد ملفات مرضى بعد</h3>
+                <p id="emptyText">ابدأ بإنشاء أول ملف مريض لربط جلسات التقييم ونتائجها بهذا الملف.</p>
+                <button class="btn btn-primary" id="btnEmptyNew" style="padding:13px 30px">＋ إضافة ملف جديد</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- نموذج إنشاء/تعديل ملف -->
+    <div class="modal" id="formModal" role="dialog" aria-modal="true">
+        <div class="modal-card">
+            <div class="modal-title" id="formTitle">＋ إضافة ملف جديد</div>
+            <div class="modal-sub" id="formSub">يُنشأ رمز الملف تلقائيًا ويكون فريدًا. الحقول المطلوبة فقط: الاسم أو الاسم المستعار.</div>
+            <div class="form-error" id="formError"></div>
+            <form id="patientForm" novalidate>
+                <div class="form-grid">
+                    <div class="field">
+                        <label>رمز الملف <span class="hint">يُنشأ تلقائيًا</span></label>
+                        <input type="text" id="fFileNum" readonly placeholder="PT-0000">
+                    </div>
+                    <div class="field">
+                        <label for="fName">الاسم أو الاسم المستعار <span class="req">*</span></label>
+                        <input type="text" id="fName" placeholder="مثال: م. أ / سارة" maxlength="80">
+                    </div>
+                    <div class="field">
+                        <label for="fAge">العمر أو تاريخ الميلاد</label>
+                        <input type="text" id="fAge" placeholder="مثال: 34 أو 15/03/1998">
+                    </div>
+                    <div class="field">
+                        <label for="fSex">الجنس</label>
+                        <select id="fSex">
+                            <option value="">— غير محدد —</option>
+                            <option value="ذكر">ذكر</option>
+                            <option value="أنثى">أنثى</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="fOpened">تاريخ فتح الملف</label>
+                        <input type="text" id="fOpened" placeholder="يوم/شهر/سنة">
+                    </div>
+                    <div class="field">
+                        <label for="fPhone">رقم الهاتف <span class="hint">اختياري</span></label>
+                        <input type="text" id="fPhone" placeholder="اختياري">
+                    </div>
+                    <div class="field full">
+                        <label for="fNotes">ملاحظات أولية</label>
+                        <textarea id="fNotes" placeholder="ملاحظات أولية عن الحالة (اختياري)"></textarea>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-ok" id="btnSaveFile">💾 حفظ الملف</button>
+                    <button type="button" class="btn btn-soft" id="btnCancelFile">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- نافذة تأكيد (حذف/أرشفة) -->
+    <div class="modal" id="confirmModal" role="dialog" aria-modal="true">
+        <div class="modal-card small">
+            <div class="modal-title" id="confirmTitle">تأكيد</div>
+            <div class="modal-sub" id="confirmText"></div>
+            <div id="confirmWarn"></div>
+            <div class="modal-actions">
+                <button class="btn btn-danger" id="confirmYes">تأكيد</button>
+                <button class="btn btn-soft" id="confirmNo">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <div class="footer-brand">
+                    <img src="logo.jpg" alt="DIAGNO-ASSIST">
+                    <div><span class="fname">DIAGNO-ASSIST</span><span class="fsub">للأخصائيين النفسيين</span></div>
+                </div>
+                <p>منصة رقمية متكاملة لمساعدتك في التشخيص والاختبارات وتتبع رحلة تعافي مرضاك.</p>
+            </div>
+            <div class="footer-col"><h4>عن المنصة</h4><a href="#">من نحن</a><a href="index.html#features">مميزات المنصة</a><a href="index.html#how">كيف يعمل</a><a href="pricing.html">الأسعار</a></div>
+            <div class="footer-col"><h4>المساعدة والدعم</h4><a href="#">الأسئلة الشائعة</a><a href="#">تواصل معنا</a></div>
+            <div class="footer-col"><h4>البنود القانونية</h4><a href="#">الشروط والأحكام</a><a href="#">سياسة الخصوصية</a></div>
+        </div>
+        <div class="footer-bottom container">© 2026 DIAGNO-ASSIST — جميع الحقوق محفوظة</div>
+    </footer>
+
+    <script src="patient-store.js"></script>
+    <script src="patient-files.js"></script>
+</body>
+</html>

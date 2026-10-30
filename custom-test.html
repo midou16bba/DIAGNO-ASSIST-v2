@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق المقياس | DIAGNO-ASSIST</title>
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{--blue:#2563eb;--blue-deep:#1d4ed8;--blue-light:#60a5fa;--sky:#06b6d4;--ink:#0b1c3f;--muted:#5b6b8c;--line:#e3ecfe}
+        body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;background:#f5f8ff;color:var(--ink);min-height:100vh}
+        .container{width:auto;max-width:none;padding-inline:3%}
+        .hidden{display:none!important}
+        header.nav{background:linear-gradient(135deg,#0b1c3f 0%,#16337a 50%,#1d4ed8 100%);position:sticky;top:0;z-index:100;box-shadow:0 8px 32px rgba(11,28,63,.35)}
+        .nav-inner{display:flex;align-items:center;justify-content:space-between;height:96px;gap:24px}
+        .brand{display:flex;align-items:center;gap:16px;text-decoration:none;flex-shrink:0}
+        .brand-logo{width:64px;height:64px;border-radius:20px;object-fit:cover;box-shadow:0 10px 26px rgba(37,99,235,.30),0 0 0 4px rgba(37,99,235,.08)}
+        .brand-text{line-height:1.15}
+        .brand-name{display:block;font-size:27px;font-weight:900;letter-spacing:.5px;background:linear-gradient(120deg,var(--blue-deep),var(--blue) 55%,var(--sky));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .brand-sub{display:block;font-size:13.5px;font-weight:700;color:#c8daff}
+        .nav-links{display:flex;gap:32px}
+        .nav-links a{color:#d6e4ff;text-decoration:none;font-weight:700;font-size:15px;position:relative;padding-block:8px;transition:color .25s}
+        .nav-links a::after{content:'';position:absolute;bottom:0;right:0;width:0;height:3px;border-radius:3px;background:linear-gradient(90deg,#22d3ee,#60a5fa);transition:width .3s}
+        .nav-links a:hover{color:#fff}
+        .nav-links a:hover::after{width:100%}
+        .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-weight:800;border:none;border-radius:14px;cursor:pointer;text-decoration:none;transition:all .25s cubic-bezier(.4,0,.2,1);font-size:15px;padding:13px 28px}
+        .btn-primary{background:linear-gradient(135deg,var(--blue),var(--blue-deep));color:#fff;box-shadow:0 6px 20px rgba(37,99,235,.35)}
+        .btn-primary:hover{transform:translateY(-2px)}
+        .btn-soft{background:#eef4ff;color:var(--blue-deep);border:1.5px solid #d7e5ff}
+        .btn-soft:hover{background:#e0ecff}
+        .btn-ok{background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;box-shadow:0 6px 20px rgba(22,163,74,.3)}
+        .btn-danger{background:#fef2f2;color:#dc2626;border:1.5px solid #fecaca}
+        .nav-cta{padding:12px 28px;font-size:15px;border-radius:14px}
+        .mini-hero{background:linear-gradient(135deg,#0b1c3f 0%,#16337a 40%,#1d4ed8 100%);padding:36px 0 44px;color:#fff;text-align:center}
+        .breadcrumb{display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;color:rgba(255,255,255,.6);margin-bottom:14px}
+        .breadcrumb a{color:rgba(255,255,255,.7);text-decoration:none}
+        .breadcrumb a:hover{color:#fff}
+        .mini-hero h1{font-size:clamp(23px,3.4vw,34px);font-weight:900;margin-bottom:8px}
+        .mini-hero p{font-size:14.5px;color:rgba(255,255,255,.75);max-width:640px;margin:0 auto}
+        .wrap{padding:34px 0 80px}
+        .card{background:#fff;border-radius:22px;box-shadow:0 14px 44px rgba(11,28,63,.08);border:1px solid var(--line);padding:24px 26px;margin-bottom:22px}
+        .chips{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:14px}
+        .chip{font-size:12.5px;font-weight:800;background:#eef4ff;border:1px solid #d7e5ff;color:var(--blue-deep);padding:7px 14px;border-radius:999px}
+        .chip.patient{background:#f0fdf4;border-color:#bbf7d0;color:#15803d}
+        .instr{font-size:13.5px;color:var(--muted);line-height:1.9;background:#f8fafc;border:1px dashed #cbd5e1;border-radius:13px;padding:13px 16px}
+        .notice{border-radius:14px;padding:13px 17px;font-size:13.5px;font-weight:700;margin-bottom:16px;line-height:1.8}
+        .notice.info{background:#fffbeb;border:1px solid #fde68a;color:#92400e}
+        .notice.err{background:#fef2f2;border:1px solid #fecaca;color:#991b1b}
+        .progress-head{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:10px}
+        .progress-head h3{font-size:17px;font-weight:900}
+        .progress-nums{font-size:13.5px;font-weight:800;color:var(--blue-deep)}
+        .progress-nums.done{color:#16a34a}
+        .progress-track{height:12px;background:#e6eeff;border-radius:99px;overflow:hidden;margin-bottom:22px}
+        .progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--sky),var(--blue));border-radius:99px;transition:width .35s cubic-bezier(.4,0,.2,1)}
+        .progress-fill.complete{background:linear-gradient(90deg,#22c55e,#16a34a)}
+        .question-card{border:1.5px solid var(--line);border-radius:17px;padding:17px 19px;margin-bottom:14px;background:#fbfdff;transition:border-color .2s}
+        .question-card.answered{border-color:#bfdbfe;background:#f7faff}
+        .tq-header{display:flex;gap:13px;align-items:flex-start;margin-bottom:13px}
+        .tq-num{width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,var(--blue),var(--blue-deep));color:#fff;font-weight:900;font-size:14.5px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+        .question-card.answered .tq-num{background:linear-gradient(135deg,#16a34a,#15803d)}
+        .tq-text{font-size:15.5px;font-weight:700;line-height:1.85;padding-top:4px}
+        .answers-row{display:flex;gap:9px;flex-wrap:wrap}
+        .answers-row button{font-family:inherit;font-size:13.5px;font-weight:800;padding:10px 17px;border-radius:12px;border:1.5px solid var(--line);background:#fff;color:var(--muted);cursor:pointer;transition:all .18s}
+        .answers-row button:hover{border-color:var(--blue-light);color:var(--blue-deep);background:#eff6ff}
+        .answers-row button.sel{background:linear-gradient(135deg,var(--blue),var(--blue-deep));border-color:transparent;color:#fff;box-shadow:0 6px 16px rgba(37,99,235,.3)}
+        .actions{display:flex;gap:11px;flex-wrap:wrap;margin-top:20px;padding-top:18px;border-top:1px solid var(--line)}
+        .res-panel{margin-top:20px;border:1.5px solid #c7d8ff;border-radius:18px;padding:20px;background:linear-gradient(135deg,#f5f9ff,#eef4ff);display:none}
+        .res-panel.show{display:block}
+        .result-main{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+        .score-circle{width:104px;height:104px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-weight:900;box-shadow:0 10px 26px rgba(11,28,63,.2);flex-shrink:0;background:var(--blue)}
+        .score-circle .v{font-size:27px;line-height:1.1}
+        .score-circle .l{font-size:10.5px;font-weight:700;opacity:.9}
+        .result-meta{flex:1;min-width:220px}
+        .result-meta h4{font-size:20px;font-weight:900;margin-bottom:6px}
+        .result-meta p{font-size:13.5px;color:var(--muted);line-height:1.8}
+        .dim-bars{margin-top:15px;display:flex;flex-direction:column;gap:9px}
+        .dim-bar{display:flex;align-items:center;gap:10px;font-size:13px}
+        .dim-bar .nm{width:120px;font-weight:800;flex-shrink:0}
+        .dim-bar .track{flex:1;height:11px;background:#dbe7ff;border-radius:99px;overflow:hidden}
+        .dim-bar .fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--sky),var(--blue))}
+        .dim-bar .vv{width:110px;text-align:left;font-weight:800;color:var(--blue-deep)}
+        .notes{margin-top:13px;font-size:12.5px;color:var(--muted);line-height:1.9}
+        .val-box{border-radius:14px;padding:14px 16px;font-size:13.5px;line-height:1.9;margin-top:14px}
+        .val-box h5{font-size:14px;font-weight:900;margin-bottom:5px}
+        .val-err{background:#fef2f2;border:1px solid #fecaca;color:#991b1b}
+        .val-warn{background:#fffbeb;border:1px solid #fde68a;color:#92400e}
+        .val-ok{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534}
+        .val-box ul{padding-right:20px}
+        .picker-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+        .picker-item{border:1.5px solid var(--line);border-radius:16px;padding:16px 18px;background:#fbfdff;cursor:pointer;transition:all .2s;text-align:right;font-family:inherit}
+        .picker-item:hover{border-color:var(--blue-light);transform:translateY(-3px);box-shadow:0 12px 26px rgba(37,99,235,.14)}
+        .picker-item h4{font-size:16px;font-weight:900;margin-bottom:5px}
+        .picker-item .meta{font-size:12.5px;color:var(--muted)}
+        .footer{background:var(--ink);color:#fff;padding:46px 0 0}
+        .footer-bottom{text-align:center;padding:20px 0;font-size:13px;color:#64748b}
+        .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(120px);background:var(--ink);color:#fff;padding:14px 26px;border-radius:14px;font-size:14px;font-weight:700;box-shadow:0 14px 40px rgba(0,0,0,.3);transition:transform .35s cubic-bezier(.4,0,.2,1);z-index:400;max-width:88vw;text-align:center}
+        .toast.show{transform:translateX(-50%) translateY(0)}
+        .toast.ok{background:#14532d}
+        .toast.bad{background:#7f1d1d}
+        @media(max-width:1020px){.nav-links{display:none}.nav-inner{padding-inline:4%}}
+        @media(max-width:620px){
+            .nav-inner{height:auto;min-height:72px;padding-inline:2%;gap:8px}
+            .brand-logo{width:40px;height:40px;border-radius:12px}.brand-name{font-size:16px}.brand-sub{font-size:9.5px}.brand{gap:8px}
+            .nav-cta{padding:8px 12px;font-size:12px;border-radius:8px}
+            .card{padding:18px 15px}
+            .answers-row button{padding:9px 13px;font-size:12.5px}
+            .tq-text{font-size:14.5px}
+            .btn{padding:12px 18px;font-size:13.5px}
+        }
+    </style>
+</head>
+<body>
+
+    <header class="nav">
+        <div class="container nav-inner">
+            <a class="brand" href="index.html">
+                <img class="brand-logo" src="logo.jpg" alt="DIAGNO-ASSIST">
+                <span class="brand-text">
+                    <span class="brand-name">DIAGNO-ASSIST</span>
+                    <span class="brand-sub">للأخصائيين النفسيين</span>
+                </span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">الرئيسية</a>
+                <a href="index.html#how">كيف يعمل</a>
+                <a href="index.html#features">المميزات</a>
+                <a href="pricing.html">الأسعار</a>
+            </nav>
+            <button class="btn btn-primary nav-cta" id="authBtn">تسجيل الدخول</button>
+        </div>
+    </header>
+
+    <section class="mini-hero">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="index.html">الرئيسية</a><span>←</span>
+                <a href="tools.html">الأدوات</a><span>←</span>
+                <a href="tools-severity-scale.html">اختيار المقياس</a><span>←</span>
+                <span>تطبيق المقياس</span>
+            </div>
+            <h1 id="scaleName">جارٍ التحميل...</h1>
+            <p id="scaleDesc"></p>
+        </div>
+    </section>
+
+    <section class="wrap">
+        <div class="container">
+            <div id="noticeBox"></div>
+
+            <div class="card" id="infoCard" style="display:none">
+                <div class="chips" id="infoChips"></div>
+                <div class="instr" id="instrBox" style="display:none"></div>
+            </div>
+
+            <div class="card" id="testCard" style="display:none">
+                <div class="progress-head">
+                    <h3>عبارات المقياس</h3>
+                    <div class="progress-nums" id="questCount">0 / 0</div>
+                </div>
+                <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+                <div id="questions"></div>
+                <div class="actions">
+                    <button class="btn btn-primary" data-act="calc">احسب النتيجة 🧮</button>
+                    <button class="btn btn-ok" data-act="save" id="saveBtn">حفظ الجلسة والمتابعة ←</button>
+                    <button class="btn btn-danger" data-act="clear">مسح الإجابات</button>
+                </div>
+                <div class="res-panel" id="resPanel"></div>
+            </div>
+
+            <div class="card" id="pickerCard" style="display:none">
+                <h3 style="font-size:18px;font-weight:900;margin-bottom:14px">اختر مقياسًا مخصصًا للتطبيق</h3>
+                <div class="picker-list" id="pickerList"></div>
+            </div>
+        </div>
+    </section>
+
+    <div class="toast" id="toast"></div>
+
+    <footer class="footer">
+        <div class="footer-bottom">© 2026 DIAGNO-ASSIST — جميع الحقوق محفوظة</div>
+    </footer>
+
+    <script src="scale-engine.js"></script>
+    <script src="custom-test.js"></script>
+</body>
+</html>

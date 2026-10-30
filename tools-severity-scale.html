@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختر المقياس | DIAGNO-ASSIST</title>
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{--blue:#2563eb;--blue-deep:#1d4ed8;--blue-light:#60a5fa;--sky:#06b6d4;--ink:#0b1c3f;--muted:#5b6b8c;--line:#e3ecfe;--bg:#fff}
+        body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;overflow-x:hidden}
+        .container{width:auto;max-width:none;padding-inline:3%}
+
+        /* Header */
+        header.nav{background:linear-gradient(135deg,#0b1c3f 0%,#16337a 50%,#1d4ed8 100%);position:sticky;top:0;z-index:100;box-shadow:0 8px 32px rgba(11,28,63,.35)}
+        .nav-inner{display:flex;align-items:center;justify-content:space-between;height:96px;gap:24px}
+        .brand{display:flex;align-items:center;gap:16px;text-decoration:none;flex-shrink:0}
+        .brand-logo{width:64px;height:64px;border-radius:20px;object-fit:cover;box-shadow:0 10px 26px rgba(37,99,235,.30),0 0 0 4px rgba(37,99,235,.08)}
+        .brand-text{line-height:1.15}
+        .brand-name{display:block;font-size:27px;font-weight:900;letter-spacing:.5px;background:linear-gradient(120deg,var(--blue-deep),var(--blue) 55%,var(--sky));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .brand-sub{display:block;font-size:13.5px;font-weight:700;color:#c8daff}
+        .nav-links{display:flex;gap:32px}
+        .nav-links a{color:#d6e4ff;text-decoration:none;font-weight:700;font-size:15px;position:relative;padding-block:8px;transition:color .25s}
+        .nav-links a::after{content:'';position:absolute;bottom:0;right:0;width:0;height:3px;border-radius:3px;background:linear-gradient(90deg,#22d3ee,#60a5fa);transition:width .3s}
+        .nav-links a:hover{color:#fff}
+        .nav-links a:hover::after{width:100%}
+        .btn{display:inline-flex;align-items:center;gap:8px;font-family:inherit;font-weight:700;border:none;border-radius:14px;cursor:pointer;text-decoration:none;transition:all .25s cubic-bezier(.4,0,.2,1)}
+        .btn-primary{background:linear-gradient(135deg,var(--blue),var(--blue-deep));color:#fff;padding:14px 34px;font-size:16px;box-shadow:0 6px 20px rgba(37,99,235,.35)}
+        .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(37,99,235,.45)}
+        .nav-cta{padding:12px 28px;font-size:15px;border-radius:14px}
+
+        /* Hero */
+        .page-hero{background:linear-gradient(135deg,#0b1c3f 0%,#16337a 40%,#1d4ed8 100%);padding:48px 0 56px;text-align:center;color:#fff;position:relative;overflow:hidden}
+        .page-hero::before{content:'';position:absolute;top:-40%;right:-10%;width:400px;height:400px;background:radial-gradient(circle,rgba(255,255,255,.06) 0%,transparent 70%);border-radius:50%}
+        .breadcrumb{display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;color:rgba(255,255,255,.6);margin-bottom:16px;position:relative;z-index:1}
+        .breadcrumb a{color:rgba(255,255,255,.7);text-decoration:none;transition:color .2s}
+        .breadcrumb a:hover{color:#fff}
+        .breadcrumb .sep{margin:0 4px}
+        .page-hero h1{font-size:clamp(28px,4vw,40px);font-weight:900;margin-bottom:12px;position:relative;z-index:1}
+        .page-hero p{font-size:16px;color:rgba(255,255,255,.75);max-width:500px;margin:0 auto;position:relative;z-index:1}
+        .back-btn{display:inline-flex;align-items:center;gap:8px;color:rgba(255,255,255,.8);text-decoration:none;font-weight:700;font-size:14px;padding:8px 20px;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);backdrop-filter:blur(4px);transition:all .25s;margin-top:20px;position:relative;z-index:1}
+        .back-btn:hover{background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.35)}
+
+        /* Scale Cards */
+        .scales-section{padding:60px 0 80px}
+        .scales-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:28px;max-width:960px;margin:0 auto}
+
+        /* Scale Card */
+        .scale-card{border-radius:24px;padding:0;border:none;position:relative;overflow:hidden;transition:all .4s cubic-bezier(.4,0,.2,1);cursor:pointer;text-decoration:none;color:inherit;display:block;min-height:420px}
+        .scale-card:hover{transform:translateY(-8px);box-shadow:0 24px 60px rgba(0,0,0,.15)}
+
+        /* Card background */
+        .scale-card-bg{position:absolute;inset:0;border-radius:24px;overflow:hidden}
+        .scale-card.ptsd .scale-card-bg{background:linear-gradient(135deg,#fff5f5 0%,#ffe8e8 100%)}
+        .scale-card.mdd .scale-card-bg{background:linear-gradient(135deg,#f0f7ff 0%,#e0f0ff 100%)}
+
+        /* Decorative wave shape */
+        .scale-card-wave{position:absolute;top:0;left:0;right:0;height:100px;overflow:hidden;pointer-events:none}
+        .scale-card.ptsd .scale-card-wave{background:linear-gradient(135deg,#ef4444 0%,#dc2626 50%,#f87171 100%);clip-path:polygon(0 0,100% 0,100% 50%,70% 100%,0 70%);opacity:.85}
+        .scale-card.mdd .scale-card-wave{background:linear-gradient(135deg,#2563eb 0%,#1d4ed8 50%,#3b82f6 100%);clip-path:polygon(0 0,100% 0,100% 70%,30% 100%,0 50%);opacity:.85}
+
+        /* Small circle icon in top-right */
+        .scale-card-circle{position:absolute;top:20px;left:20px;width:60px;height:60px;border-radius:16px;display:flex;align-items:center;justify-content:center;z-index:3;box-shadow:0 4px 16px rgba(0,0,0,.1)}
+        .scale-card.ptsd .scale-card-circle{background:linear-gradient(135deg,#fca5a5,#f87171)}
+        .scale-card.mdd .scale-card-circle{background:linear-gradient(135deg,#93c5fd,#60a5fa)}
+        .scale-card-circle-inner{width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+
+        /* Dotted pattern */
+        .scale-card-dots{position:absolute;bottom:20px;left:20px;display:grid;grid-template-columns:repeat(4,6px);gap:6px;z-index:3;opacity:.4}
+        .scale-card-dots span{width:6px;height:6px;border-radius:50%;background:currentColor}
+        .scale-card.ptsd .scale-card-dots{color:#dc2626}
+        .scale-card.mdd .scale-card-dots{color:#2563eb}
+
+        /* Content wrapper */
+        .scale-card-content{position:relative;z-index:2;padding:36px 28px 28px;display:flex;flex-direction:column;height:100%}
+
+        /* Large icon area */
+        .scale-icon-wrap{display:flex;justify-content:center;margin-bottom:20px}
+        .scale-icon{width:140px;height:160px;display:flex;align-items:center;justify-content:center;position:relative;transition:transform .4s cubic-bezier(.4,0,.2,1)}
+        .scale-card:hover .scale-icon{transform:scale(1.05)}
+
+        /* Clipboard shape */
+        .scale-clipboard{width:120px;height:150px;background:#fff;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,.12);position:relative;border:3px solid #e2e8f0;display:flex;flex-direction:column;align-items:center;padding:20px 12px 12px}
+        .scale-clipboard::before{content:'';position:absolute;top:-8px;left:50%;transform:translateX(-50%);width:40px;height:16px;background:#e2e8f0;border-radius:8px 8px 0 0}
+        .scale-card.ptsd .scale-clipboard{border-color:#fecaca}
+        .scale-card.ptsd .scale-clipboard::before{background:#fca5a5}
+        .scale-card.mdd .scale-clipboard{border-color:#bfdbfe}
+        .scale-card.mdd .scale-clipboard::before{background:#93c5fd}
+
+        /* Icon on clipboard */
+        .scale-clipboard-icon{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:12px}
+        .scale-card.ptsd .scale-clipboard-icon{background:linear-gradient(135deg,#fca5a5,#f87171);box-shadow:0 4px 12px rgba(239,68,68,.3)}
+        .scale-card.mdd .scale-clipboard-icon{background:linear-gradient(135deg,#93c5fd,#60a5fa);box-shadow:0 4px 12px rgba(37,99,235,.3)}
+
+        /* Lines on clipboard */
+        .scale-clipboard-lines{width:100%;display:flex;flex-direction:column;gap:6px}
+        .scale-clipboard-line{height:4px;border-radius:2px;background:#e2e8f0}
+        .scale-card.ptsd .scale-clipboard-line{background:#fecaca}
+        .scale-card.mdd .scale-clipboard-line{background:#bfdbfe}
+        .scale-clipboard-line:nth-child(2){width:80%}
+        .scale-clipboard-line:nth-child(3){width:60%}
+
+        /* Checkmarks */
+        .scale-clipboard-checks{position:absolute;right:8px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:12px}
+        .scale-check{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff}
+        .scale-card.ptsd .scale-check{background:#ef4444}
+        .scale-card.mdd .scale-check{background:#2563eb}
+
+        .scale-card h3{font-size:24px;font-weight:900;color:var(--ink);margin-bottom:6px;text-align:center}
+        .scale-card.ptsd h3{color:#991b1b}
+        .scale-card.mdd h3{color:#1e40af}
+        .scale-card .en-name{font-size:13px;font-weight:700;margin-bottom:12px;display:block;text-align:center}
+        .scale-card.ptsd .en-name{color:#dc2626}
+        .scale-card.mdd .en-name{color:#2563eb}
+
+        /* Decorative line */
+        .scale-card-line{width:40px;height:3px;border-radius:3px;margin:0 auto 16px}
+        .scale-card.ptsd .scale-card-line{background:linear-gradient(90deg,#ef4444,#f87171)}
+        .scale-card.mdd .scale-card-line{background:linear-gradient(90deg,#2563eb,#60a5fa)}
+
+        .scale-card p{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:24px;text-align:center;flex:1}
+
+        /* Button */
+        .scale-btn{display:flex;align-items:center;justify-content:center;gap:10px;font-family:inherit;font-weight:900;font-size:16px;color:#fff;border:none;padding:16px 32px;border-radius:16px;cursor:pointer;transition:all .3s cubic-bezier(.4,0,.2,1);box-shadow:0 6px 24px rgba(0,0,0,.15);text-decoration:none;width:100%;position:relative;overflow:hidden;margin-top:auto}
+        .scale-card.ptsd .scale-btn{background:linear-gradient(135deg,#ef4444,#dc2626);box-shadow:0 6px 24px rgba(239,68,68,.3)}
+        .scale-card.mdd .scale-btn{background:linear-gradient(135deg,#2563eb,#1d4ed8);box-shadow:0 6px 24px rgba(37,99,235,.3)}
+        .scale-btn:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(0,0,0,.2)}
+        .scale-btn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);transition:left .5s}
+        .scale-card:hover .scale-btn::before{left:100%}
+
+        /* المقاييس المخصصة — بطاقة بنفس تصميم البطاقات الأصلية بالضبط (ثيم أزرق) */
+        .scale-card.custom .scale-card-bg{background:linear-gradient(135deg,#f0f7ff 0%,#e0f0ff 100%)}
+        .scale-card.custom .scale-card-wave{background:linear-gradient(135deg,#2563eb 0%,#1d4ed8 50%,#3b82f6 100%);clip-path:polygon(0 0,100% 0,100% 70%,30% 100%,0 50%);opacity:.85}
+        .scale-card.custom .scale-card-circle{background:linear-gradient(135deg,#93c5fd,#60a5fa)}
+        .scale-card.custom .scale-card-dots{color:#2563eb}
+        .scale-card.custom .scale-clipboard{border-color:#bfdbfe}
+        .scale-card.custom .scale-clipboard::before{background:#93c5fd}
+        .scale-card.custom .scale-clipboard-icon{background:linear-gradient(135deg,#93c5fd,#60a5fa);box-shadow:0 4px 12px rgba(37,99,235,.3)}
+        .scale-card.custom .scale-clipboard-line{background:#bfdbfe}
+        .scale-card.custom .scale-check{background:#2563eb}
+        .scale-card.custom h3{color:#1e40af}
+        .scale-card.custom .en-name{color:#2563eb}
+        .scale-card.custom .scale-card-line{background:linear-gradient(90deg,#2563eb,#60a5fa)}
+        .scale-card.custom .scale-btn{background:linear-gradient(135deg,#2563eb,#1d4ed8);box-shadow:0 6px 24px rgba(37,99,235,.3)}
+        .scale-card.custom.fix .scale-btn{background:linear-gradient(135deg,#dc2626,#b91c1c);box-shadow:0 6px 24px rgba(220,38,38,.3)}
+
+        /* شريط الأدوات فوق القائمة */
+        .custom-head{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;max-width:960px;margin:0 auto 24px}
+        .custom-head h2{font-size:21px;font-weight:900;color:var(--ink);display:flex;align-items:center;gap:10px}
+        .custom-head h2::before{content:'';width:10px;height:26px;border-radius:6px;background:linear-gradient(180deg,#7c3aed,#06b6d4)}
+        .scale-search{font-family:inherit;font-size:14.5px;padding:12px 18px;border:1.5px solid var(--line);border-radius:14px;background:#fbfdff;min-width:260px;transition:all .2s}
+        .scale-search:focus{outline:none;border-color:var(--blue-light);box-shadow:0 0 0 4px rgba(96,165,250,.15);background:#fff}
+        .grid-empty{grid-column:1/-1;text-align:center;color:var(--muted);font-size:14px;background:#fbfdff;border:1.5px dashed #d8b4fe;border-radius:20px;padding:34px 24px;line-height:2.1}
+        .grid-empty a{color:#6d28d9;font-weight:900;text-decoration:none}
+        .builder-cta{display:flex;align-items:center;justify-content:center;gap:10px;max-width:960px;margin:26px auto 0;font-family:inherit;font-weight:900;font-size:15.5px;color:#fff;background:linear-gradient(135deg,#7c3aed,#06b6d4);border:none;border-radius:16px;padding:17px 30px;cursor:pointer;text-decoration:none;box-shadow:0 10px 30px rgba(124,58,237,.32);transition:all .25s}
+        .builder-cta:hover{transform:translateY(-3px);box-shadow:0 16px 38px rgba(124,58,237,.42)}
+
+        /* Footer */
+        .footer{background:var(--ink);color:#fff;padding:56px 0 0}
+        .footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:36px}
+        .footer-brand{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+        .footer-brand img{width:54px;height:54px;border-radius:16px;object-fit:cover}
+        .footer-brand .fname{font-size:21px;font-weight:900;background:linear-gradient(120deg,var(--blue),var(--sky));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .footer-brand .fsub{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+        .footer-col p{font-size:14px;color:#94a3b8;line-height:1.9}
+        .footer-col h4{font-size:16px;font-weight:800;margin-bottom:18px;color:#fff}
+        .footer-col a{display:block;color:#94a3b8;text-decoration:none;font-size:14px;padding:5px 0;transition:color .2s}
+        .footer-col a:hover{color:var(--blue-light)}
+        .footer-bottom{text-align:center;padding:22px 0;margin-top:40px;border-top:1px solid rgba(255,255,255,.08);font-size:13px;color:#64748b}
+
+        /* Responsive */
+        @media(max-width:1020px){.nav-links{display:none}.nav-inner{padding-inline:4%}}
+        @media(max-width:620px){
+            .nav-inner{height:auto;min-height:72px;padding-inline:2%;gap:8px}
+            .brand-logo{width:40px;height:40px;border-radius:12px}
+            .brand-name{font-size:16px}
+            .brand-sub{font-size:9.5px}
+            .brand{gap:8px}
+            .nav-cta{padding:8px 12px;font-size:12px;border-radius:8px}
+            .page-hero{padding:32px 0 40px}
+            .page-hero h1{font-size:24px}
+            .scales-section{padding:40px 0 60px}
+            .scales-grid{grid-template-columns:1fr;gap:20px;padding:0 16px}
+            .scale-card{min-height:auto}
+            .scale-card-content{padding:28px 20px 20px}
+            .scale-icon{width:120px;height:140px}
+            .scale-clipboard{width:100px;height:130px}
+            .scale-card h3{font-size:20px}
+            .scale-card p{font-size:13px}
+            .footer-grid{grid-template-columns:1fr;gap:28px}
+        }
+        @media(max-width:430px){
+            .scale-card-content{padding:24px 16px 16px}
+            .scale-icon{width:100px;height:120px}
+            .scale-clipboard{width:90px;height:115px;padding:16px 10px 10px}
+            .scale-btn{padding:14px 24px;font-size:14px}
+        }
+    </style>
+</head>
+<body>
+
+    <header class="nav">
+        <div class="container nav-inner">
+            <a class="brand" href="index.html">
+                <img class="brand-logo" src="logo.jpg" alt="DIAGNO-ASSIST">
+                <span class="brand-text">
+                    <span class="brand-name">DIAGNO-ASSIST</span>
+                    <span class="brand-sub">للأخصائيين النفسيين</span>
+                </span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">الرئيسية</a>
+                <a href="index.html#how">كيف يعمل</a>
+                <a href="index.html#features">المميزات</a>
+                <a href="pricing.html">الأسعار</a>
+            </nav>
+            <button class="btn btn-primary nav-cta" id="authBtn">تسجيل الدخول</button>
+        </div>
+    </header>
+
+    <section class="page-hero">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="index.html">الرئيسية</a>
+                <span class="sep">←</span>
+                <a href="tools.html">اختر أداة التقييم</a>
+                <span class="sep">←</span>
+                <span>حساب الشدة</span>
+            </div>
+            <h1>اختر المقياس</h1>
+            <p>اختر المقياس النفسي المناسب لقياس شدة الأعراض.</p>
+            <a href="tools.html" class="back-btn">← العودة للأدوات</a>
+        </div>
+    </section>
+
+    <section class="scales-section">
+        <div class="custom-head">
+            <h2>قائمة المقاييس</h2>
+            <input type="text" class="scale-search" id="scaleSearch" placeholder="ابحث في جميع المقاييس...">
+        </div>
+        <div class="scales-grid" id="scalesGrid">
+            <!-- مقياس اضطراب ما بعد الصدمة -->
+            <div class="scale-card ptsd" onclick="selectScale('ptsd')">
+                <div class="scale-card-bg"></div>
+                <div class="scale-card-wave"></div>
+                <div class="scale-card-circle"><div class="scale-card-circle-inner"></div></div>
+                <div class="scale-card-dots"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                <div class="scale-card-content">
+                    <div class="scale-icon-wrap">
+                        <div class="scale-icon">
+                            <div class="scale-clipboard">
+                                <div class="scale-clipboard-icon">🛡️</div>
+                                <div class="scale-clipboard-lines">
+                                    <div class="scale-clipboard-line"></div>
+                                    <div class="scale-clipboard-line"></div>
+                                    <div class="scale-clipboard-line"></div>
+                                </div>
+                                <div class="scale-clipboard-checks">
+                                    <div class="scale-check">✓</div>
+                                    <div class="scale-check">✓</div>
+                                    <div class="scale-check">✓</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h3>مقياس اضطراب ما بعد الصدمة</h3>
+                    <span class="en-name">PTSD Checklist (PCL-5)</span>
+                    <div class="scale-card-line"></div>
+                    <p>مقياس مُقنَّن لتشخيص اضطراب ما بعد الصدمة يتضمن 94 عبارة تغطي الأعراض الأساسية.</p>
+                    <span class="scale-btn">اختر هذا المقياس ←</span>
+                </div>
+            </div>
+
+            <!-- مقياس اضطراب الاكتئاب -->
+            <div class="scale-card mdd" onclick="selectScale('mdd')">
+                <div class="scale-card-bg"></div>
+                <div class="scale-card-wave"></div>
+                <div class="scale-card-circle"><div class="scale-card-circle-inner"></div></div>
+                <div class="scale-card-dots"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                <div class="scale-card-content">
+                    <div class="scale-icon-wrap">
+                        <div class="scale-icon">
+                            <div class="scale-clipboard">
+                                <div class="scale-clipboard-icon">🧠</div>
+                                <div class="scale-clipboard-lines">
+                                    <div class="scale-clipboard-line"></div>
+                                    <div class="scale-clipboard-line"></div>
+                                    <div class="scale-clipboard-line"></div>
+                                </div>
+                                <div class="scale-clipboard-checks">
+                                    <div class="scale-check">✓</div>
+                                    <div class="scale-check">✓</div>
+                                    <div class="scale-check">✓</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h3>مقياس اضطراب الاكتئاب</h3>
+                    <span class="en-name">Major Depression Disorder (MDD)</span>
+                    <div class="scale-card-line"></div>
+                    <p>مقياس مُقنَّن لتشخيص اضطراب الاكتئاب الجسيم يتضمن 64 عبارة تغطي الأعراض الاكتئابية.</p>
+                    <span class="scale-btn">اختر هذا المقياس ←</span>
+                </div>
+            </div>
+
+        </div>
+        <a class="builder-cta" href="scale-builder.html">+ إنشاء مقياس مخصص جديد</a>
+    </section>
+
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <div class="footer-brand">
+                    <img src="logo.jpg" alt="DIAGNO-ASSIST">
+                    <div><span class="fname">DIAGNO-ASSIST</span><span class="fsub">للأخصائيين النفسيين</span></div>
+                </div>
+                <p>منصة رقمية متكاملة لمساعدتك في التشخيص والاختبارات وتتبع رحلة تعافي مرضاك.</p>
+            </div>
+            <div class="footer-col"><h4>عن المنصة</h4><a href="#">من نحن</a><a href="index.html#features">مميزات المنصة</a><a href="index.html#how">كيف يعمل</a><a href="pricing.html">الأسعار</a></div>
+            <div class="footer-col"><h4>المساعدة والدعم</h4><a href="#">الأسئلة الشائعة</a><a href="#">تواصل معنا</a></div>
+            <div class="footer-col"><h4>البنود القانونية</h4><a href="#">الشروط والأحكام</a><a href="#">سياسة الخصوصية</a></div>
+        </div>
+        <div class="footer-bottom container">© 2026 DIAGNO-ASSIST — جميع الحقوق محفوظة</div>
+    </footer>
+
+    <script src="scale-engine.js"></script>
+    <script>
+        function selectScale(s){localStorage.setItem('diagSelectedScale',s);location.href='patient-severity.html'}
+        function chooseCustom(id){localStorage.setItem('diagSelectedScale',id);localStorage.setItem('chosenCustomScale',id);location.href='patient-severity.html'}
+        function esc(s){return String(s===undefined||s===null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+        function renderCustomScales(q){
+            var grid=document.getElementById('scalesGrid');
+            var E=window.ScaleEngine;
+            q=(q||'').trim().toLowerCase();
+            var olds=grid.querySelectorAll('.scale-card.custom, .grid-empty');
+            for(var r=0;r<olds.length;r++)olds[r].parentNode.removeChild(olds[r]);
+            var statics=grid.querySelectorAll('.scale-card:not(.custom)');
+            var shown=0;
+            for(var j=0;j<statics.length;j++){
+                var hit=!q||statics[j].textContent.toLowerCase().indexOf(q)>=0;
+                statics[j].style.display=hit?'':'none';
+                if(hit)shown++;
+            }
+            var customHtml='',customCount=0;
+            if(E){
+                var list=E.loadScales();
+                for(var i=0;i<list.length;i++){
+                    var s=list[i],v=E.validateScale(s),ok=!v.errors.length;
+                    var meta=s.items.length+' بنود · '+esc(E.methodLabel(s.scoring.method))+(s.dimensions.length?' · '+s.dimensions.length+' أبعاد':'');
+                    var desc=ok?(s.description||'مقياس مخصص من إنشائك — انقر لتطبيقه على المريض.'):('⚠ '+v.errors[0]);
+                    if(q&&(s.name+' '+(s.description||'')+' '+(s.author||'')+' '+meta).toLowerCase().indexOf(q)<0)continue;
+                    customCount++;
+                    var dots='';
+                    for(var d=0;d<12;d++)dots+='<span></span>';
+                    customHtml+='<div class="scale-card custom'+(ok?'':' fix')+'" data-id="'+esc(s.id)+'" data-act="'+(ok?'choose':'fix')+'">'+
+                        '<div class="scale-card-bg"></div>'+
+                        '<div class="scale-card-wave"></div>'+
+                        '<div class="scale-card-circle"><div class="scale-card-circle-inner"></div></div>'+
+                        '<div class="scale-card-dots">'+dots+'</div>'+
+                        '<div class="scale-card-content">'+
+                        '<div class="scale-icon-wrap"><div class="scale-icon"><div class="scale-clipboard">'+
+                        '<div class="scale-clipboard-icon">'+esc(s.icon||'📝')+'</div>'+
+                        '<div class="scale-clipboard-lines"><div class="scale-clipboard-line"></div><div class="scale-clipboard-line"></div><div class="scale-clipboard-line"></div></div>'+
+                        '<div class="scale-clipboard-checks"><div class="scale-check">✓</div><div class="scale-check">✓</div><div class="scale-check">✓</div></div>'+
+                        '</div></div></div>'+
+                        '<h3>'+esc(s.name)+'</h3>'+
+                        '<span class="en-name">'+(ok?'مقياس مخصص · v'+(s.version||1)+' · جاهز':v.errors.length+' أخطاء — يتطلب إصلاحًا')+'</span>'+
+                        '<div class="scale-card-line"></div>'+
+                        '<p>'+esc(desc)+'<br><span style="font-size:12.5px;font-weight:800;color:#2563eb">'+meta+'</span></p>'+
+                        '<span class="scale-btn">'+(ok?'اختر هذا المقياس ←':'إصلاح الأخطاء ←')+'</span>'+
+                        '</div></div>';
+                }
+            }
+            if(grid.insertAdjacentHTML){
+                grid.insertAdjacentHTML('beforeend',customHtml);
+                if(!E)grid.insertAdjacentHTML('beforeend','<div class="grid-empty">تعذّر تحميل محرك المقاييس.</div>');
+                else if(!shown&&!customHtml)grid.insertAdjacentHTML('beforeend','<div class="grid-empty">لا نتائج مطابقة لبحثك.</div>');
+                else if(!customCount&&!q)grid.insertAdjacentHTML('beforeend','<div class="grid-empty">لا توجد مقاييس مخصصة بعد — <a href="scale-builder.html">أنشئ أول مقياس مخصص ←</a></div>');
+            }
+        }
+        document.getElementById('scalesGrid').addEventListener('click',function(e){
+            var card=e.target.closest('.scale-card.custom');
+            if(!card)return;
+            var id=card.getAttribute('data-id');
+            if(card.getAttribute('data-act')==='choose')chooseCustom(id);
+            else location.href='scale-builder.html?id='+encodeURIComponent(id);
+        });
+        document.getElementById('scaleSearch').addEventListener('input',function(){renderCustomScales(this.value)});
+        renderCustomScales('');
+        (function(){var b=document.getElementById('authBtn');var u=JSON.parse(localStorage.getItem('diagUser')||'null');if(u){b.textContent=(u.isAdmin?'👨‍💼 ':'👤 ')+(u.isAdmin?'المدير':u.name);b.onclick=function(){location.href='profile.html'}}else{b.onclick=function(){location.href='login.html'}}})();
+    </script>
+</body>
+</html>

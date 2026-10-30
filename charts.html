@@ -1,0 +1,706 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ملخص التقييم | DIAGNO-ASSIST</title>
+<link rel="icon" type="image/jpeg" href="logo.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="nav-bar.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+:root{--blue:#2563eb;--blue-deep:#1d4ed8;--blue-light:#60a5fa;--sky:#06b6d4;--ink:#0b1c3f;--muted:#5b6b8c;--line:#e3ecfe;--shadow:0 2px 12px rgba(0,0,0,.06)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Cairo',sans-serif;background:#f0f4f8;color:#1e293b;min-height:100vh;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+
+@keyframes fadeInUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+
+header.nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(16px);background:linear-gradient(120deg,#0b1c3f,#16337a 45%,#1d4ed8);border-bottom:1px solid rgba(255,255,255,.14);box-shadow:0 12px 36px rgba(11,28,63,.35)}
+header.nav .brand-name{background:linear-gradient(120deg,#fff,#bfdbfe);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+header.nav .brand-sub{color:#c8daff}
+header.nav .nav-links a{color:#d6e4ff}
+header.nav .nav-links a::after{background:linear-gradient(90deg,#22d3ee,#60a5fa)}
+header.nav .nav-links a:hover{color:#fff}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:96px;gap:24px;width:auto;max-width:none;padding-inline:3%}
+.brand{display:flex;align-items:center;gap:16px;text-decoration:none;flex-shrink:0}
+.brand-logo{width:64px;height:64px;border-radius:20px;object-fit:cover;box-shadow:0 10px 26px rgba(37,99,235,.30),0 0 0 4px rgba(37,99,235,.08)}
+.brand-text{line-height:1.15}
+.brand-name{display:block;font-size:27px;font-weight:900;letter-spacing:.5px;background:linear-gradient(120deg,#1d4ed8,#2563eb 55%,#06b6d4);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.brand-sub{display:block;font-size:13.5px;font-weight:700;letter-spacing:.3px;margin-top:3px}
+.nav-links{display:flex;gap:34px;align-items:center}
+.nav-links a{text-decoration:none;font-weight:700;font-size:15.5px;position:relative;padding:6px 0;transition:color .25s}
+.nav-links a::after{content:"";position:absolute;bottom:-2px;right:0;width:0;height:3px;border-radius:3px;transition:width .3s}
+.nav-links a:hover::after{width:100%}
+.nav-links a .ico{font-size:17px}
+.nav-cta{padding:12px 28px;font-size:15px;border-radius:14px;background:linear-gradient(135deg,#2563eb,#60a5fa);color:#fff;border:none;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 8px 24px rgba(37,99,235,.35);transition:all .25s}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(37,99,235,.45)}
+
+.hero{background:linear-gradient(135deg,#0b1c3f 0%,#1e3a8a 50%,#2563eb 100%);background-size:200% 200%;animation:gradientShift 8s ease infinite;padding:32px 24px 28px;color:#fff;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-60%;left:-20%;width:140%;height:200%;background:radial-gradient(ellipse,rgba(255,255,255,.06) 0%,transparent 60%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-40%;right:-10%;width:60%;height:120%;background:radial-gradient(circle,rgba(6,182,212,.15) 0%,transparent 50%);pointer-events:none}
+.hero .container{position:relative;z-index:1;text-align:center}
+.breadcrumb{display:flex;align-items:center;justify-content:center;gap:8px;font-size:.78rem;color:rgba(255,255,255,.55);margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.6);transition:color .2s}
+.breadcrumb a:hover{color:#fff}
+.hero-title{font-size:1.6rem;font-weight:900;margin-bottom:6px;text-shadow:0 2px 10px rgba(0,0,0,.2);text-align:center}
+.hero-subtitle{font-size:1rem;font-weight:600;color:rgba(255,255,255,.8);margin-bottom:16px;text-align:center}
+.hero-stats{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.hero-stat{background:rgba(255,255,255,.1);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:10px 18px;display:flex;align-items:center;gap:8px;transition:transform .25s,background .25s}
+.hero-stat:hover{transform:translateY(-2px);background:rgba(255,255,255,.16)}
+.hero-stat .stat-icon{font-size:1.3rem}
+.hero-stat .stat-label{font-size:.72rem;color:rgba(255,255,255,.6);display:block}
+.hero-stat .stat-value{font-size:.92rem;font-weight:800;color:#fff}
+
+.main-grid{max-width:800px;margin:0 auto;padding:24px 16px 40px;display:grid;grid-template-columns:1fr;gap:24px}
+.col-main{display:flex;flex-direction:column;gap:20px}
+.col-side{display:none}
+
+.card{background:#fff;border-radius:20px;padding:24px;box-shadow:var(--shadow);border:1px solid #f1f5f9;transition:transform .3s,box-shadow .3s;animation:fadeInUp .5s ease both}
+.card:nth-child(1){animation-delay:.05s}
+.card:nth-child(2){animation-delay:.1s}
+.card:nth-child(3){animation-delay:.15s}
+.card:nth-child(4){animation-delay:.2s}
+.card:nth-child(5){animation-delay:.25s}
+.card:nth-child(6){animation-delay:.3s}
+.card:nth-child(7){animation-delay:.35s}
+.card:hover{transform:translateY(-3px);box-shadow:0 6px 24px rgba(0,0,0,.08)}
+.card-title{font-size:1.05rem;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:8px;color:#1e293b}
+
+.overview{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.overview-text{flex:1;min-width:180px}
+.overview-text .big-score{font-size:2.4rem;font-weight:900;color:var(--blue);line-height:1.1}
+.overview-text .severity-badge{display:inline-block;padding:5px 16px;border-radius:20px;font-size:.85rem;font-weight:700;margin-top:8px;transition:transform .2s}
+.overview-text .severity-badge:hover{transform:scale(1.05)}
+.overview-text .desc{font-size:.88rem;color:var(--muted);margin-top:8px;line-height:1.6}
+
+.dim-list{display:flex;flex-direction:column;gap:14px}
+.dim-item{display:flex;align-items:center;gap:12px;padding:6px 0;transition:transform .2s}
+.dim-item:hover{transform:translateX(-4px)}
+.dim-rank{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:800;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.dim-info{flex:1}
+.dim-name{font-weight:700;font-size:.9rem;margin-bottom:5px}
+.dim-bar-wrap{background:#e8edf5;border-radius:8px;height:8px;overflow:hidden}
+.dim-bar{height:100%;border-radius:8px;transition:width 1s cubic-bezier(.22,1,.36,1)}
+.dim-score{font-size:.82rem;font-weight:800;color:var(--muted);white-space:nowrap;min-width:36px;text-align:left}
+
+.chart-wrap{position:relative;width:100%;min-height:360px;border-radius:12px;overflow:hidden;padding:8px}
+
+.last-result{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.last-score{font-size:2rem;font-weight:900;color:var(--blue)}
+.last-diff{display:flex;align-items:center;gap:4px;font-size:.88rem;font-weight:700;padding:4px 12px;border-radius:10px}
+.last-diff.up{color:#dc2626;background:#fef2f2}
+.last-diff.down{color:#16a34a;background:#f0fdf4}
+.last-diff.stable{color:#d97706;background:#fffbeb}
+
+.info-box{background:#f0f7ff;border:1px solid #bfdbfe;border-radius:14px;padding:16px;font-size:.88rem;line-height:1.9;color:#1e40af}
+.disclaimer-box{background:#fff7ed;border:1px solid #fed7aa;border-radius:14px;padding:16px;font-size:.84rem;line-height:1.9;color:#9a3412;display:flex;gap:12px;align-items:flex-start}
+.disclaimer-box svg{flex-shrink:0;margin-top:2px;width:22px;height:22px;color:#d97706}
+
+.action-buttons{display:flex;gap:14px;flex-wrap:wrap}
+.action-buttons button{flex:1;min-width:140px;padding:14px;border-radius:14px;font-family:inherit;font-weight:700;font-size:.92rem;border:none;cursor:pointer;transition:all .25s;display:flex;align-items:center;justify-content:center;gap:10px}
+.action-buttons button svg{width:20px;height:20px;flex-shrink:0}
+.btn-primary{background:linear-gradient(135deg,var(--blue),var(--blue-deep));color:#fff;box-shadow:0 6px 20px rgba(37,99,235,.3)}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(37,99,235,.4)}
+.btn-outline{background:#fff;color:var(--blue);border:2px solid var(--line)}
+.btn-outline:hover{background:var(--line);border-color:var(--blue-light);transform:translateY(-3px)}
+
+.severity-breakdown{display:flex;flex-direction:column;gap:8px}
+.sev-row{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;background:#f8fafc;transition:all .2s}
+.sev-row:hover{background:#f1f5f9;transform:translateX(-3px)}
+.sev-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,.15)}
+.sev-label{flex:1;font-size:.88rem;font-weight:700}
+.sev-value{font-size:.82rem;font-weight:700;color:var(--muted)}
+
+.footer{background:linear-gradient(135deg,var(--ink),#16337a);color:rgba(255,255,255,.55);text-align:center;padding:28px 16px;font-size:.8rem;margin-top:0}
+.footer a{color:#60a5fa;font-weight:700;transition:color .2s}
+.footer a:hover{color:#fff}
+.no-sessions{text-align:center;padding:36px;color:var(--muted);font-size:.95rem}
+
+@media(max-width:800px){
+  .nav-links{display:none}
+  .nav-inner{padding-inline:4%}
+  .hero{padding:24px 16px 20px}
+  .hero-title{font-size:1.3rem}
+  .hero-stats{gap:8px}
+  .hero-stat{padding:8px 12px}
+}
+@media(max-width:640px){
+  .main-grid{padding:20px 12px 36px}
+  .card{padding:20px}
+  .overview{flex-direction:column-reverse}
+  .action-buttons{flex-direction:column}
+  .action-buttons button{width:100%}
+}
+@media(max-width:430px){
+  .brand-logo{width:40px;height:40px;border-radius:12px}
+  .brand-name{font-size:16px}
+  .brand-sub{font-size:9.5px}
+  .brand{gap:8px}
+  .nav-cta{padding:7px 12px;font-size:11px;border-radius:8px}
+  .nav-inner{height:auto;min-height:64px;padding-inline:3%;gap:8px}
+  .hero{padding:14px 12px 12px}
+  .hero-title{font-size:1.05rem}
+  .hero-subtitle{font-size:.82rem}
+  .hero-stats{gap:5px}
+  .hero-stat{padding:5px 8px;border-radius:8px;gap:5px}
+  .hero-stat .stat-icon{font-size:.9rem}
+  .hero-stat .stat-value{font-size:.78rem}
+  .main-grid{padding:10px 8px 24px;gap:14px}
+  .card{padding:14px;border-radius:14px}
+  .card-title{font-size:.9rem;margin-bottom:10px}
+  .overview{gap:10px}
+  .overview-text .big-score{font-size:1.6rem}
+  .overview-text{min-width:unset}
+  .dim-item:hover{transform:none}
+  .dim-score{min-width:28px;font-size:.75rem}
+  .dim-name{font-size:.8rem}
+  .chart-wrap{min-height:220px;padding:4px}
+  .last-result{gap:8px}
+  .last-score{font-size:1.4rem}
+  .last-diff{font-size:.78rem;padding:3px 8px}
+  .info-box{padding:10px;font-size:.8rem;line-height:1.7}
+  .disclaimer-box{padding:10px;gap:8px;font-size:.76rem;line-height:1.7}
+  .disclaimer-box svg{width:16px;height:16px}
+  .action-buttons button{padding:10px;border-radius:10px;font-size:.82rem;gap:6px}
+  .action-buttons button svg{width:16px;height:16px}
+  .sev-row{padding:8px;border-radius:8px}
+  .sev-row:hover{transform:none}
+  .footer{padding:18px 10px}
+  .progress-nav .step{padding:5px 7px}
+  .progress-nav .step .step-icon{width:20px;height:20px;font-size:9px}
+  .progress-nav .step-connector{width:6px}
+}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <img class="brand-logo" src="logo.jpg" alt="DIAGNO-ASSIST">
+      <span class="brand-text">
+        <span class="brand-name">DIAGNO-ASSIST</span>
+        <span class="brand-sub" data-i18n="brand_sub">للأخصائيين النفسيين</span>
+      </span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html"><span class="ico">🏠</span> <span data-i18n="nav_home">الرئيسية</span></a>
+      <a href="index.html#how"><span class="ico">🔬</span> <span data-i18n="nav_how">كيف يعمل</span></a>
+      <a href="index.html#features"><span class="ico">🩺</span> <span data-i18n="nav_features">المميزات</span></a>
+      <a href="pricing.html"><span class="ico">💰</span> <span data-i18n="nav_pricing">الأسعار</span></a>
+    </nav>
+    <button class="nav-cta" id="authBtn">تسجيل الدخول</button>
+  </div>
+</header>
+
+<nav class="progress-nav">
+    <div class="nav-steps">
+        <a class="step completed" href="patient.html">
+            <span class="step-icon">✓</span>
+            <span>التجهيز</span>
+        </a>
+        <div class="step-connector"></div>
+        <a class="step completed" href="patient.html">
+            <span class="step-icon">👤</span>
+            <span>ملف المريض</span>
+        </a>
+        <div class="step-connector"></div>
+        <a class="step completed" href="diagnosis.html">
+            <span class="step-icon">📊</span>
+            <span>التشخيص الفارقي</span>
+        </a>
+        <div class="step-connector"></div>
+        <a class="step completed" href="test.html">
+            <span class="step-icon">🔍</span>
+            <span>المقياس</span>
+        </a>
+        <div class="step-connector"></div>
+        <a class="step active" href="charts.html">
+            <span class="step-icon">📈</span>
+            <span>التقرير</span>
+        </a>
+    </div>
+</nav>
+
+<section class="hero" id="heroSection">
+  <div class="container">
+
+    <h1 class="hero-title" id="heroTitle" data-i18n="charts_title">ملخص التقييم التشخيصي</h1>
+    <p class="hero-subtitle" id="heroSubtitle" data-i18n="charts_subtitle">ملخص نتائج التقييم والتحليلات</p>
+    <div class="hero-stats" id="heroStats"></div>
+  </div>
+</section>
+
+<div class="main-grid" id="app">
+
+  <div class="col-main">
+    <div class="card" id="overviewCard"></div>
+    <div class="card" id="topDimCard"></div>
+    
+    <div class="card" id="top3Card"></div>
+    <div class="card" id="trendCard">
+      <div class="card-title" data-i18n="charts_trend_title">📈 تطور النسبة عبر الجلسات</div>
+      <div class="chart-wrap"><canvas id="trendChart"></canvas></div>
+      <div id="trendMessage"></div>
+    </div>
+    <div class="card" id="lastCard"></div>
+    <div class="card" id="interpretCard"></div>
+  </div>
+
+  <div class="col-side">
+  </div>
+
+</div>
+
+<div style="max-width:800px;margin:0 auto;padding:0 16px 28px">
+  <div class="card" style="animation-delay:.48s">
+    <div class="disclaimer-box">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <div data-i18n="charts_disclaimer">هذه النتائج تعكس إجاباتك على هذا المقياس فقط، وهي أداة للكشف عن الأعراض وليست تشخيصًا نهائيًا. يُنصح بمراجعة متخصص للحصول على تقييم شامل.</div>
+    </div>
+  </div>
+
+  <div class="card" style="animation-delay:.54s">
+    <div class="action-buttons">
+      <button class="btn-primary" id="btnPrint">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        <span data-i18n="charts_print">طباعة PDF</span>
+      </button>
+      <button class="btn-outline" id="btnSave">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        <span data-i18n="charts_save">حفظ الملف</span>
+      </button>
+      <button class="btn-outline" id="btnPatientFile" style="display:none">📁 ملف المريض</button>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <p data-i18n="charts_footer">DIAGNO-ASSIST © 2026 — نظام التقييم التشخيصي للأخصائيين النفسيين</p>
+  <p style="margin-top:6px"><a href="index.html" data-i18n="nav_home">الرئيسية</a> · <a href="patient-files.html">ملفات المرضى</a> · <a href="tools.html">الأدوات</a></p>
+</footer>
+
+<script src="translations.js"></script>
+<script src="i18n.js"></script>
+<script>
+(function(){
+  var PTSD_ITEMS=[
+    'تتقحّم ذاكرتي تفاصيل الحدث الصادم دون رغبة مني',
+    'تباغتني مشاعر العجز التي عشتها أثناء الصدمة وكأنها تحدث الآن',
+    'أشعر بأنني أعيد معايشة الحدث الصادم من جديد',
+    'تتكرر مراودة الذكريات عن الحدث الصادم دون إرادتي',
+    'أجد صعوبة في إخراج تفاصيل الحدث الصادم من رأسي',
+    'تداهمني نوبات من الخوف المفاجئ دون سبب واضح منذ وقوع الصدمة',
+    'تراودني كوابيس تتعلق بالحادث الذي تعرضت له',
+    'تعيد لي الكوابيس مشاعر مرتبطة بالصدمة',
+    'تجتاحني تقلبات مزاجية حادة لا أستطيع السيطرة عليها',
+    'عندما تهاجمني ذكرى الصدمة يختل إدراكي للوقت أو المكان للحظات',
+    'أشعر أن ذكريات الصدمة تلاحقني حتى في لحظات الاسترخاء أو قبل النوم مباشرة',
+    'أشعر فجأة وكأنني أرى الحدث الصدمي الآن بكامل تفاصيله',
+    'أشعر بالذعر لمجرد التفكير في أنني قد أجبر على التحدث عما حدث لي',
+    'أتحاشى مشاهدة الأخبار أو البرامج التي قد تثير ذكريات الصدمة',
+    'أحاول تفادي الأفكار المزعجة التي تذكرني بالحدث',
+    'أقوم بجهد كبير لإشغال نفسي بالعمل أو أي نشاط للهرب من التفكير',
+    'أتهرب بصرامة من المحادثات أو النقاشات التي قد تفتح سيرة الصدمة',
+    'أغير طريقي أو أتجنب الأماكن الجغرافية التي وقعت فيها الصدمة',
+    'أتجنب الأشخاص الذين يذكرونني بالحدث الصادم',
+    'أبذل جهدًا واعيًا لتجنب التفكير في أي شيء يخص الحدث الصادم',
+    'أرفض الحديث عن تفاصيل تجربتي الصادمة للآخرين',
+    'أهملت أشياء أو هوايات كنت أحبها لمجرد أنها باتت مرتبطة في ذهني بذكريات الصدمة',
+    'أبتعد عن الأنشطة التي قد تتقاطع مع تفاصيل صدمتي',
+    'أكتم مشاعري الداخلية بجهد كبير لكي أتجنب الشعور بالألم المرتبط بالحدث',
+    'فقدت القدرة على الشعور بالاستمتاع تجاه الأنشطة التي كنت أستمتع بها قبل الحادثة',
+    'أشعر بالذنب تجاه ما حدث',
+    'ينتابني شعور باليأس تجاه المستقبل',
+    'منذ الحادث الصادم أشعر بالعجز عن التخطيط للمستقبل',
+    'منذ الحادث أصبحت أشعر بالغربة عن الآخرين',
+    'يسيطر عليّ شعور دائم بالترقب وكأن شيئًا ما سيحدث',
+    'أصبحت عاجزًا عن التعبير عن مشاعري تجاه المقربين مني',
+    'أشعر بعدم الارتياح عند رؤية صورة أو شخص مرتبط بالحدث الصادم',
+    'منذ الحادث أجد صعوبة في اتخاذ القرارات البسيطة بوضوح',
+    'يتشتت ذهني دومًا لفترة طويلة منذ الحادثة',
+    'أشعر بالذنب تجاه نجاتي من الحادث',
+    'عجزت عن تذكر أجزاء أو تفاصيل مهمة جدًا من الحدث الصادم',
+    'ألوم نفسي بقسوة على عدم قدرتي على منع الحادث',
+    'تسيطر عليّ مشاعر سلبية كالخوف والرعب والغضب أو الخزي والندم',
+    'فقدت القدرة على عيش المشاعر الإيجابية كالحب والفرح أو الرضا التام',
+    'ينتابني ضيق نفسي شديد إذا مررت بموقف أو سمعت كلمة تذكرني بما حدث',
+    'يستجيب جسدي بعنف (تسارع نبضات، تعرق، ضيق تنفس) عند التعرض لأي مذكّر بالصدمة',
+    'أعيش في حالة تأهب قصوى وترقب دائم للمخاطر كأنني مهدد في كل لحظة',
+    'أعاني من تشتت ذهني حاد وصعوبة بالغة في التركيز على دراستي أو عملي منذ الحادث',
+    'أنفجر غضبًا بشكل مفاجئ دون مبرر كاف',
+    'أشعر برغبة قوية لإيذاء الآخرين جسديًا أو ضرب الأشياء من حولي',
+    'أفزع وأنتفض بعنف من الأصوات المفاجئة أو الحركات غير المتوقعة',
+    'أقوم بتصرفات طائشة أو تدميرية لذاتي منذ الحادث الصدمي',
+    'أشعر بتململ حركي مستمر وعجز تام عن الجلوس بهدوء أو الاسترخاء',
+    'أبدي سلوكيات عدوانية (لفظية أو جسدية) دون مبرر كاف',
+    'أعاني من تشتت ذهني حاد وصعوبة بالغة في التركيز على دراستي أو عملي منذ الحادث',
+    'أجد صعوبة شديدة في الدخول في النوم أو الاستمرار فيه بشكل مريح',
+    'أستيقظ مذعورًا في منتصف الليل مع تسارع في ضربات القلب وضيق في الصدر',
+    'أصبحت سريع الاستثارة والانزعاج من المثيرات البيئية حولي (كالإضاءة أو الضوضاء)',
+    'يراودني قلق مزمن حيال سلامتي الشخصية وسلامة من أحبهم بشكل مبالغ فيه',
+    'أشعر بضغط نفسي جسدي (كغصة في الحلق أو ثقل في الصدر) نتيجة كبت الانفعالات الحادة',
+    'أشعر أنني أصبحت سريع الانفعال على أتفه الأمور بدون سبب واضح',
+    'عندما تجتاحني مشاعر قوية، أعجز عن تهدئة نفسي أو استعادة توازني',
+    'أمر بتقلبات مزاجية سريعة جدًا دون أسباب واضحة لمن حولي',
+    'أعيش حالة من الخدر العاطفي الطويل حيث لا أشعر بأي شيء على الإطلاق',
+    'تخرج انفعالاتي عن السيطرة بشكل يجعلني أشعر بالرعب من نفسي ومن ردود أفعالي',
+    'منذ الحادث، ألجأ لسلوكيات اندفاعية خطرة لكي أهرب من مشاعري عندما أشعر بالحزن أو الضغط',
+    'تمنعني حدة مشاعري من التفكير بعقلانية واتخاذ القرارات السليمة',
+    'صرت أبكي بحرقة حادة في مواقف قد يراها الآخرون عادية أو بسيطة، منذ الحادث الصادم',
+    'أصبحت أواجه صعوبة بالغة في التعبير عما بداخلي من مشاعر',
+    'أتهجم على الآخرين بالكلام الجارح كوسيلة للتنفيس عن غضبي',
+    'ينتابني إحساس بأنني قنبلة قد تنفجر انفعالياً في أي لحظة',
+    'أشعر أن حياتي قد انتهت فعليًا بعد ذلك الحدث الصادم',
+    'أعتقد أنني كنت السبب وراء ما حدث بشكل أو بآخر',
+    'يرافقني شعور بأنني إنسان محطم من الداخل لا يمكن إصلاحي',
+    'يتملكني إحساس بالعار من نفسي بسبب ما مررت به',
+    'أرى نفسي أقل قيمة من أي شخص أتعامل معه',
+    'أشعر أنني تحولت إلى عبء ثقيل على كاهل المحيطين بي وعائلتي',
+    'أجد صعوبة بالغة في مسامحة نفسي على أي خطأ',
+    'أشعر أن شخصيتي الحقيقية قد تلاشت وضاعت بعد الصدمة',
+    'يسيطر عليّ شعور بأنني لا أستحق السعادة أو النجاح أو الحب من الآخرين',
+    'أشعر أنني ضحية',
+    'أشعر بالعجز عن حماية نفسي أو السيطرة على مجريات حياتي',
+    'أشعر بالدونية حتى عندما يمدحني الآخرون',
+    'يتملكني يقين داخلي بأنني شخص غير مرغوب فيه',
+    'تشكلت لدي قناعة سلبية وثابتة بأنني شخص سيء',
+    'منذ الحادث، صرت أحس أنني غير كافٍ',
+    'أجد صعوبة في بناء علاقات مقربة أو حميمية مع أشخاص جدد في حياتي',
+    'أحافظ على مسافة وجدانية وعزلة عن الآخرين حماية لنفسي من التعرض للأذى',
+    'ي şüphe عليّ شك من نوايا الآخرين حتى عندما يظهرون لي اللطف',
+    'أعجز عن الشعور بالأمان الوجداني داخل علاقاتي العاطفية أو الأسرية الحالية',
+    'أجد صعوبة في الجلوس أو الاقتراب من أو الاندماج مع الآخرين',
+    'أصبحت أفضل العزلة عن البشر على عناء التعامل معهم',
+    'أنسحب من العلاقة بمجرد أن أشعر أنها أصبحت قريبة أو جادة',
+    'أشعر بالخوف من أن الأشخاص الذين أحبهم سيهجرونني أو يتخلون عني',
+    'أشعر بنفور إذا حاول شخص ما التقرب مني أو إظهار التعاطف معي',
+    'صرت أجد نفسي أدخل في علاقات غير صحية أو مؤذية',
+    'أشعر أن الآخرين عاجزون عن فهم عمق المعاناة التي عشتها',
+    'صرت أنسحب من المناسبات الاجتماعية',
+    'فقدت الثقة في الأشخاص منذ الحادث الصادم'
+  ];
+
+  var MDD_ITEMS=[
+    'شعرت بمسحة من الحزن تخيم على يومي دون وجود سبب واضح',
+    'فقدت الاستمتاع بالأنشطة التي كنت أمارسها سابقًا',
+    'شعرت بفراغ داخلي يصعب عليّ تفسيره',
+    'شعرت برغبة متكررة في البكاء',
+    'لاحظت أن مزاجي يكون في أسوأ حالاته صباحًا عند الاستيقاظ',
+    'يتحسن مزاجي تدريجيًا خلال اليوم بعد أن كان سيئًا في أوله',
+    'لم تعد الهوايات التي أحبها تمنحني المتعة',
+    'شعرت بأن قدرتي على الإحساس بالمشاعر قد تراجعت',
+    'لم تعد الأنباء السارة أو المناسبات السعيدة تحرك مشاعري',
+    'اختفت لديّ مشاعر البهجة',
+    'شعرت بالجفاء من الأشخاص المقربين مني (كالعائلة أو الأصدقاء)',
+    'شعرت بالبرود العاطفي تجاه الأشخاص المقربين',
+    'حدث أن أردت البكاء دون أن أستطيع فعل ذلك',
+    'انتابني إحساس بالمرارة وكأن كل ما حولي في الحياة فقد قيمته',
+    'شعرت بضيق جعلني سريع الانفعال من أقل الكلمات أو المواقف',
+    'عجزت عن التفاعل انفعاليًا مع محيطي',
+    'شعرت بأنني منفصل عن الآخرين حتى عندما أكون بينهم',
+    'عجزت عن الحفاظ على تركيزي أثناء القراءة، أو مشاهدة التلفاز، أو متابعة نقاش بسيط',
+    'سيطرت عليّ فكرة أن الفشل هو حليفي الحتمي في أي عمل أو خطوة قد أقدم عليها',
+    'تملكني اعتقاد راسخ بأنني عبء ثقيل على عائلتي وعلى كل من حولي',
+    'واجهت صعوبة في استدعاء المعلومات أو تذكر المواعيد والالتزامات اليومية الروتينية',
+    'انتابتني أفكار تلح عليّ بأن الموت قد يكون راحة لي من هذه المعاناة المستمرة',
+    'أعتقد بأن عقلي مشوش أو أقل كفاءة',
+    'أحس وكأن عملياتي العقلية أصبحت أبطأ',
+    'شعرت بالتردد الشديد في اتخاذ القرارات اليومية البسيطة (مثل اختيار ملابسي أو طعامي)',
+    'سيطر عليّ التشاؤم تجاه مستقبلي',
+    'تملكني اعتقاد بأنني شخص عديم الجدوى',
+    'أفكر كثيرًا في الماضي',
+    'أعتقد أن الموت أحسن من الحياة',
+    'أعتقد بأن وجودي لا يترك أثرًا ذا قيمة',
+    'أرى بأن حياتي تفتقد إلى هدف واضح',
+    'راودتني أفكار بإنهاء حياتي',
+    'أفسر الأخطاء الصغيرة على أنها دليل على فشلي',
+    'عانيت من صعوبة شديدة في الدخول في النوم رغم شعوري بالتعب',
+    'استيقظت في منتصف الليل أو في الصباح الباكر وعجزت عن العودة للنوم مجددًا',
+    'نمت لساعات طويلة ومع ذلك استيقظت وأنا أشعر بالخمول',
+    'فقدت رغبتي في تناول الطعام',
+    'شعرت بشراهة غير معتادة للأكل',
+    'نقص وزني أو زاد وزني بشكل واضح',
+    'شعرت بإنهاك جسدي وفقدان مطلق للطاقة رغم أنني لم أبذل مجهودًا كبيرًا',
+    'عانيت من آلام أو أوجاع جسدية متفرقة (كصداع أو آلام ظهر) ليس لها تفسير طبي واضح',
+    'شعرت بثقل شديد وصعوبة في تحريك أطرافي (يداي وقدمي)',
+    'لاحظت تراجعًا في الرغبة الجنسية مقارنة بمستواي المعتاد',
+    'شعرت باضطرابات في جهازي الهضمي (كالغثيان أو الإمساك المستمر)',
+    'أبقى في فراشي لوقت طويل',
+    'أبديت ردود فعل جامدة تجاه المواقف التي كانت تستدعي مني استجابة سلوكية سريعة',
+    'أصبحت أؤجل كل المهام والمسؤوليات إلى أن تتراكم عليّ',
+    'أدائي أو إنتاجيتي في تراجع بشكل ملحوظ',
+    'تهاونت في مظهري الخارجي (اللبس، التنسيق...)',
+    'أهملت نظافتي الشخصية بشكل غير معتاد بالنسبة لي',
+    'استجاباتي بطيئة',
+    'انسحبت من التفاعلات الاجتماعية',
+    'تجنبت الرد على الاتصالات أو لقاء الأصدقاء',
+    'وجدت نفسي أقوم بحركات لا إرادية',
+    'انحصر نشاطي الحركي في مساحة محدودة (كالبقاء في غرفة واحدة) لمعظم اليوم',
+    'لاحظت أنا أو المقربون مني أن نبرة صوتي أصبحت خالية من التعابير الانفعالية',
+    'عجزت عن اتخاذ المبادرة لبدء أي نشاط جديد',
+    'أتكاسل عن أداء المهام الروتينية الأساسية (مثل إعداد الطعام أو ترتيب المكان...)',
+    'لاحظت كثرة تنهدي أو زفيري بشكل غير معتاد',
+    'أجد صعوبة في مغادرة المنزل حتى عندما يكون ذلك ضروريًا',
+    'أجلت الرد على الرسائل أو المكالمات رغم أهميتها',
+    'قضيت وقتًا طويلاً دون القيام بأي نشاط ذي معنى'
+  ];
+
+  var DIM_LABELS=['الاقتحام والارتجاع','التجنّب','التغيرات المعرفية','الإثارة والفرط التحفزي','الجسدي والوجدانية السلبية','خلل التنظيم الانفعالي والسلوكي','المفهوم السلبي المشوه عن الذات','الاختلال في العلاقات'];
+
+  function ptKey(base){
+    var p=null;
+    try{p=JSON.parse(localStorage.getItem('diagActivePatient'))}catch(e){}
+    return p? base+'_'+p.id : base;
+  }
+  function getTest(){return localStorage.getItem(ptKey('activeChartTest'))||'ptsd'}
+  function getItems(test){return test==='mdd'?MDD_ITEMS:PTSD_ITEMS}
+  function getSessions(test){
+    var k=test==='mdd'?ptKey('diagSessionsMddV2'):ptKey('diagSessionsV2');
+    try{return JSON.parse(localStorage.getItem(k))||[]}catch(e){return[]}
+  }
+  function getThresholds(test){
+    if(test==='mdd')return{MAX:256,MID:129,HIGH:193};
+    return{MAX:376,MID:189,HIGH:283};
+  }
+  function stateLabel(total,th){
+    if(total>=th.HIGH)return'مرتفعة';
+    if(total>=th.MID)return'متوسطة';
+    return'ضعيفة';
+  }
+  function stateColor(total,th){
+    if(total>=th.HIGH)return'#16a34a';
+    if(total>=th.MID)return'#d97706';
+    return'#dc2626';
+  }
+  function stateBg(total,th){
+    if(total>=th.HIGH)return'#16a34a22';
+    if(total>=th.MID)return'#d9770622';
+    return'#dc262622';
+  }
+  function calcDims(session,test){
+    var items=getItems(test);
+    var numDims=8;
+    var chunkSize=Math.ceil(items.length/numDims);
+    var dims=[];
+    for(var c=0;c<numDims;c++){
+      var chunk=session.answers.slice(c*chunkSize,(c+1)*chunkSize);
+      var sum=0;
+      for(var i=0;i<chunk.length;i++)sum+=chunk[i].score||0;
+      var maxS=chunkSize*4;
+      var score3=maxS>0?Math.round(sum/maxS*30)/10:0;
+      dims.push({name:DIM_LABELS[c],pct:maxS>0?Math.round(sum/maxS*100):0,score3:score3});
+    }
+    return dims;
+  }
+
+  function makeSession(number,date,total,items){
+    var extra=total-items.length;
+    var scores=[];
+    for(var i=0;i<items.length;i++)scores.push(1);
+    for(var i=0;i<extra;i++)scores[(i*37)%items.length]++;
+    var answers=items.map(function(text,idx){
+      var score=scores[idx];
+      var label=score===1?'يوميًا تقريبًا':score===2?'نصف الأيام':score===3?'أيام قليلة فقط':'لم يحدث أبدًا';
+      return{no:idx+1,text:text,label:label,score:score};
+    });
+    var max=items.length*4;
+    var th=getThresholds(getTest());
+    var state=total>=th.HIGH?'مرتفعة':total>=th.MID?'متوسطة':'ضعيفة';
+    return{number:number,date:date,total:total,max:max,avg:Math.round(total/items.length*100)/100,pct:Math.round(total/max*100),state:state,answers:answers};
+  }
+
+  function seedSessions(t){
+    var items=getItems(t);
+    var seeds=t==='mdd'
+      ?[[1,'01/07/2026',78],[2,'12/07/2026',96],[3,'19/07/2026',132],[4,'26/07/2026',160]]
+      :[[1,'01/07/2026',112],[2,'12/07/2026',158],[3,'19/07/2026',224],[4,'26/07/2026',271]];
+    var arr=[];
+    for(var i=0;i<seeds.length;i++){
+      arr.push(makeSession(seeds[i][0],seeds[i][1],seeds[i][2],items));
+    }
+    return arr;
+  }
+
+  var test=getTest();
+  var sessions=getSessions(test);
+  var activePatient=null;
+  try{activePatient=JSON.parse(localStorage.getItem('diagActivePatient')||'null')}catch(e){}
+  if(sessions.length===0&&!activePatient){
+    sessions=seedSessions(test);
+    var k=test==='mdd'?ptKey('diagSessionsMddV2'):ptKey('diagSessionsV2');
+    localStorage.setItem(k,JSON.stringify(sessions));
+  }
+
+  function wireAuth(){
+    var authBtn=document.getElementById('authBtn');
+    if(authBtn){
+      var u=null;
+      try{u=JSON.parse(localStorage.getItem('diagUser')||'null')}catch(e){}
+      if(u){
+        authBtn.textContent=(u.isAdmin?'👨‍💼 ':'👤 ')+(u.isAdmin?'المدير':u.name);
+        authBtn.onclick=function(){location.href='profile.html'};
+      }else{
+        authBtn.onclick=function(){location.href='login.html'};
+      }
+    }
+    var btnFile=document.getElementById('btnPatientFile');
+    if(btnFile&&activePatient&&activePatient.id){
+      btnFile.style.display='';
+      btnFile.onclick=function(){location.href='patient-file.html?id='+encodeURIComponent(activePatient.id)};
+    }
+  }
+
+  if(sessions.length===0){
+    /* ملف مريض حقيقي بلا جلسات: عرض حالة فارغة بدلًا من زرع جلسات وهمية */
+    var emptyLabel=test==='mdd'?'مقياس الاكتئاب (MDD)':'اضطراب ما بعد الصدمة (PTSD)';
+    document.getElementById('heroTitle').textContent='ملخص التقييم التشخيصي';
+    document.getElementById('heroSubtitle').textContent=emptyLabel;
+    document.getElementById('heroStats').innerHTML='<div class="hero-stat"><span class="stat-icon">📭</span><div><span class="stat-label">الجلسات</span><span class="stat-value">0</span></div></div>';
+    document.getElementById('overviewCard').innerHTML='<div class="card-title">📈 سجل الجلسات</div><div class="info-box">لا توجد جلسات تقييم محفوظة لهذا الملف بعد على هذا الجهاز. ابدأ أول جلسة من ملف المريض لتظهر هنا.</div>';
+    wireAuth();
+    return;
+  }
+
+  var last=sessions[sessions.length-1];
+  var prev=sessions.length>1?sessions[sessions.length-2]:null;
+  var th=getThresholds(test);
+  var dims=calcDims(last,test);
+  var sorted=dims.slice().sort(function(a,b){return b.score3-a.score3});
+
+  var sevColor=stateColor(last.total,th);
+  var sevBg=stateBg(last.total,th);
+
+  var testLabel=test==='mdd'?('اكتئاب — DSM-5 (MDD)'):('اضطراب ما بعد الصدمة (PTSD)');
+  document.getElementById('heroTitle').textContent='ملخص التقييم التشخيصي';
+  document.getElementById('heroSubtitle').textContent=testLabel;
+  document.getElementById('heroStats').innerHTML=
+    '<div class="hero-stat"><span class="stat-icon">📋</span><div><span class="stat-label">النسبة</span><span class="stat-value">'+last.pct+'%</span></div></div>'+
+    '<div class="hero-stat"><span class="stat-icon">🔬</span><div><span class="stat-label">الجلسات</span><span class="stat-value">'+sessions.length+'</span></div></div>'+
+    '<div class="hero-stat"><span class="stat-icon">📅</span><div><span class="stat-label">آخر جلسة</span><span class="stat-value">'+last.date+'</span></div></div>'+
+    '<div class="hero-stat"><span class="stat-icon">⚡</span><div><span class="stat-label">الشدة</span><span class="stat-value">'+last.state+'</span></div></div>';
+
+  document.getElementById('overviewCard').innerHTML=
+    '<div class="card-title">📋 شدة الاضطراب</div>'+
+    '<div class="overview">'+
+    '<div class="overview-text">'+
+    '<div class="big-score">'+last.pct+'%</div>'+
+    '<div class="severity-badge" style="background:'+sevBg+';color:'+sevColor+'">'+last.state+'</div>'+
+    '<div class="desc">آخر نتيجة مسجلة من جلسة رقم '+last.number+'</div>'+
+    '</div>'+
+    '</div>';
+
+  var dimHtml='<div class="card-title">🎯 الأبعاد الأكثر بروزًا</div><div class="dim-list">';
+  var dimColors=['#dc2626','#d97706','#2563eb','#8b5cf6','#16a34a','#06b6d4','#f59e0b','#ec4899'];
+  for(var i=0;i<sorted.length;i++){
+    var d=sorted[i];
+    var c=dimColors[i]||dimColors[4];
+    dimHtml+='<div class="dim-item">'+
+      '<div class="dim-rank" style="background:'+c+'">'+(i+1)+'</div>'+
+      '<div class="dim-info"><div class="dim-name">'+d.name+'</div>'+
+      '<div class="dim-bar-wrap"><div class="dim-bar" style="width:'+d.pct+'%;background:linear-gradient(90deg,'+c+','+c+'cc)"></div></div></div>'+
+      '<div class="dim-score">'+d.pct+'%</div>'+
+      '</div>';
+  }
+  dimHtml+='</div><div class="info-box" style="margin-top:14px">💡 كل بُعد يُحسب كنسبة من أعلى درجة ممكنة (من 3). الأبعاد الأعلى هي الأكثر بروزًا في إجاباتك.</div>';
+  document.getElementById('topDimCard').innerHTML=dimHtml;
+
+  var top3Html='<div class="card-title">🏆 أبرز 3 أبعاد</div><div class="dim-list">';
+  var medals=['🥇','🥈','🥉'];
+  for(var i=0;i<Math.min(3,sorted.length);i++){
+    var d=sorted[i];
+    top3Html+='<div class="dim-item">'+
+      '<div class="dim-rank" style="background:#2563eb;font-size:1.1rem">'+medals[i]+'</div>'+
+      '<div class="dim-info"><div class="dim-name">'+d.name+'</div></div>'+
+      '<div class="dim-score" style="color:#2563eb">'+d.pct+'%</div>'+
+      '</div>';
+  }
+  top3Html+='</div>';
+  document.getElementById('top3Card').innerHTML=top3Html;
+
+  if(sessions.length===1){
+    document.getElementById('trendMessage').innerHTML='<div class="no-sessions">هذه جلستك الأولى. قم بإجراء جلسات إضافية لرؤية تطور النسبة.</div>';
+  }else{
+    var tLabels=sessions.map(function(s){return'الجلسة '+s.number});
+    var tData=sessions.map(function(s){return s.pct});
+
+    var bgPlugin={
+      id:'bgZones',
+      beforeDraw:function(chart){
+        var ctx=chart.ctx;
+        var yAxis=chart.scales.y;
+        var xAxis=chart.scales.x;
+        var top=yAxis.top;
+        var bottom=yAxis.bottom;
+        var left=xAxis.left;
+        var right=xAxis.right;
+        var h=bottom-top;
+        var pctHigh=(th.HIGH/th.MAX)*100;
+        var pctMid=(th.MID/th.MAX)*100;
+        ctx.save();
+        ctx.globalAlpha=0.1;
+        ctx.fillStyle='#16a34a';
+        ctx.fillRect(left,top,right-left,h*(1-pctHigh/100));
+        ctx.fillStyle='#d97706';
+        ctx.fillRect(left,top+h*(1-pctHigh/100),right-left,h*(pctHigh-pctMid)/100);
+        ctx.fillStyle='#dc2626';
+        ctx.fillRect(left,top+h*(1-pctMid/100),right-left,h*pctMid/100);
+        ctx.restore();
+      }
+    };
+
+    new Chart(document.getElementById('trendChart'),{
+      type:'line',
+      data:{labels:tLabels,datasets:[
+        {label:'النسبة',data:tData,borderColor:'#2563eb',backgroundColor:'#2563eb',borderWidth:3,pointRadius:5,pointBackgroundColor:tData.map(function(p){
+          var total=Math.round(p/100*th.MAX);
+          return stateColor(total,th);
+        }),tension:.3,fill:false}
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,interaction:{intersect:false,mode:'index'},plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return ctx.parsed.y+'%'}}}},scales:{y:{beginAtZero:true,max:100,grid:{color:'#f1f5f9'},ticks:{font:{family:'Cairo',size:11},callback:function(v){return v+'%'}}},x:{grid:{display:false},ticks:{font:{family:'Cairo',size:10},maxRotation:45}}}},
+      plugins:[bgPlugin]
+    });
+  }
+
+  var diffHtml='';
+  if(prev){
+    var diff=last.pct-prev.pct;
+    var arrow='',cls='',txt='';
+    if(diff>0){arrow='↑';cls='down';txt='انخفاض'}
+    else if(diff<0){arrow='↓';cls='up';txt='ارتفاع'}
+    else{arrow='→';cls='stable';txt='لا تغير'}
+    diffHtml='<div class="last-diff '+cls+'">'+arrow+' '+txt+' '+Math.abs(diff)+'%</div>';
+  }
+  document.getElementById('lastCard').innerHTML=
+    '<div class="card-title">📋 آخر نتيجة</div>'+
+    '<div class="last-result">'+
+    '<div class="last-score">'+last.pct+'%</div>'+
+    '<div class="severity-badge" style="background:'+sevBg+';color:'+sevColor+'">'+last.state+'</div>'+
+    diffHtml+
+    '</div>';
+
+  var topNames=sorted.slice(0,2).map(function(d){return d.name});
+  var interp='بناءً على نتائجك الحالية، تظهر الأبعاد الأعلى في إجاباتك هي: <strong>'+topNames.join(' و ')+'</strong>. ';
+  if(last.state==='مرتفعة')interp+='تشير نسبتك إلى وجود أعراض بمستوى مرتفع، مما قد يستدعي مراجعة متخصصة.';
+  else if(last.state==='متوسطة')interp+='تشير نسبتك إلى وجود أعراض بمستوى متوسط. يُنصح بمتابعة التقييم مع متخصص.';
+  else interp+='تشير نسبتك إلى وجود أعراض بمستوى منخفض. استمر في المتابعة.';
+  interp+=' <br><br>⚠️ هذه النتائج ذاتية وليست تشخيصًا. يُنصح بمراجعة متخصص للحصول على تقييم شامل.';
+  document.getElementById('interpretCard').innerHTML='<div class="card-title">💡 ماذا تعني نتيجتك؟</div><div class="info-box">'+interp+'</div>';
+
+  var btnReport=document.getElementById('btnReport');
+  if(btnReport)btnReport.onclick=function(){window.open('AssessmentReport.html?autoPrint=1','_blank','width=800,height=1000')};
+  document.getElementById('btnPrint').onclick=function(){window.open('AssessmentReport.html?autoPrint=1','_blank','width=800,height=1000')};
+  document.getElementById('btnSave').onclick=function(){window.open('AssessmentReport.html?autoPrint=1','_blank','width=800,height=1000')};
+
+  wireAuth();
+})();
+</script>
+</body>
+</html>

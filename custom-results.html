@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ملخص التقييم | DIAGNO-ASSIST</title>
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{--blue:#2563eb;--blue-deep:#1d4ed8;--blue-light:#60a5fa;--sky:#06b6d4;--ink:#0b1c3f;--muted:#5b6b8c;--line:#e3ecfe;--shadow:0 2px 12px rgba(0,0,0,.06)}
+        body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;background:#f0f4f8;color:#1e293b;min-height:100vh;overflow-x:hidden}
+        a{text-decoration:none;color:inherit}
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+
+        header.nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(16px);background:linear-gradient(120deg,#0b1c3f,#16337a 45%,#1d4ed8);border-bottom:1px solid rgba(255,255,255,.14);box-shadow:0 12px 36px rgba(11,28,63,.35)}
+        .nav-inner{display:flex;align-items:center;justify-content:space-between;height:96px;gap:24px;padding-inline:3%}
+        .brand{display:flex;align-items:center;gap:16px;text-decoration:none;flex-shrink:0}
+        .brand-logo{width:64px;height:64px;border-radius:20px;object-fit:cover;box-shadow:0 10px 26px rgba(37,99,235,.30),0 0 0 4px rgba(37,99,235,.08)}
+        .brand-text{line-height:1.15}
+        .brand-name{display:block;font-size:27px;font-weight:900;letter-spacing:.5px;background:linear-gradient(120deg,#fff,#bfdbfe);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .brand-sub{display:block;font-size:13.5px;font-weight:700;color:#c8daff}
+        .nav-links{display:flex;gap:34px;align-items:center}
+        .nav-links a{color:#d6e4ff;text-decoration:none;font-weight:700;font-size:15.5px;position:relative;padding:6px 0;transition:color .25s}
+        .nav-links a::after{content:"";position:absolute;bottom:-2px;right:0;width:0;height:3px;border-radius:3px;background:linear-gradient(90deg,#22d3ee,#60a5fa);transition:width .3s}
+        .nav-links a:hover{color:#fff}
+        .nav-links a:hover::after{width:100%}
+        .nav-links a .ico{font-size:17px}
+        .nav-cta{padding:12px 28px;font-size:15px;border-radius:14px;background:linear-gradient(135deg,#2563eb,#60a5fa);color:#fff;border:none;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 8px 24px rgba(37,99,235,.35);transition:all .25s}
+        .nav-cta:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(37,99,235,.45)}
+
+        .hero{background:linear-gradient(135deg,#0b1c3f 0%,#1e3a8a 50%,#2563eb 100%);background-size:200% 200%;animation:gradientShift 8s ease infinite;padding:32px 24px 28px;color:#fff;position:relative;overflow:hidden}
+        .hero::before{content:'';position:absolute;top:-60%;left:-20%;width:140%;height:200%;background:radial-gradient(ellipse,rgba(255,255,255,.06) 0%,transparent 60%);pointer-events:none}
+        .hero::after{content:'';position:absolute;bottom:-40%;right:-10%;width:60%;height:120%;background:radial-gradient(circle,rgba(6,182,212,.15) 0%,transparent 50%);pointer-events:none}
+        .hero .container{position:relative;z-index:1;text-align:center}
+        .breadcrumb{display:flex;align-items:center;justify-content:center;gap:8px;font-size:.78rem;color:rgba(255,255,255,.55);margin-bottom:14px}
+        .breadcrumb a{color:rgba(255,255,255,.6);transition:color .2s}
+        .breadcrumb a:hover{color:#fff}
+        .hero-title{font-size:1.6rem;font-weight:900;margin-bottom:6px;text-shadow:0 2px 10px rgba(0,0,0,.2);text-align:center}
+        .hero-subtitle{font-size:1rem;font-weight:600;color:rgba(255,255,255,.8);margin-bottom:16px;text-align:center}
+        .hero-stats{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+        .hero-stat{background:rgba(255,255,255,.1);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:10px 18px;display:flex;align-items:center;gap:8px;transition:transform .25s,background .25s}
+        .hero-stat:hover{transform:translateY(-2px);background:rgba(255,255,255,.16)}
+        .hero-stat .stat-icon{font-size:1.3rem}
+        .hero-stat .stat-label{font-size:.72rem;color:rgba(255,255,255,.6);display:block}
+        .hero-stat .stat-value{font-size:.92rem;font-weight:800;color:#fff}
+
+        .main-grid{max-width:800px;margin:0 auto;padding:24px 16px 40px;display:grid;grid-template-columns:1fr;gap:24px}
+        .col-main{display:flex;flex-direction:column;gap:20px}
+
+        .card{background:#fff;border-radius:20px;padding:24px;box-shadow:var(--shadow);border:1px solid #f1f5f9;transition:transform .3s,box-shadow .3s;animation:fadeInUp .5s ease both}
+        .card:nth-child(1){animation-delay:.05s}
+        .card:nth-child(2){animation-delay:.1s}
+        .card:nth-child(3){animation-delay:.15s}
+        .card:nth-child(4){animation-delay:.2s}
+        .card:nth-child(5){animation-delay:.25s}
+        .card:nth-child(6){animation-delay:.3s}
+        .card:nth-child(7){animation-delay:.35s}
+        .card:hover{transform:translateY(-3px);box-shadow:0 6px 24px rgba(0,0,0,.08)}
+        .card-title{font-size:1.05rem;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:8px;color:#1e293b}
+
+        .overview{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+        .overview-text{flex:1;min-width:180px}
+        .overview-text .big-score{font-size:2.4rem;font-weight:900;color:var(--blue);line-height:1.1}
+        .overview-text .severity-badge{display:inline-block;padding:5px 16px;border-radius:20px;font-size:.85rem;font-weight:700;margin-top:8px;transition:transform .2s}
+        .overview-text .severity-badge:hover{transform:scale(1.05)}
+        .overview-text .desc{font-size:.88rem;color:var(--muted);margin-top:8px;line-height:1.6}
+        .score-circle{width:118px;height:118px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-weight:900;box-shadow:0 12px 30px rgba(11,28,63,.22);flex-shrink:0;background:var(--blue)}
+        .score-circle .v{font-size:31px;line-height:1.1}
+        .score-circle .l{font-size:11px;font-weight:700;opacity:.9}
+
+        .dim-list{display:flex;flex-direction:column;gap:14px}
+        .dim-item{display:flex;align-items:center;gap:12px;padding:6px 0;transition:transform .2s}
+        .dim-item:hover{transform:translateX(-4px)}
+        .dim-rank{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:800;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+        .dim-info{flex:1;min-width:0}
+        .dim-name{font-weight:700;font-weight:700;font-size:.9rem;margin-bottom:5px}
+        .dim-bar-wrap{background:#e8edf5;border-radius:8px;height:8px;overflow:hidden}
+        .dim-bar{height:100%;border-radius:8px;transition:width 1s cubic-bezier(.22,1,.36,1)}
+        .dim-score{font-size:.82rem;font-weight:800;color:var(--muted);white-space:nowrap;min-width:36px;text-align:left}
+        .dim-sub{font-size:.75rem;color:var(--muted);font-weight:600}
+
+        .chart-wrap{position:relative;width:100%;min-height:360px;border-radius:12px;overflow:hidden;padding:8px}
+
+        .last-result{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+        .last-score{font-size:2rem;font-weight:900;color:var(--blue)}
+        .last-diff{display:flex;align-items:center;gap:4px;font-size:.88rem;font-weight:700;padding:4px 12px;border-radius:10px}
+        .last-diff.up{color:#dc2626;background:#fef2f2}
+        .last-diff.down{color:#16a34a;background:#f0fdf4}
+        .last-diff.stable{color:#d97706;background:#fffbeb}
+        .last-diff.neutral{color:#2563eb;background:#eff6ff}
+
+        .info-box{background:#f0f7ff;border:1px solid #bfdbfe;border-radius:14px;padding:16px;font-size:.88rem;line-height:1.9;color:#1e40af}
+        .disclaimer-box{background:#fff7ed;border:1px solid #fed7aa;border-radius:14px;padding:16px;font-size:.84rem;line-height:1.9;color:#9a3412;display:flex;gap:12px;align-items:flex-start}
+        .disclaimer-box svg{flex-shrink:0;margin-top:2px;width:22px;height:22px;color:#d97706}
+
+        .action-buttons{display:flex;gap:14px;flex-wrap:wrap}
+        .action-buttons button,.action-buttons a{flex:1;min-width:140px;padding:14px;border-radius:14px;font-family:inherit;font-weight:700;font-size:.92rem;border:none;cursor:pointer;transition:all .25s;display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none}
+        .action-buttons svg{width:20px;height:20px;flex-shrink:0}
+        .btn-primary{background:linear-gradient(135deg,var(--blue),var(--blue-deep));color:#fff;box-shadow:0 6px 20px rgba(37,99,235,.3)}
+        .btn-primary:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(37,99,235,.4)}
+        .btn-outline{background:#fff;color:var(--blue);border:2px solid var(--line)}
+        .btn-outline:hover{background:var(--line);border-color:var(--blue-light);transform:translateY(-3px)}
+
+        .chips{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}
+        .chip{font-size:12.5px;font-weight:800;background:#eef4ff;border:1px solid #d7e5ff;color:var(--blue-deep);padding:7px 14px;border-radius:999px}
+        .chip.patient{background:#f0fdf4;border-color:#bbf7d0;color:#15803d}
+        .chip.trend-up{background:#fef2f2;border-color:#fecaca;color:#b91c1c}
+        .chip.trend-down{background:#f0fdf4;border-color:#bbf7d0;color:#15803d}
+
+        table{width:100%;border-collapse:collapse;font-size:13.5px}
+        th,td{padding:11px 12px;text-align:right;border-bottom:1px solid var(--line)}
+        th{font-size:12.5px;font-weight:900;color:#334a75;background:#f4f8ff}
+        tr.latest td{background:#f5faff;font-weight:800}
+        td.score{font-weight:900;color:var(--blue-deep)}
+        .ans-no{width:38px;height:30px;border-radius:9px;background:#eef4ff;color:var(--blue-deep);display:inline-flex;align-items:center;justify-content:center;font-weight:900;font-size:12.5px}
+        .table-scroll{overflow-x:auto}
+
+        .val-box{border-radius:14px;padding:14px 16px;font-size:13.5px;line-height:1.9;margin-top:14px}
+        .val-warn{background:#fffbeb;border:1px solid #fde68a;color:#92400e}
+        .val-ok{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534}
+        .val-box ul{padding-right:20px}
+        .notes{margin-top:14px;font-size:13px;color:var(--muted);line-height:2}
+
+        .action-row{display:flex;gap:11px;flex-wrap:wrap;margin-top:4px}
+        .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-weight:800;border:none;border-radius:14px;cursor:pointer;text-decoration:none;transition:all .25s cubic-bezier(.4,0,.2,1);font-size:15px;padding:13px 28px}
+        .btn-primary2{background:linear-gradient(135deg,var(--blue),var(--blue-deep));color:#fff;box-shadow:0 6px 20px rgba(37,99,235,.35)}
+        .btn-primary2:hover{transform:translateY(-2px)}
+        .btn-soft{background:#eef4ff;color:var(--blue-deep);border:1.5px solid #d7e5ff}
+        .btn-soft:hover{background:#e0ecff}
+
+        .no-sessions{text-align:center;padding:36px;color:var(--muted);font-size:.95rem}
+        .empty{padding:26px;text-align:center;color:var(--muted);font-size:14.5px;line-height:2}
+        .empty a{color:var(--blue-deep);font-weight:900}
+
+        .footer{background:linear-gradient(135deg,var(--ink),#16337a);color:rgba(255,255,255,.55);text-align:center;padding:28px 16px;font-size:.8rem}
+        .footer a{color:#60a5fa;font-weight:700;transition:color .2s}
+        .footer a:hover{color:#fff}
+
+        @media(max-width:1020px){.nav-links{display:none}.nav-inner{padding-inline:4%}}
+        @media(max-width:640px){
+            .nav-inner{height:auto;min-height:72px;padding-inline:2%;gap:8px}
+            .brand-logo{width:40px;height:40px;border-radius:12px}
+            .brand-name{font-size:16px}
+            .brand-sub{font-size:9.5px}
+            .brand{gap:8px}
+            .nav-cta{padding:7px 12px;font-size:11px;border-radius:8px}
+            .hero{padding:24px 16px 20px}
+            .hero-title{font-size:1.3rem}
+            .hero-stats{gap:8px}
+            .hero-stat{padding:8px 12px}
+            .main-grid{padding:20px 12px 36px}
+            .card{padding:20px}
+            .overview{flex-direction:column-reverse}
+            .action-buttons{flex-direction:column}
+            .action-buttons button,.action-buttons a{width:100%}
+            .action-row .btn{width:100%}
+        }
+        @media(max-width:430px){
+            .hero{padding:14px 12px 12px}
+            .hero-title{font-size:1.05rem}
+            .hero-subtitle{font-size:.82rem}
+            .hero-stats{gap:5px}
+            .hero-stat{padding:5px 8px;border-radius:8px;gap:5px}
+            .hero-stat .stat-icon{font-size:.9rem}
+            .hero-stat .stat-value{font-size:.78rem}
+            .main-grid{padding:10px 8px 24px;gap:14px}
+            .card{padding:14px;border-radius:14px}
+            .card-title{font-size:.9rem;margin-bottom:10px}
+            .overview-text .big-score{font-size:1.6rem}
+            .overview-text{min-width:unset}
+            .dim-item:hover{transform:none}
+            .dim-score{min-width:28px;font-size:.75rem}
+            .dim-name{font-size:.8rem}
+            .chart-wrap{min-height:220px;padding:4px}
+            .last-result{gap:8px}
+            .last-score{font-size:1.4rem}
+            .last-diff{font-size:.78rem;padding:3px 8px}
+            .info-box{padding:10px;font-size:.8rem;line-height:1.7}
+            .disclaimer-box{padding:10px;gap:8px;font-size:.76rem;line-height:1.7}
+            .disclaimer-box svg{width:16px;height:16px}
+            .action-buttons button,.action-buttons a{padding:10px;border-radius:10px;font-size:.82rem;gap:6px}
+            .action-buttons button svg,.action-buttons a svg{width:16px;height:16px}
+        }
+        @media print{
+            header.nav,.action-row,.footer,.action-buttons{display:none}
+            body{background:#fff}
+            .card{box-shadow:none;border:1px solid #ccc;page-break-inside:avoid}
+            .hero{animation:none;background:#0b1c3f}
+        }
+    </style>
+</head>
+<body>
+
+    <header class="nav">
+        <div class="nav-inner">
+            <a class="brand" href="index.html">
+                <img class="brand-logo" src="logo.jpg" alt="DIAGNO-ASSIST">
+                <span class="brand-text">
+                    <span class="brand-name">DIAGNO-ASSIST</span>
+                    <span class="brand-sub">للأخصائيين النفسيين</span>
+                </span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html"><span class="ico">🏠</span> الرئيسية</a>
+                <a href="index.html#how"><span class="ico">🔬</span> كيف يعمل</a>
+                <a href="index.html#features"><span class="ico">🩺</span> المميزات</a>
+                <a href="pricing.html"><span class="ico">💰</span> الأسعار</a>
+            </nav>
+            <button class="nav-cta" id="authBtn">تسجيل الدخول</button>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="index.html">الرئيسية</a><span>←</span>
+                <a href="tools.html">الأدوات</a><span>←</span>
+                <a href="tools-severity-scale.html">اختر المقياس</a><span>←</span>
+                <span>ملخص التقييم</span>
+            </div>
+            <h1 class="hero-title" id="resTitle">ملخص التقييم</h1>
+            <p class="hero-subtitle" id="resSub"></p>
+            <div class="hero-stats" id="heroStats"></div>
+        </div>
+    </section>
+
+    <div class="main-grid">
+        <div class="col-main" id="mainBox"></div>
+    </div>
+
+    <div style="max-width:800px;margin:0 auto;padding:0 16px 28px">
+        <div class="card" style="animation-delay:.48s">
+            <div class="disclaimer-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <div>هذه النتائج تعكس إجاباتك على هذا المقياس المخصص فقط، وهي أداة مساعدة وليست تشخيصًا نهائيًا. يُنصح بمراجعة متخصص للحصول على تقييم شامل.</div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>DIAGNO-ASSIST © 2026 — نظام التقييم التشخيصي للأخصائيين النفسيين</p>
+        <p style="margin-top:6px"><a href="index.html">الرئيسية</a> · <a href="tools.html">الأدوات</a> · <a href="scale-builder.html">منشئ المقاييس</a></p>
+    </footer>
+
+    <script src="scale-engine.js"></script>
+    <script src="custom-results.js"></script>
+</body>
+</html>

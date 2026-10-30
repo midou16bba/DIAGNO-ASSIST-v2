@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الدفع | DIAGNO-ASSIST</title>
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Cairo',sans-serif;background:linear-gradient(135deg,#0b1c3f 0%,#16337a 50%,#1d4ed8 100%);color:#1e293b;min-height:100vh;overflow-x:hidden}
+        
+        /* Navbar */
+        header.nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(16px);background:linear-gradient(120deg,#0b1c3f,#16337a 45%,#1d4ed8);border-bottom:1px solid rgba(255,255,255,.14);box-shadow:0 12px 36px rgba(11,28,63,.35)}
+        header.nav .brand-name{background:linear-gradient(120deg,#fff,#bfdbfe);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        header.nav .brand-sub{color:#c8daff}
+        header.nav .nav-links a{color:#d6e4ff}
+        header.nav .nav-links a::after{background:linear-gradient(90deg,#22d3ee,#60a5fa)}
+        header.nav .nav-links a:hover{color:#fff}
+        .nav-inner{display:flex;align-items:center;justify-content:space-between;height:96px;gap:24px;width:auto;max-width:none;padding-inline:3%}
+        .brand{display:flex;align-items:center;gap:16px;text-decoration:none;flex-shrink:0}
+        .brand-logo{width:64px;height:64px;border-radius:20px;object-fit:cover;box-shadow:0 10px 26px rgba(37,99,235,.30),0 0 0 4px rgba(37,99,235,.08)}
+        .brand-text{line-height:1.15}
+        .brand-name{display:block;font-size:27px;font-weight:900;letter-spacing:.5px;background:linear-gradient(120deg,#1d4ed8,#2563eb 55%,#06b6d4);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .brand-sub{display:block;font-size:13.5px;font-weight:700;letter-spacing:.3px;margin-top:3px}
+        .nav-links{display:flex;gap:34px;align-items:center}
+        .nav-links a{text-decoration:none;font-weight:700;font-size:15.5px;position:relative;padding:6px 0;transition:color .25s}
+        .nav-links a::after{content:"";position:absolute;bottom:-2px;right:0;width:0;height:3px;border-radius:3px;transition:width .3s}
+        .nav-links a:hover::after{width:100%}
+        .nav-links a .ico{font-size:17px}
+        .nav-cta{padding:12px 28px;font-size:15px;border-radius:14px;background:linear-gradient(135deg,#2563eb,#60a5fa);color:#fff;border:none;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 8px 24px rgba(37,99,235,.35);transition:all .25s}
+        .nav-cta:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(37,99,235,.45)}
+        @media(max-width:800px){.nav-links{display:none}.nav-inner{padding-inline:4%}}
+
+        /* Main Container */
+        .payment-wrap{max-width:1100px;margin:0 auto;padding:40px 20px 60px}
+        
+        /* Header Section */
+        .pay-header{text-align:center;margin-bottom:40px;animation:fadeInUp .6s ease}
+        .pay-header h1{font-size:2.2rem;font-weight:900;color:#fff;margin-bottom:8px;text-shadow:0 4px 20px rgba(0,0,0,.3)}
+        .pay-header p{font-size:1rem;color:rgba(255,255,255,.7);font-weight:600}
+        .pay-badge{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;padding:8px 20px;border-radius:30px;font-size:.85rem;font-weight:700;margin-top:12px;box-shadow:0 4px 16px rgba(245,158,11,.4)}
+        
+        /* Content Grid */
+        .pay-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start}
+        
+        /* Golden Card */
+        .card-3d{perspective:1000px;animation:fadeInUp .8s ease .2s both}
+        .card-golden{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 30%,#0f3460 60%,#1a1a2e 100%);border-radius:24px;padding:32px 28px;color:#fff;min-height:240px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;box-shadow:0 25px 60px rgba(0,0,0,.5),0 0 0 1px rgba(255,215,0,.2),inset 0 1px 0 rgba(255,255,255,.1);transform:rotateY(-5deg) rotateX(2deg);transition:transform .4s ease}
+        .card-golden:hover{transform:rotateY(0) rotateX(0) scale(1.02)}
+        .card-golden::before{content:"";position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(255,215,0,.15) 0%,transparent 70%);top:-100px;right:-100px;animation:shimmer 3s ease-in-out infinite}
+        .card-golden::after{content:"";position:absolute;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(96,165,250,.1) 0%,transparent 70%);bottom:-80px;left:-60px}
+        @keyframes shimmer{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.1)}}
+        
+        .card-top{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1}
+        .card-chip{width:52px;height:38px;background:linear-gradient(135deg,#f5d47a 0%,#c99b3f 50%,#f5d47a 100%);border-radius:8px;position:relative;box-shadow:0 4px 12px rgba(201,155,63,.4)}
+        .card-chip::before{content:"";position:absolute;inset:4px;border:1.5px solid rgba(0,0,0,.2);border-radius:4px}
+        .card-chip::after{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:70%;height:1px;background:rgba(0,0,0,.15)}
+        .card-brand{text-align:left}
+        .card-brand-name{font-size:16px;font-weight:900;letter-spacing:2px;background:linear-gradient(135deg,#f5d47a,#ffd700,#f5d47a);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .card-brand-sub{font-size:9px;color:#a0855a;font-weight:600;letter-spacing:1px}
+        
+        .card-number{font-size:1.5rem;letter-spacing:6px;font-weight:700;font-family:'Consolas',monospace;text-shadow:0 2px 10px rgba(0,0,0,.5);direction:ltr;text-align:left;position:relative;z-index:1;padding:20px 0;border-bottom:1px solid rgba(255,215,0,.15)}
+        
+        .card-bottom{display:flex;align-items:flex-end;justify-content:space-between;position:relative;z-index:1;padding-top:16px}
+        .card-holder-label{font-size:8px;color:#a0855a;letter-spacing:1px;margin-bottom:4px;text-transform:uppercase}
+        .card-holder-name{font-size:16px;font-weight:800;letter-spacing:2px;background:linear-gradient(135deg,#f5d47a,#ffd700);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .card-exp{text-align:left}
+        .card-exp-label{font-size:8px;color:#a0855a;letter-spacing:1px;text-transform:uppercase}
+        .card-exp-date{font-size:18px;font-weight:800;color:#f5d47a;direction:ltr;letter-spacing:2px;margin-top:2px}
+        
+        .card-network{position:absolute;bottom:20px;left:20px;display:flex;gap:-10px;z-index:1}
+        .card-network .circle{width:40px;height:40px;border-radius:50%;opacity:.3}
+        .card-network .circle:first-child{background:#eb001b}
+        .card-network .circle:last-child{background:#f79e1b;margin-left:-15px}
+        
+        /* Amount Box */
+        .amount-section{background:rgba(255,255,255,.08);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);border-radius:16px;padding:20px;margin-top:20px;position:relative;z-index:1}
+        .amount-row{display:flex;align-items:center;justify-content:space-between}
+        .amount-label{font-size:.9rem;color:rgba(255,255,255,.7);font-weight:600}
+        .amount-value{font-size:1.8rem;font-weight:900;background:linear-gradient(135deg,#f5d47a,#ffd700);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .amount-period{font-size:.8rem;color:#a0855a;font-weight:600;margin-top:4px;text-align:left}
+        .amount-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(255,215,0,.3),transparent);margin:12px 0}
+        .amount-total{display:flex;justify-content:space-between;align-items:center}
+        .amount-total-label{font-size:.85rem;color:rgba(255,255,255,.6)}
+        .amount-total-value{font-size:1.1rem;font-weight:800;color:#fff}
+        
+        /* Payment Form */
+        .pay-form{background:#fff;border-radius:24px;padding:36px;box-shadow:0 20px 50px rgba(0,0,0,.15);animation:fadeInUp .8s ease .4s both}
+        .pay-form h2{font-size:1.3rem;font-weight:800;color:#1e293b;margin-bottom:24px;display:flex;align-items:center;gap:10px}
+        .pay-form h2 .icon{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#2563eb,#60a5fa);display:flex;align-items:center;justify-content:center;font-size:18px}
+        
+        .field{margin-bottom:18px}
+        .field label{display:block;font-size:.85rem;font-weight:700;color:#475569;margin-bottom:8px}
+        .field input{width:100%;border:2px solid #e2e8f0;border-radius:14px;padding:14px 16px;font-size:1rem;color:#1e293b;background:#f8fafc;direction:ltr;text-align:left;outline:none;transition:all .3s;font-family:'Cairo',sans-serif;font-weight:600}
+        .field input:focus{border-color:#2563eb;box-shadow:0 0 0 4px rgba(37,99,235,.1);background:#fff}
+        .field input::placeholder{color:#94a3b8;font-weight:500}
+        
+        .pay-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+        
+        .btn-pay{width:100%;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;border:none;padding:16px;border-radius:14px;font-weight:900;font-size:1.1rem;cursor:pointer;transition:all .3s;font-family:'Cairo',sans-serif;box-shadow:0 8px 24px rgba(245,158,11,.4);display:flex;align-items:center;justify-content:center;gap:10px;margin-top:8px}
+        .btn-pay:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(245,158,11,.5)}
+        .btn-pay:active{transform:translateY(-1px)}
+        
+        .secure-note{display:flex;align-items:center;gap:8px;justify-content:center;font-size:.8rem;color:#94a3b8;margin-top:16px}
+        .secure-note svg{width:16px;height:16px;color:#22c55e}
+        
+        /* Features */
+        .pay-features{margin-top:24px;padding:20px;background:#f0fdf4;border-radius:14px;border:1px solid #bbf7d0}
+        .pay-features h4{font-size:.9rem;font-weight:700;color:#166534;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+        .pay-features ul{list-style:none}
+        .pay-features li{font-size:.85rem;color:#15803d;padding:6px 0;display:flex;align-items:center;gap:8px}
+        .pay-features li::before{content:"✓";width:20px;height:20px;border-radius:50%;background:#22c55e;color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+        
+        /* Modal */
+        .modal{display:none;position:fixed;inset:0;background:rgba(11,28,63,.8);backdrop-filter:blur(8px);z-index:1000;align-items:center;justify-content:center;padding:20px}
+        .modal.show{display:flex}
+        .modal-box{background:#fff;border-radius:24px;padding:48px 36px;text-align:center;max-width:440px;width:100%;box-shadow:0 25px 60px rgba(0,0,0,.3);animation:scaleIn .4s ease}
+        .modal-check{width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;font-size:48px;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;box-shadow:0 12px 32px rgba(34,197,94,.4)}
+        .modal-box h2{font-size:1.5rem;font-weight:900;color:#1e293b;margin-bottom:10px}
+        .modal-box p{color:#64748b;font-size:.95rem;line-height:1.8;margin-bottom:28px}
+        .btn-ok{background:linear-gradient(135deg,#2563eb,#60a5fa);color:#fff;border:none;padding:14px 48px;border-radius:14px;font-weight:800;font-size:1rem;cursor:pointer;font-family:'Cairo',sans-serif;box-shadow:0 8px 24px rgba(37,99,235,.35);transition:all .3s}
+        .btn-ok:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(37,99,235,.45)}
+        
+        /* Toast */
+        .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(160px);background:linear-gradient(135deg,#0b1c3f,#1e3a8a);color:#fff;padding:16px 28px;border-radius:16px;font-weight:700;font-size:.9rem;z-index:1100;display:flex;align-items:center;gap:10px;transition:transform .5s cubic-bezier(.68,-.55,.27,1.55);box-shadow:0 12px 32px rgba(0,0,0,.3);border-right:4px solid #f5d47a}
+        .toast.show{transform:translateX(-50%) translateY(0)}
+        
+        /* Footer */
+        footer{background:#0b1c3f;color:#c8daff;margin-top:40px}
+        .footer-grid{max-width:1100px;width:94%;margin:0 auto;padding:48px 0 30px;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:36px}
+        .footer-col h4{color:#fff;font-size:16px;font-weight:800;margin-bottom:18px}
+        .footer-col a{display:block;color:#b3a4d9;text-decoration:none;font-size:14px;margin-bottom:11px;transition:color .3s}
+        .footer-col a:hover{color:#fff}
+        .footer-brand{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+        .footer-brand img{width:44px;height:44px;border-radius:12px;object-fit:cover}
+        .footer-brand .fname{color:#fff;font-weight:800;letter-spacing:1px}
+        .footer-brand .fsub{display:block;font-size:11px;color:#b3a4d9;margin-top:2px}
+        .footer-col p{font-size:14px;line-height:1.9;color:#c8daff}
+        .footer-bottom{border-top:1px solid rgba(255,255,255,.1);text-align:center;padding:20px;color:#7f92b5;font-size:13px}
+        @media(max-width:900px){.pay-grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr;padding:30px 0}.card-golden{transform:none}}
+        @media(max-width:500px){.footer-grid{grid-template-columns:1fr}}
+        
+        /* Animations */
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes scaleIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+    @media(max-width:430px){
+  .nav-inner{height:auto;min-height:60px;gap:8px;padding-inline:2%}
+  .brand-logo{width:36px;height:36px;border-radius:10px}
+  .brand-name{font-size:16px}
+  .brand-sub{font-size:9px}
+  .brand{gap:6px}
+  .nav-cta{padding:7px 12px;font-size:11px;border-radius:8px}
+  .card-golden{padding:18px 14px;border-radius:16px}
+  .card-number{font-size:1rem;letter-spacing:2px;padding:12px 0}
+  .card-holder-name{font-size:12px;letter-spacing:1px}
+  .card-exp-date{font-size:14px}
+  .card-top{gap:6px}
+  .card-chip{width:36px;height:28px}
+  .card-golden{transform:none}
+  .card-3d{perspective:none}
+  .pay-form{padding:20px 14px;border-radius:16px}
+  .pay-form h2{font-size:1rem;margin-bottom:14px}
+  .pay-form h2 .icon{width:30px;height:30px;font-size:14px}
+  .field input{padding:9px 10px;font-size:.85rem}
+  .btn-pay{padding:10px;font-size:.95rem}
+  .pay-row{gap:8px}
+  .field label{font-size:.75rem}
+  .pay-header h1{font-size:1.3rem}
+  .pay-header p{font-size:.8rem}
+  .pay-badge{font-size:.72rem;padding:5px 12px}
+  .payment-wrap{padding:16px 12px 36px}
+  .modal{padding:10px}
+  .modal-box{padding:28px 16px;max-width:100%}
+  .modal-check{width:72px;height:72px;font-size:32px}
+  .modal-box h2{font-size:1.1rem}
+  .modal-box p{font-size:.82rem}
+  .btn-ok{padding:10px 28px;font-size:.85rem}
+  .footer-grid{gap:18px;padding:26px 0 18px}
+}
+    </style>
+</head>
+<body>
+    <header class="nav">
+      <div class="nav-inner">
+        <a class="brand" href="index.html">
+          <img class="brand-logo" src="logo.jpg" alt="DIAGNO-ASSIST">
+          <span class="brand-text">
+            <span class="brand-name">DIAGNO-ASSIST</span>
+            <span class="brand-sub" data-i18n="brand_sub">للأخصائيين النفسيين</span>
+          </span>
+        </a>
+        <nav class="nav-links">
+          <a href="index.html"><span class="ico">🏠</span> <span data-i18n="nav_home">الرئيسية</span></a>
+          <a href="index.html#how"><span class="ico">🔬</span> <span data-i18n="nav_how">كيف يعمل</span></a>
+          <a href="index.html#features"><span class="ico">🩺</span> <span data-i18n="nav_features">المميزات</span></a>
+          <a href="pricing.html"><span class="ico">💰</span> <span data-i18n="nav_pricing">الأسعار</span></a>
+        </nav>
+        <button class="nav-cta" id="authBtn" data-i18n="login">تسجيل الدخول</button>
+      </div>
+    </header>
+    
+    <div class="payment-wrap">
+        <div class="pay-header">
+            <h1 data-i18n="payment_title">الدفع بالبطاقة الذهبية</h1>
+            <p data-i18n="payment_subtitle">أدخل بيانات بطاقة الذهبية الجزائرية لإتمام تفعيل اشتراكك</p>
+            <div class="pay-badge">💎 <span data-i18n="payment_secure_badge">معاملة آمنة ومشفرة</span></div>
+        </div>
+        
+        <div class="pay-grid">
+            <!-- Golden Card -->
+            <div class="card-3d">
+                <div class="card-golden">
+                    <div class="card-top">
+                        <div class="card-chip"></div>
+                        <div class="card-brand">
+                            <div class="card-brand-name">EDAHABIA</div>
+                            <div class="card-brand-sub">CARTE RÉVISÉE</div>
+                        </div>
+                    </div>
+                    <div class="card-number" id="cardDisplay">6037 4512 7845 9013</div>
+                    <div class="card-bottom">
+                        <div>
+                            <div class="card-holder-label">CARD HOLDER</div>
+                            <div class="card-holder-name">DIAGNO-ASSIST</div>
+                        </div>
+                        <div class="card-exp">
+                            <div class="card-exp-label">EXPIRES</div>
+                            <div class="card-exp-date" id="expDisplay">12/28</div>
+                        </div>
+                    </div>
+                    <div class="card-network">
+                        <div class="circle"></div>
+                        <div class="circle"></div>
+                    </div>
+                </div>
+                
+                <div class="amount-section">
+                    <div class="amount-row">
+                        <span class="amount-label" data-i18n="payment_subscription">اشتراك الباقة</span>
+                        <span class="amount-value" id="planName">الباقة الشهرية</span>
+                    </div>
+                    <div class="amount-divider"></div>
+                    <div class="amount-total">
+                        <span class="amount-total-label" data-i18n="payment_total">المبلغ الإجمالي</span>
+                        <span class="amount-total-value" id="planPrice">2,500 دج</span>
+                    </div>
+                    <div class="amount-period" id="planPeriod">شهريًا — بدون التزام</div>
+                </div>
+            </div>
+            
+            <!-- Payment Form -->
+            <div class="pay-form">
+                <h2><span class="icon">💳</span> <span data-i18n="payment_card_data">بيانات البطاقة</span></h2>
+                <div class="field">
+                    <label data-i18n="payment_card_num">رقم البطاقة</label>
+                    <input id="cardNum" value="6037 4512 7845 9013" maxlength="19" placeholder="6037 4512 7845 9013">
+                </div>
+                <div class="field">
+                    <label data-i18n="payment_card_name">اسم حامل البطاقة</label>
+                    <input id="cardName" value="DIAGNO-ASSIST" style="direction:rtl;text-align:right" placeholder="الاسم كما على البطاقة">
+                </div>
+                <div class="pay-row">
+                    <div class="field">
+                        <label data-i18n="payment_expiry">تاريخ الانتهاء</label>
+                        <input id="cardExp" value="12/28" maxlength="5" placeholder="MM/YY">
+                    </div>
+                    <div class="field">
+                        <label data-i18n="payment_cvv">رمز الأمان CVV</label>
+                        <input id="cardCvv" maxlength="3" type="password" placeholder="•••">
+                    </div>
+                </div>
+                <button class="btn-pay" id="payBtn">
+                    <span>💳</span>
+                    <span data-i18n="payment_pay_btn">الدفع الآن</span>
+                </button>
+                <div class="secure-note">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    <span data-i18n="payment_secure">🔒 معاملة مشفرة وآمنة تمامًا</span>
+                </div>
+                
+                <div class="pay-features">
+                    <h4>🎁 <span data-i18n="payment_whats_included">ماذا تحصل مع الاشتراك</span></h4>
+                    <ul id="planFeatures">
+                        <li data-i18n="pricing_feat_user">مستخدم واحد</li>
+                        <li data-i18n="pricing_feat_2tests">اختبارين متقطعين</li>
+                        <li data-i18n="pricing_feat_2diff">التشخيص الفارقي لاضطرابين محتملين</li>
+                        <li data-i18n="pricing_feat_5files">حفظ 5 ملفات مرضى</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-box">
+            <div class="modal-check">✓</div>
+            <h2 data-i18n="payment_success_title">تم الدفع بنجاح!</h2>
+            <p data-i18n="payment_success_desc">شكرًا على اختيارنا ❤️<br>تم تفعيل اشتراكك بنجاح، وسيصلك إشعار تفعيل على بريدك الإلكتروني.</p>
+            <button class="btn-ok" id="closeSuccess" data-i18n="payment_ok">حسنًا</button>
+        </div>
+    </div>
+    
+    <div class="toast" id="receiptToast">🧐 تم إصدار فاتورتك — رقم العملية: <b style="color:#f5d47a">DA-2026-8471</b></div>
+    
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col"><div class="footer-brand"><img src="logo.jpg" alt="DIAGNO-ASSIST"><div><span class="fname">DIAGNO-ASSIST</span><span class="fsub" data-i18n="brand_sub">للأخصائيين النفسيين</span></div></div><p data-i18n="footer_desc">منصة رقمية متكاملة لمساعدتك في التشخيص والاختبارات وتتبع رحلة تعافي مرضاك.</p></div>
+            <div class="footer-col"><h4 data-i18n="footer_about">عن المنصة</h4><a href="#" data-i18n="footer_about_us">من نحن</a><a href="#" data-i18n="footer_features_link">مميزات المنصة</a><a href="#" data-i18n="footer_how">كيف يعمل</a><a href="pricing.html" data-i18n="nav_pricing">الأسعار</a><a href="#" data-i18n="footer_jobs">وظائف</a></div>
+            <div class="footer-col"><h4 data-i18n="footer_help">المساعدة والدعم</h4><a href="#" data-i18n="footer_faq">الأسئلة الشائعة</a><a href="#" data-i18n="footer_contact">تواصل معنا</a><a href="#" data-i18n="footer_help_center">مركز المساعدة</a><a href="#" data-i18n="footer_guide">دليل الاستخدام</a><a href="#" data-i18n="footer_status">الحالة التقنية</a></div>
+            <div class="footer-col"><h4 data-i18n="footer_legal">البنود القانونية</h4><a href="#" data-i18n="footer_terms">الشروط والأحكام</a><a href="#" data-i18n="footer_privacy">سياسة الخصوصية</a><a href="#" data-i18n="footer_cookies">سياسة ملفات تعريف الارتباط</a><a href="#" data-i18n="footer_disclaimer">إخلاء المسؤولية الطبية</a><a href="#" data-i18n="footer_refund">سياسة الاسترداد</a></div>
+        </div>
+        <div class="footer-bottom" data-i18n="footer_copyright">© 2026 DIAGNO-ASSIST — جميع الحقوق محفوظة</div>
+    </footer>
+    
+    <script src="translations.js"></script>
+    <script src="i18n.js"></script>
+    <script>
+        // Plan data
+        var plans = {
+            monthly: { name: 'الباقة الشهرية', nameEn: 'Monthly Plan', nameFr: 'Plan Mensuel', price: '2,500 دج', period: 'شهريًا — بدون التزام', features: ['pricing_feat_user', 'pricing_feat_2tests', 'pricing_feat_2diff', 'pricing_feat_5files', 'pricing_feat_4sessions'] },
+            quarterly: { name: 'باقة 3 أشهر', nameEn: '3-Month Plan', nameFr: 'Plan 3 Mois', price: '7,000 دج', period: 'كل 3 أشهر', features: ['pricing_feat_user', 'pricing_feat_6tests', 'pricing_feat_3diff', 'pricing_feat_10files', 'pricing_feat_6sessions', 'pricing_feat_notes'] },
+            semiannual: { name: 'باقة 6 أشهر', nameEn: '6-Month Plan', nameFr: 'Plan 6 Mois', price: '13,000 دج', period: 'كل 6 أشهر', features: ['pricing_feat_users', 'pricing_feat_unlimited_tests', 'pricing_feat_5diff', 'pricing_feat_20files', 'pricing_feat_10sessions', 'pricing_feat_export'] },
+            yearly: { name: 'الباقة السنوية', nameEn: 'Yearly Plan', nameFr: 'Plan Annuel', price: '22,000 دج', period: 'سنويًا', features: ['pricing_feat_unlimited_users', 'pricing_feat_all_tests', 'pricing_feat_all_diff', 'pricing_feat_unlimited_files', 'pricing_feat_unlimited_sessions', 'pricing_feat_priority'] }
+        };
+        
+        // Get plan from URL
+        var params = new URLSearchParams(window.location.search);
+        var planKey = params.get('plan') || 'monthly';
+        var plan = plans[planKey] || plans.monthly;
+        
+        // Update UI
+        document.getElementById('planName').textContent = plan.name;
+        document.getElementById('planPrice').textContent = plan.price;
+        document.getElementById('planPeriod').textContent = plan.period;
+        
+        // Update features
+        var featuresHtml = '';
+        var lang = localStorage.getItem('diagLang') || 'ar';
+        plan.features.forEach(function(key) {
+            var text = (window.I18N && window.I18N[lang] && window.I18N[lang][key]) || key;
+            featuresHtml += '<li>' + text + '</li>';
+        });
+        document.getElementById('planFeatures').innerHTML = featuresHtml;
+        
+        // Card number formatting
+        document.getElementById('cardNum').addEventListener('input', function(e) {
+            var val = this.value.replace(/\s/g, '').replace(/[^0-9]/g, '');
+            var formatted = val.match(/.{1,4}/g)?.join(' ') || val;
+            this.value = formatted;
+            document.getElementById('cardDisplay').textContent = formatted || '6037 4512 7845 9013';
+        });
+        
+        // Expiry formatting
+        document.getElementById('cardExp').addEventListener('input', function(e) {
+            var val = this.value.replace(/[^0-9]/g, '');
+            if (val.length >= 2) val = val.substring(0,2) + '/' + val.substring(2);
+            this.value = val;
+            document.getElementById('expDisplay').textContent = val || '12/28';
+        });
+        
+        // Pay button
+        document.getElementById('payBtn').addEventListener('click', function() {
+            var num = document.getElementById('cardNum').value.replace(/\s/g, '');
+            var name = document.getElementById('cardName').value.trim();
+            var exp = document.getElementById('cardExp').value.trim();
+            var cvv = document.getElementById('cardCvv').value.trim();
+            if (num.length !== 16 || !name || exp.length < 4 || cvv.length !== 3) {
+                alert('يرجى التحقق من صحة بيانات البطاقة');
+                return;
+            }
+            document.getElementById('successModal').classList.add('show');
+        });
+        
+        document.getElementById('closeSuccess').addEventListener('click', function() {
+            document.getElementById('successModal').classList.remove('show');
+            document.getElementById('receiptToast').classList.add('show');
+            setTimeout(function() { window.location.href = 'patient.html'; }, 4000);
+        });
+        
+        // Auth button
+        (function(){
+            var btn = document.getElementById('authBtn');
+            if(!btn) return;
+            var u = JSON.parse(localStorage.getItem('diagUser') || 'null');
+            if(u){
+                btn.textContent = (u.isAdmin ? '👨‍💼 ' : '👤 ') + (u.isAdmin ? 'المدير' : u.name);
+                btn.onclick = function() { location.href = 'profile.html'; };
+            } else {
+                btn.onclick = function() { location.href = 'login.html'; };
+            }
+        })();
+    </script>
+</body>
+</html>

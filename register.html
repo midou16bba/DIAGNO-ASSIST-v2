@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إنشاء حساب | DIAGNO-ASSIST</title>
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+            background: #fafcff;
+            color: #12294e;
+            min-height: 100vh;
+        }
+        .bg-blob { position: fixed; border-radius: 50%; filter: blur(90px); z-index: -1; }
+        .blob-1 { width: 420px; height: 420px; background: #c8daff; top: -120px; left: -100px; }
+        .blob-2 { width: 380px; height: 380px; background: #b8ecd8; bottom: -100px; right: -80px; }
+
+        header.nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(16px);background:linear-gradient(120deg,#0b1c3f,#16337a 45%,#1d4ed8);border-bottom:1px solid rgba(255,255,255,.14);box-shadow:0 12px 36px rgba(11,28,63,.35)}
+        header.nav .brand-name{background:linear-gradient(120deg,#fff,#bfdbfe);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        header.nav .brand-sub{color:#c8daff}
+        header.nav .nav-links a{color:#d6e4ff}
+        header.nav .nav-links a::after{background:linear-gradient(90deg,#22d3ee,#60a5fa)}
+        header.nav .nav-links a:hover{color:#fff}
+        .nav-inner{display:flex;align-items:center;justify-content:space-between;height:96px;gap:24px;width:auto;max-width:none;padding-inline:3%}
+        .brand{display:flex;align-items:center;gap:16px;text-decoration:none;flex-shrink:0}
+        .brand-logo{width:64px;height:64px;border-radius:20px;object-fit:cover;box-shadow:0 10px 26px rgba(37,99,235,.30),0 0 0 4px rgba(37,99,235,.08)}
+        .brand-text{line-height:1.15}
+        .brand-name{display:block;font-size:27px;font-weight:900;letter-spacing:.5px;background:linear-gradient(120deg,#1d4ed8,#2563eb 55%,#06b6d4);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .brand-sub{display:block;font-size:13.5px;font-weight:700;letter-spacing:.3px;margin-top:3px}
+        .nav-links{display:flex;gap:34px;align-items:center}
+        .nav-links a{text-decoration:none;font-weight:700;font-size:15.5px;position:relative;padding:6px 0;transition:color .25s}
+        .nav-links a::after{content:"";position:absolute;bottom:-2px;right:0;width:0;height:3px;border-radius:3px;transition:width .3s}
+        .nav-links a:hover::after{width:100%}
+        .nav-links a .ico{font-size:17px}
+        .nav-cta{padding:12px 28px;font-size:15px;border-radius:14px;background:linear-gradient(135deg,#2563eb,#60a5fa);color:#fff;border:none;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 8px 24px rgba(37,99,235,.35);transition:all .25s}
+        .nav-cta:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(37,99,235,.45)}
+
+        .auth-wrap {
+            max-width: 520px; margin: 40px auto 60px; padding: 0 20px;
+        }
+        .auth-card {
+            background: #fff; border: 2px solid #e3ecfe; border-radius: 22px;
+            padding: 34px 30px; box-shadow: 0 14px 40px rgba(37, 99, 235, 0.10);
+        }
+        .auth-ico {
+            width: 64px; height: 64px; border-radius: 18px; margin: 0 auto 14px;
+            background: linear-gradient(135deg, #2563eb, #60a5fa);
+            font-size: 28px; display: flex; align-items: center; justify-content: center;
+        }
+        .auth-card h1 { text-align: center; font-size: 24px; color: #12294e; margin-bottom: 6px; }
+        .auth-card .sub { text-align: center; font-size: 13.5px; color: #5c6f96; margin-bottom: 24px; }
+        .field { margin-bottom: 16px; }
+        .field label { display: block; font-size: 13.5px; font-weight: 700; color: #41547f; margin-bottom: 7px; }
+        .field input, .field select {
+            width: 100%; padding: 12px 14px; border: 2px solid #e3ecfe;
+            border-radius: 12px; font-size: 14px; font-family: inherit; color: #12294e;
+            background: #fafcff;
+        }
+        .field input:focus, .field select:focus { outline: none; border-color: #2563eb; background: #fff; }
+        .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .auth-btn {
+            width: 100%; padding: 14px; border: none; border-radius: 13px;
+            background: linear-gradient(135deg, #2563eb, #60a5fa); color: #fff;
+            font-size: 16px; font-weight: 800; cursor: pointer;
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.35); transition: transform 0.2s;
+        }
+        .auth-btn:hover { transform: translateY(-2px); }
+        .auth-msg {
+            margin-top: 14px; display: none; text-align: center;
+            border-radius: 10px; padding: 11px 14px; font-size: 13.5px; font-weight: 700;
+            line-height: 1.7;
+        }
+        .auth-msg.err { display: block; background: #fbdcdc; color: #b91c1c; border: 1px solid #f5a3a3; }
+        .auth-msg.ok { display: block; background: #dff6e8; color: #15803d; border: 1px solid #a7e3c0; }
+        .auth-alt { text-align: center; margin-top: 18px; font-size: 13.5px; color: #5c6f96; }
+        .auth-alt a { color: #2563eb; font-weight: 800; text-decoration: none; }
+
+        footer { background: #12294e; color: #c8daff; margin-top: 20px; }
+        .footer-grid {
+            max-width: 1300px; margin: 0 auto; padding: 44px 50px 30px;
+            display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 34px;
+        }
+        .footer-col h4 { color: #fff; font-size: 16px; margin-bottom: 16px; }
+        .footer-col a { display: block; color: #b3a4d9; text-decoration: none; font-size: 14px; margin-bottom: 10px; transition: color 0.3s; }
+        .footer-col a:hover { color: #fff; }
+        .footer-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+        .footer-brand img { width: 42px; height: 42px; border-radius: 12px; object-fit: cover; }
+        .footer-brand .brand-name { color: #fff; font-weight: 800; letter-spacing: 1px; }
+        .footer-brand .brand-sub { display: block; font-size: 11px; color: #b3a4d9; margin-top: 2px; }
+        .footer-col p { font-size: 14px; line-height: 1.8; color: #c8daff; }
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1); text-align: center;
+            padding: 18px; color: #7f92b5; font-size: 13px;
+        }
+        @media (max-width: 800px) {
+            .nav-links { display: none; }
+            .nav-inner{padding-inline:4%}
+            .footer-grid { grid-template-columns: 1fr 1fr; padding: 30px 18px; }
+            .field-row { grid-template-columns: 1fr; }
+        }
+        @media(max-width:430px){
+          .nav-inner{height:auto;min-height:60px;gap:8px;padding-inline:2%}
+          .brand-logo{width:36px;height:36px;border-radius:10px}
+          .brand-name{font-size:16px}
+          .brand-sub{font-size:9px}
+          .brand{gap:6px}
+          .nav-cta{padding:7px 12px;font-size:11px;border-radius:8px}
+          .auth-card{padding:20px 14px}
+          .auth-wrap{margin:20px auto 36px;padding:0 10px}
+          .auth-card h1{font-size:18px}
+          .auth-card .sub{font-size:11px;margin-bottom:16px}
+          .bg-blob{display:none}
+          .footer-grid{grid-template-columns:1fr;padding:22px 14px;gap:16px}
+          .field-row{gap:8px}
+          .field label{font-size:12px}
+          .field input,.field select{padding:9px 10px;font-size:12px}
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-blob blob-1"></div>
+    <div class="bg-blob blob-2"></div>
+
+    <header class="nav">
+      <div class="nav-inner">
+        <a class="brand" href="index.html">
+          <img class="brand-logo" src="logo.jpg" alt="DIAGNO-ASSIST">
+          <span class="brand-text">
+            <span class="brand-name">DIAGNO-ASSIST</span>
+            <span class="brand-sub" data-i18n="brand_sub">للأخصائيين النفسيين</span>
+          </span>
+        </a>
+        <nav class="nav-links">
+          <a href="index.html"><span class="ico">🏠</span> <span data-i18n="nav_home">الرئيسية</span></a>
+          <a href="index.html#how"><span class="ico">🔬</span> كيف يعمل</a>
+          <a href="index.html#features"><span class="ico">🩺</span> المميزات</a>
+          <a href="pricing.html"><span class="ico">💰</span> <span data-i18n="nav_pricing">الأسعار</span></a>
+        </nav>
+        <button class="nav-cta" id="authBtn">تسجيل الدخول</button>
+      </div>
+    </header>
+
+    <div class="auth-wrap">
+        <div class="auth-card">
+            <div class="auth-ico">📝</div>
+            <h1 data-i18n="register_title">إنشاء حساب جديد</h1>
+            <p class="sub" data-i18n="register_sub">أول مرة على المنصة؟ أنشئ حسابك لتتمكن من تحليلات التشخيص والاختبارات</p>
+
+            <div class="field">
+                <label data-i18n="register_name">الاسم الكامل</label>
+                <input type="text" id="regName">
+            </div>
+            <div class="field-row">
+                <div class="field">
+                    <label data-i18n="register_email">البريد الإلكتروني</label>
+                    <input type="email" id="regEmail">
+                </div>
+                <div class="field">
+                    <label data-i18n="register_username">اسم المستخدم</label>
+                    <input type="text" id="regUsername">
+                </div>
+            </div>
+            <div class="field-row">
+                <div class="field">
+                    <label data-i18n="register_password">كلمة المرور</label>
+                    <input type="password" id="regPass">
+                </div>
+                <div class="field">
+                    <label data-i18n="register_confirm_password">تأكيد كلمة المرور</label>
+                    <input type="password" id="regPass2">
+                </div>
+            </div>
+            <div class="field-row">
+                <div class="field">
+                    <label data-i18n="register_specialty">التخصص</label>
+                    <select id="regSpecialty">
+                        <option value="">اختر تخصصك...</option>
+                        <option>أخصائي نفساني</option>
+                        <option>طبيب نفسي</option>
+                        <option>أخصائي اجتماعي</option>
+                        <option>مقيم في علم النفس</option>
+                        <option>أخرى</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>الولاية (اختياري)</label>
+                    <div style="position:relative">
+                        <select id="regStateSelect" style="width:100%;padding:12px 14px;border:2px solid #e3ecfe;border-radius:12px;font-size:14px;font-family:inherit;color:#12294e;background:#fafcff;appearance:none;-webkit-appearance:none;cursor:pointer">
+                            <option value="">اختر ولايتك...</option>
+                            <option value="أدرار">أدرار</option>
+                            <option value="الشلف">الشلف</option>
+                            <option value="الأغواط">الأغواط</option>
+                            <option value="أم البواقي">أم البواقي</option>
+                            <option value="باتنة">باتنة</option>
+                            <option value="بجاية">بجاية</option>
+                            <option value="بسكرة">بسكرة</option>
+                            <option value="بشار">بشار</option>
+                            <option value="البليدة">البليدة</option>
+                            <option value="البويرة">البويرة</option>
+                            <option value="تمنراست">تمنراست</option>
+                            <option value="تبسة">تبسة</option>
+                            <option value="تلمسان">تلمسان</option>
+                            <option value="تيارت">تيارت</option>
+                            <option value="تيزي وزو">تيزي وزو</option>
+                            <option value="الجزائر">الجزائر</option>
+                            <option value="الجلفة">الجلفة</option>
+                            <option value="جيجل">جيجل</option>
+                            <option value="سطيف">سطيف</option>
+                            <option value="سعيدة">سعيدة</option>
+                            <option value="سكيكدة">سكيكدة</option>
+                            <option value="سيدي بلعباس">سيدي بلعباس</option>
+                            <option value="عنابة">عنابة</option>
+                            <option value="قالمة">قالمة</option>
+                            <option value="قسنطينة">قسنطينة</option>
+                            <option value="المدية">المدية</option>
+                            <option value="مستغانم">مستغانم</option>
+                            <option value="المسيلة">المسيلة</option>
+                            <option value="معسكر">معسكر</option>
+                            <option value="ورقلة">ورقلة</option>
+                            <option value="وهران">وهران</option>
+                            <option value="البيض">البيض</option>
+                            <option value="إليزي">إليزي</option>
+                            <option value="برج بوعريريج">برج بوعريريج</option>
+                            <option value="بومرداس">بومرداس</option>
+                            <option value="الطارف">الطارف</option>
+                            <option value="تندوف">تندوف</option>
+                            <option value="تيسمسيلت">تيسمسيلت</option>
+                            <option value="الوادي">الوادي</option>
+                            <option value="خنشلة">خنشلة</option>
+                            <option value="سوق أهراس">سوق أهراس</option>
+                            <option value="تيبازة">تيبازة</option>
+                            <option value="ميلة">ميلة</option>
+                            <option value="عين الدفلى">عين الدفلى</option>
+                            <option value="النعامة">النعامة</option>
+                            <option value="عين تموشنت">عين تموشنت</option>
+                            <option value="غرداية">غرداية</option>
+                            <option value="غليزان">غليزان</option>
+                            <option value="تيميمون">تيميمون</option>
+                            <option value="برج باجي مختار">برج باجي مختار</option>
+                            <option value="أولاد جلال">أولاد جلال</option>
+                            <option value="بني عباس">بني عباس</option>
+                            <option value="عين صالح">عين صالح</option>
+                            <option value="عين قزام">عين قزام</option>
+                            <option value="توقرت">توقرت</option>
+                            <option value="جانت">جانت</option>
+                            <option value="المغير">المغير</option>
+                            <option value="المنيعة">المنيعة</option>
+                        </select>
+                        <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);pointer-events:none;color:#5c6f96;font-size:12px">▼</span>
+                    </div>
+                    <input type="text" id="regState" placeholder="أو اكتب الولاية يدويًا" style="margin-top:8px">
+                    <div style="font-size:11px;color:#7f92b5;margin-top:4px">يمكنك الاختيار من القائمة أو الكتابة يدويًا</div>
+                </div>
+            </div>
+
+            <button class="auth-btn" id="regBtn"><span data-i18n="register_btn">إنشاء الحساب ✓</span></button>
+            <div class="auth-msg" id="regMsg"></div>
+
+            <div class="auth-alt">
+                <span data-i18n="register_has_account">لديك حساب بالفعل؟</span> <a href="login.html"><span data-i18n="register_login_link">سجّل دخولك ←</span></a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="footer-brand">
+                    <img src="logo.jpg" alt="DIAGNO-ASSIST">
+                    <div>
+                        <span class="brand-name">DIAGNO-ASSIST</span>
+                        <span class="brand-sub">للأخصائيين النفسانيين</span>
+                    </div>
+                </div>
+                <p>منصة رقمية متكاملة لمساعدتك في التشخيص والاختبارات وتتبع رحلة تعافي مرضاك.</p>
+            </div>
+            <div class="footer-col">
+                <h4>عن المنصة</h4>
+                <a href="#">من نحن</a>
+                <a href="#">مميزات المنصة</a>
+                <a href="#">كيف يعمل</a>
+                <a href="#">الأسعار</a>
+                <a href="#">وظائف</a>
+            </div>
+            <div class="footer-col">
+                <h4>المساعدة والدعم</h4>
+                <a href="#">الأسئلة الشائعة</a>
+                <a href="#">تواصل معنا</a>
+                <a href="#">مركز المساعدة</a>
+                <a href="#">دليل الاستخدام</a>
+                <a href="#">الحالة التقنية</a>
+            </div>
+            <div class="footer-col">
+                <h4>البنود القانونية</h4>
+                <a href="#">الشروط والأحكام</a>
+                <a href="#">سياسة الخصوصية</a>
+                <a href="#">سياسة ملفات تعريف الارتباط</a>
+                <a href="#">إخلاء المسؤولية الطبية</a>
+                <a href="#">سياسة الاسترداد</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © 2026 DIAGNO-ASSIST — جميع الحقوق محفوظة
+        </div>
+    </footer>
+
+    <script src="translations.js"></script>
+    <script src="i18n.js"></script>
+
+    <script>
+        const msg = document.getElementById('regMsg');
+
+        function showErr(text) {
+            msg.className = 'auth-msg err';
+            msg.textContent = text;
+        }
+
+        var regStateSelect = document.getElementById('regStateSelect');
+        var regStateText = document.getElementById('regState');
+        regStateSelect.addEventListener('change', function() {
+            if (this.value) regStateText.value = '';
+        });
+        regStateText.addEventListener('input', function() {
+            if (this.value) regStateSelect.value = '';
+        });
+
+        document.getElementById('regBtn').addEventListener('click', () => {
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const username = document.getElementById('regUsername').value.trim();
+            const pass = document.getElementById('regPass').value;
+            const pass2 = document.getElementById('regPass2').value;
+            const specialty = document.getElementById('regSpecialty').value;
+            const stateSelect = document.getElementById('regStateSelect').value.trim();
+            const stateText = document.getElementById('regState').value.trim();
+            const state = stateText || stateSelect;
+
+            if (!name || !email || !username || !pass) { showErr('يرجى ملء جميع الحقول الإلزامية (*).'); return; }
+            if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { showErr('صيغة البريد الإلكتروني غير صحيحة.'); return; }
+            if (username.length < 3) { showErr('اسم المستخدم يجب أن يكون 3 أحرف على الأقل.'); return; }
+            if (pass.length < 6) { showErr('كلمة المرور يجب أن تكون 6 أحرف على الأقل.'); return; }
+            if (pass !== pass2) { showErr('كلمتا المرور غير متطابقتين.'); return; }
+
+            const users = JSON.parse(localStorage.getItem('diagUsers') || '[]');
+            if (users.some(u => u.username.toLowerCase() === username.toLowerCase())) {
+                showErr('اسم المستخدم محجوز مسبقًا — اختر اسمًا آخر.');
+                return;
+            }
+            if (users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
+                showErr('هذا البريد الإلكتروني مسجّل مسبقًا.');
+                return;
+            }
+
+            const user = { name: name, email: email, username: username, password: pass, specialty: specialty || 'أخرى', state: state };
+            users.push(user);
+            localStorage.setItem('diagUsers', JSON.stringify(users));
+            localStorage.setItem('diagUser', JSON.stringify(user));
+
+            msg.className = 'auth-msg ok';
+            msg.textContent = '✓ تم إنشاء الحساب بنجاح — مرحبًا بك ' + name + '، جارٍ فتح المنصة...';
+            setTimeout(() => { window.location.href = 'pricing.html'; }, 1100);
+        });
+    </script>
+
+    <script>
+    (function(){
+      var btn=document.getElementById('authBtn');
+      if(!btn)return;
+      var u=JSON.parse(localStorage.getItem('diagUser')||'null');
+      if(u){
+        btn.textContent=(u.isAdmin?'👨‍💼 ':'👤 ')+(u.isAdmin?'المدير':u.name);
+        btn.onclick=function(){location.href='profile.html'};
+      }else{
+        btn.onclick=function(){location.href='login.html'};
+      }
+    })();
+    </script>
+    <div id="i18n-toast" class="i18n-toast"></div>
+    <style>.i18n-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:#1e3a8a;color:#fff;padding:12px 28px;border-radius:12px;font-weight:700;font-size:14px;z-index:99999;transition:transform .4s cubic-bezier(.68,-.55,.27,1.55),opacity .4s;opacity:0;font-family:'Cairo',sans-serif}.i18n-toast.show{transform:translateX(-50%) translateY(0);opacity:1}</style>
+</body>
+</html>

@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق الاختبار | DIAGNO-ASSIST</title>
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="nav-bar.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Cairo', Tahoma, sans-serif;
+            background: linear-gradient(135deg, #e8f4fd 0%, #f0f4f8 50%, #f5f8ff 100%);
+            color: #1e293b;
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+
+        header.nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(16px);background:linear-gradient(120deg,#0b1c3f,#16337a 45%,#1d4ed8);border-bottom:1px solid rgba(255,255,255,.14);box-shadow:0 12px 36px rgba(11,28,63,.35)}
+        header.nav .brand-name{background:linear-gradient(120deg,#fff,#bfdbfe);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        header.nav .brand-sub{color:#c8daff}
+        header.nav .nav-links a{color:#d6e4ff}
+        header.nav .nav-links a::after{background:linear-gradient(90deg,#22d3ee,#60a5fa)}
+        header.nav .nav-links a:hover{color:#fff}
+        .nav-inner{display:flex;align-items:center;justify-content:space-between;height:96px;gap:24px;width:auto;max-width:none;padding-inline:3%}
+        .brand{display:flex;align-items:center;gap:16px;text-decoration:none;flex-shrink:0}
+        .brand-logo{width:64px;height:64px;border-radius:20px;object-fit:cover;box-shadow:0 10px 26px rgba(37,99,235,.30),0 0 0 4px rgba(37,99,235,.08)}
+        .brand-text{line-height:1.15}
+        .brand-name{display:block;font-size:27px;font-weight:900;letter-spacing:.5px;background:linear-gradient(120deg,#1d4ed8,#2563eb 55%,#06b6d4);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .brand-sub{display:block;font-size:13.5px;font-weight:700;letter-spacing:.3px;margin-top:3px}
+        .nav-links{display:flex;gap:34px;align-items:center}
+        .nav-links a{text-decoration:none;font-weight:700;font-size:15.5px;position:relative;padding:6px 0;transition:color .25s}
+        .nav-links a::after{content:"";position:absolute;bottom:-2px;right:0;width:0;height:3px;border-radius:3px;transition:width .3s}
+        .nav-links a:hover::after{width:100%}
+        .nav-links a .ico{font-size:17px}
+        .nav-cta{padding:12px 28px;font-size:15px;border-radius:14px;background:linear-gradient(135deg,#2563eb,#60a5fa);color:#fff;border:none;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 8px 24px rgba(37,99,235,.35);transition:all .25s}
+        .nav-cta:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(37,99,235,.45)}
+
+        /* ── Page Wrapper ── */
+        .page-wrapper { max-width: 960px; margin: 0 auto; padding: 0 20px 100px; }
+
+        /* ── Hero Card ── */
+        .hero-card {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 40%, #2563eb 100%);
+            border-radius: 0;
+            padding: 28px 40px;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            margin: 0 0 24px;
+            position: sticky;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        .hero-left { flex: none; text-align: center; position: relative; z-index: 1; }
+        .hero-progress { position: relative; z-index: 1; }
+        .hero-card::before {
+            content: '';
+            position: absolute;
+            top: -40%; right: -10%;
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .hero-card::after {
+            content: '';
+            position: absolute;
+            bottom: -30%; left: 5%;
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .hero-left { flex: none; text-align: center; position: relative; z-index: 1; }
+        .hero-left h1 { font-size: 26px; font-weight: 900; margin-bottom: 8px; }
+        .hero-left p { font-size: 14px; color: rgba(255,255,255,0.8); margin-bottom: 14px; }
+        .hero-meta { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        .hero-tag {
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 6px 16px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #fff;
+            backdrop-filter: blur(4px);
+        }
+
+        /* ── Progress Area (left of hero) ── */
+        .hero-progress {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+            margin-left: 32px;
+        }
+        .progress-circle-wrap {
+            position: relative;
+            width: 100px; height: 100px;
+        }
+        .progress-circle-svg { width: 100px; height: 100px; transform: rotate(-90deg); }
+        .progress-circle-bg { fill: none; stroke: rgba(255,255,255,0.15); stroke-width: 8; }
+        .progress-circle-fill {
+            fill: none; stroke: #60a5fa; stroke-width: 8; stroke-linecap: round;
+            stroke-dasharray: 283; stroke-dashoffset: 283;
+            transition: stroke-dashoffset 0.6s ease;
+        }
+        .progress-center-text {
+            position: absolute; inset: 0;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+        }
+        .progress-pct { font-size: 24px; font-weight: 900; color: #fff; }
+        .progress-pct-label { font-size: 9px; color: rgba(255,255,255,0.7); font-weight: 600; }
+        .progress-count {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff; padding: 4px 14px;
+            border-radius: 16px; font-size: 12px; font-weight: 700;
+            backdrop-filter: blur(4px);
+        }
+        .progress-count.done { background: #16a34a; border-color: #16a34a; }
+
+        /* ── Scale Legend ── */
+        .scale-legend {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .scale-legend .pill {
+            padding: 7px 18px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 800;
+            border: 2px solid;
+        }
+        .pill-never {
+            background: #eff6ff; color: #2563eb; border-color: #bfdbfe;
+        }
+        .pill-few {
+            background: #fff7ed; color: #ea580c; border-color: #fed7aa;
+        }
+        .pill-half {
+            background: #fefce8; color: #ca8a04; border-color: #fde68a;
+        }
+        .pill-daily {
+            background: #fef2f2; color: #dc2626; border-color: #fecaca;
+        }
+
+        /* ── Note ── */
+        .note-test {
+            background: #eff6ff; border: 1px solid #bfdbfe;
+            border-radius: 14px; padding: 14px 20px;
+            font-size: 13px; color: #1e40af; line-height: 1.8; font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        /* ── Questions Grid ── */
+        .questions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        /* ── Question Card ── */
+        .question-card {
+            background: #fff;
+            border: 2px solid #e8edf5;
+            border-radius: 16px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        .question-card:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+        }
+        .question-card:has(button.sel) {
+            border-color: #2563eb;
+            box-shadow: 0 4px 20px rgba(37,99,235,0.1);
+        }
+        .tq-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
+        .tq-num {
+            width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+            background: linear-gradient(135deg, #2563eb, #1e40af); color: #fff;
+            font-weight: 800; font-size: 13px;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 2px 8px rgba(37,99,235,0.25);
+        }
+        .tq-text { font-size: 13.5px; font-weight: 700; color: #1e293b; line-height: 1.8; flex: 1; }
+
+        /* ── Answer Buttons ── */
+        .answers-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 14px;
+        }
+        .answers-row button {
+            flex: 1;
+            padding: 10px 6px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: #fff;
+            font-family: inherit;
+            font-size: 11.5px;
+            font-weight: 700;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .answers-row button:hover {
+            border-color: #93c5fd;
+            color: #2563eb;
+            background: #eff6ff;
+        }
+        .answers-row button.sel {
+            background: #2563eb;
+            border-color: #2563eb;
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(37,99,235,0.3);
+        }
+
+        /* ── Footer / Bottom Bar ── */
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            border-top: 2px solid #e8edf5;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            z-index: 100;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.06);
+        }
+        .bottom-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .bottom-bar-center {
+            display: none;
+        }
+        .bottom-bar-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-fill-auto {
+            background: #f8fafc; color: #475569;
+            border: 2px dashed #cbd5e1;
+            padding: 8px 14px; border-radius: 10px; font-weight: 700; font-size: 11px;
+            cursor: pointer; display: inline-flex; align-items: center; gap: 4px;
+            transition: all 0.2s; font-family: inherit;
+        }
+        .btn-fill-auto:hover { border-color: #2563eb; color: #2563eb; background: #eff6ff; }
+        .btn-back-test {
+            background: #fff; color: #475569;
+            border: 2px solid #e2e8f0;
+            padding: 8px 18px; border-radius: 10px; font-weight: 700; font-size: 12px;
+            cursor: pointer; text-decoration: none; display: inline-flex;
+            align-items: center; gap: 6px; transition: all 0.2s; font-family: inherit;
+        }
+        .btn-back-test:hover { border-color: #93c5fd; color: #2563eb; background: #eff6ff; }
+        .btn-save-test {
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            color: #fff;
+            border: none; padding: 10px 24px; border-radius: 12px; font-weight: 800;
+            font-size: 13px; cursor: pointer; transition: all 0.2s;
+            font-family: inherit;
+            box-shadow: 0 2px 10px rgba(37,99,235,0.3);
+        }
+        .btn-save-test:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(37,99,235,0.4); }
+
+        .bottom-legend {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .bottom-legend .pill {
+            padding: 4px 10px;
+            border-radius: 14px;
+            font-size: 10px;
+            font-weight: 700;
+            border: 1.5px solid;
+        }
+
+        /* ── Results Panel ── */
+        .res-panel {
+            display: none;
+            background: #fff;
+            border: 2px solid #e8edf5;
+            border-radius: 20px;
+            padding: 32px;
+            margin-top: 24px;
+        }
+        .res-panel.show { display: block; animation: fadeSlideIn 0.4s ease; }
+        .res-panel .rp-head { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+        .res-panel .rp-circle {
+            width: 100px; height: 100px; border-radius: 50%;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            color: #fff; font-weight: 800; flex-shrink: 0;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+        .res-panel .rp-circle b { font-size: 28px; line-height: 1; }
+        .res-panel .rp-circle small { font-size: 10px; opacity: 0.9; margin-top: 2px; }
+        .rp-low { background: linear-gradient(135deg, #dc2626, #b91c1c); }
+        .rp-mid { background: linear-gradient(135deg, #d97706, #b45309); }
+        .rp-high { background: linear-gradient(135deg, #16a34a, #15803d); }
+        .res-panel .rp-info h3 { font-size: 22px; color: #1e293b; margin-bottom: 6px; }
+        .res-panel .rp-info p { font-size: 13px; color: #475569; line-height: 1.8; }
+        .res-panel .rp-stats {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 24px;
+        }
+        .res-panel .rp-stats div {
+            background: #f8fafc; border: 1px solid #e8edf5;
+            border-radius: 14px; padding: 16px 12px; text-align: center;
+            font-size: 12px; color: #475569;
+        }
+        .res-panel .rp-stats b {
+            display: block; font-size: 22px; color: #2563eb; margin-bottom: 4px;
+        }
+
+        .btn-save-file {
+            display: none; width: 100%; margin-top: 16px;
+            background: linear-gradient(135deg, #16a34a, #15803d); color: #fff;
+            border: none; padding: 14px; border-radius: 14px; font-weight: 800;
+            font-size: 14px; cursor: pointer; transition: all 0.2s;
+            font-family: inherit;
+            box-shadow: 0 2px 10px rgba(22,163,74,0.3);
+        }
+        .btn-save-file:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(22,163,74,0.4); }
+
+        /* ── Footer ── */
+        footer {
+            text-align: center; padding: 24px 16px; margin-top: 40px;
+            border-top: 1px solid #e8edf5; color: #94a3b8; font-size: 12px;
+        }
+        footer .footer-brand {
+            display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px;
+        }
+        footer .footer-brand img { width: 30px; height: 30px; border-radius: 8px; }
+        footer .footer-brand .brand-name { font-weight: 800; color: #1e40af; font-size: 14px; }
+
+        /* ── Animations ── */
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .question-card { animation: fadeSlideIn 0.3s ease backwards; }
+        .question-card:nth-child(1) { animation-delay: 0.02s; }
+        .question-card:nth-child(2) { animation-delay: 0.04s; }
+        .question-card:nth-child(3) { animation-delay: 0.06s; }
+        .question-card:nth-child(4) { animation-delay: 0.08s; }
+        .question-card:nth-child(5) { animation-delay: 0.10s; }
+        .question-card:nth-child(6) { animation-delay: 0.12s; }
+
+        /* ── Responsive ── */
+        @media (max-width: 900px) {
+            .questions-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 700px) {
+            .hero-card {
+                flex-direction: column-reverse;
+                padding: 24px 20px;
+                gap: 20px;
+            }
+            .hero-progress { margin-left: 0; }
+            .nav-links { display: none; }
+            .nav-inner{padding-inline:4%}
+            .bottom-bar {
+                flex-wrap: wrap;
+                gap: 8px;
+                padding: 10px 16px;
+            }
+            .bottom-bar-left, .bottom-bar-right { width: 100%; justify-content: center; }
+            .res-panel .rp-head { flex-direction: column; text-align: center; }
+            .res-panel .rp-stats { grid-template-columns: 1fr; }
+            .scale-legend { justify-content: center; }
+            .answers-row { flex-wrap: wrap; }
+            .answers-row button { min-width: 45%; }
+        }
+        @media (max-width: 480px) {
+            .btn-fill-auto { font-size: 10px; padding: 6px 10px; }
+            .btn-back-test { font-size: 11px; padding: 6px 14px; }
+            .btn-save-test { font-size: 12px; padding: 8px 18px; }
+        }
+        @media(max-width:430px){
+          .nav-inner{height:auto;min-height:64px;gap:8px;padding-inline:3%}
+          .brand-logo{width:36px;height:36px;border-radius:10px}
+          .brand-name{font-size:15px}
+          .brand-sub{font-size:9px}
+          .brand{gap:6px}
+          .nav-cta{padding:7px 12px;font-size:11px;border-radius:8px}
+          .hero-card{padding:14px 12px;gap:12px}
+          .hero-card::before{width:120px;height:120px;right:-4%;top:-25%}
+          .hero-card::after{width:80px;height:80px;left:2%;bottom:-15%}
+          .progress-circle-wrap,.progress-circle-svg{width:68px;height:68px}
+          .progress-pct{font-size:17px}
+          .progress-pct-label{font-size:7px}
+          .hero-left h1{font-size:16px}
+          .hero-left p{font-size:11px}
+          .hero-tag{font-size:9px;padding:3px 8px}
+          .note-test{padding:8px 10px;font-size:11px;border-radius:8px}
+          .question-card{padding:12px 10px}
+          .tq-num{width:28px;height:28px;font-size:10px}
+          .tq-text{font-size:12px}
+          .tq-header{gap:6px;margin-bottom:8px}
+          .answers-row{gap:4px}
+          .answers-row button{padding:7px 3px;font-size:10px;min-width:44%}
+          .bottom-bar{padding:6px 8px;gap:4px}
+          .bottom-bar-left,.bottom-bar-right{gap:4px}
+          .btn-fill-auto{font-size:8.5px;padding:4px 6px}
+          .btn-back-test{font-size:10px;padding:5px 10px}
+          .btn-save-test{font-size:11px;padding:6px 14px}
+          .res-panel{padding:14px;border-radius:12px}
+          .res-panel .rp-circle{width:68px;height:68px}
+          .res-panel .rp-circle b{font-size:20px}
+          .res-panel .rp-info h3{font-size:16px}
+          .res-panel .rp-stats div{padding:10px 6px}
+          .res-panel .rp-stats b{font-size:16px}
+          .res-panel .rp-head{gap:12px}
+          .scale-legend .pill{padding:4px 10px;font-size:9px}
+          .scale-legend{gap:4px}
+          .btn-save-file{padding:8px 10px;font-size:11px;border-radius:8px}
+          body{padding-bottom:140px;overflow-x:hidden}
+          .page-wrapper{padding:0 10px 40px}
+          .question-card{animation:none!important}
+          html,body{overflow-x:hidden}
+        }
+
+        /* ── Auto-fill code modal + toast (works even when native dialogs are blocked) ── */
+        .fill-modal-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:20px;z-index:10000;opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
+        .fill-modal-backdrop.show{opacity:1;visibility:visible}
+        .fill-modal-card{background:#fff;border-radius:22px;padding:28px 26px 22px;width:min(420px,100%);box-shadow:0 30px 80px rgba(11,28,63,.35);text-align:center;transform:translateY(14px) scale(.97);transition:transform .3s cubic-bezier(.34,1.56,.64,1);font-family:'Cairo',Tahoma,sans-serif}
+        .fill-modal-backdrop.show .fill-modal-card{transform:translateY(0) scale(1)}
+        .fill-modal-icon{width:64px;height:64px;border-radius:50%;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-size:30px;background:linear-gradient(135deg,#eff6ff,#dbeafe);border:2px solid #bfdbfe}
+        .fill-modal-card h3{font-size:19px;font-weight:900;color:#0b1c3f;margin-bottom:6px}
+        .fill-modal-card p{font-size:12.5px;color:#64748b;line-height:1.7;margin-bottom:16px}
+        .fill-code-input{width:100%;padding:13px 16px;border:2px solid #e2e8f0;border-radius:14px;font-family:inherit;font-size:20px;font-weight:800;letter-spacing:6px;text-align:center;color:#0b1c3f;background:#f8fafc;outline:none;transition:border-color .2s,box-shadow .2s;direction:ltr}
+        .fill-code-input:focus{border-color:#2563eb;background:#fff;box-shadow:0 0 0 4px rgba(37,99,235,.12)}
+        .fill-code-input.error{border-color:#dc2626;background:#fef2f2;animation:fillShake .4s}
+        @keyframes fillShake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+        .fill-modal-error{display:none;margin-top:10px;font-size:12px;font-weight:700;color:#dc2626}
+        .fill-modal-error.show{display:block}
+        .fill-modal-actions{display:flex;gap:10px;margin-top:18px}
+        .fill-modal-btn{flex:1;padding:11px 16px;border-radius:12px;border:2px solid #e2e8f0;background:#fff;color:#475569;font-family:inherit;font-weight:800;font-size:13.5px;cursor:pointer;transition:all .2s}
+        .fill-modal-btn:hover{background:#f8fafc}
+        .fill-modal-btn.primary{border:none;background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;box-shadow:0 6px 18px rgba(37,99,235,.3)}
+        .fill-modal-btn.primary:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(37,99,235,.4)}
+        .fill-toast{position:fixed;bottom:96px;left:50%;transform:translateX(-50%) translateY(20px);max-width:min(560px,92vw);background:#0f172a;color:#fff;padding:12px 20px;border-radius:14px;font-size:13px;font-weight:700;line-height:1.6;text-align:center;box-shadow:0 18px 50px rgba(0,0,0,.35);opacity:0;visibility:hidden;transition:all .3s;z-index:10001}
+        .fill-toast.show{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <header class="nav">
+      <div class="nav-inner">
+        <a class="brand" href="index.html">
+          <img class="brand-logo" src="logo.jpg" alt="DIAGNO-ASSIST">
+          <span class="brand-text">
+            <span class="brand-name">DIAGNO-ASSIST</span>
+            <span class="brand-sub" data-i18n="brand_sub">للأخصائيين النفسيين</span>
+          </span>
+        </a>
+        <nav class="nav-links">
+          <a href="index.html"><span class="ico">🏠</span> <span data-i18n="nav_home">الرئيسية</span></a>
+          <a href="index.html#how"><span class="ico">🔬</span> <span data-i18n="nav_how">كيف يعمل</span></a>
+          <a href="index.html#features"><span class="ico">🩺</span> <span data-i18n="nav_features">المميزات</span></a>
+          <a href="pricing.html"><span class="ico">💰</span> <span data-i18n="nav_pricing">الأسعار</span></a>
+        </nav>
+        <button class="nav-cta" id="authBtn">تسجيل الدخول</button>
+      </div>
+    </header>
+
+    <nav class="progress-nav">
+        <div class="nav-steps">
+            <a class="step completed" href="patient.html">
+                <span class="step-icon">✓</span>
+                <span>التجهيز</span>
+            </a>
+            <div class="step-connector"></div>
+            <a class="step completed" href="patient.html">
+                <span class="step-icon">👤</span>
+                <span>ملف المريض</span>
+            </a>
+            <div class="step-connector"></div>
+            <a class="step completed" href="diagnosis.html">
+                <span class="step-icon">📊</span>
+                <span>التشخيص الفارقي</span>
+            </a>
+            <div class="step-connector"></div>
+            <a class="step active" href="test.html">
+                <span class="step-icon">🔍</span>
+                <span>المقياس</span>
+            </a>
+            <div class="step-connector"></div>
+            <a class="step" href="charts.html">
+                <span class="step-icon">📈</span>
+                <span>التقرير</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Card - Full Width Sticky -->
+    <div class="hero-card">
+        <div class="hero-progress">
+            <div class="progress-circle-wrap">
+                <svg class="progress-circle-svg" viewBox="0 0 100 100">
+                    <circle class="progress-circle-bg" cx="50" cy="50" r="45"/>
+                    <circle class="progress-circle-fill" id="progressFill" cx="50" cy="50" r="45"/>
+                </svg>
+                <div class="progress-center-text">
+                    <div class="progress-pct" id="progressPct">0%</div>
+                    <div class="progress-pct-label" data-i18n="test_completed">مكتمل</div>
+                </div>
+            </div>
+            <span class="progress-count" id="questCount">0 / 0</span>
+        </div>
+        <div class="hero-left">
+            <h1 data-i18n="test_title">تطبيق الاختبار التشخيصي</h1>
+            <p id="testPatientInfo">المريض: محمد عبد الله — جلسة التشخيص</p>
+            <div class="hero-meta">
+                <div class="hero-tag"><span id="testName">مقياس الطلبة لاضطراب ما بعد الصدمة</span></div>
+                <div class="hero-tag"><span id="testHint">اختر مدى تكرار كل عبارة خلال الشهر الماضي</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-wrapper">
+
+        <div class="note-test" data-i18n="test_note">
+            📝 سيتم إضافة عبارات المقياس هنا قريبًا — اختر الإجابة المناسبة لكل عبارة
+        </div>
+
+        <!-- Questions Grid -->
+        <div id="questions" class="questions-grid"></div>
+
+        <div class="note-test" id="emptyNote" style="margin-top:0; display:none;">
+            📝 سيتم إضافة عبارات المقياس هنا قريبًا.
+        </div>
+
+        <!-- Results Panel -->
+        <div class="res-panel" id="resPanel">
+            <div class="rp-head">
+                <div class="rp-circle" id="rpCircle">
+                    <b id="rpTotal">0</b>
+                    <small id="rpMax">من 0</small>
+                </div>
+                <div class="rp-info">
+                    <h3 id="rpState">—</h3>
+                    <p id="rpDesc">—</p>
+                </div>
+            </div>
+            <div class="rp-stats">
+                <div><b id="rpAnswered">0</b><span data-i18n="test_answered_count">عدد العبارات المجابة</span></div>
+                <div><b id="rpAvg">0</b><span data-i18n="test_avg_score">متوسط الدرجة لكل عبارة (من 4)</span></div>
+                <div><b id="rpPct">0%</b><span data-i18n="test_max_pct">نسبة الدرجة القصوى</span></div>
+            </div>
+        </div>
+
+        <button class="btn-save-file" id="saveFileBtn" data-i18n="test_save_btn">💾 حفظ الملف (جلسة جديدة) — وعرض الرسوم البيانية</button>
+
+        <div class="note-test" style="margin-top:4px;" data-i18n="test_save_note">
+            💡 تُحسب النتيجة تلقائيًا وتُحفظ في سجل المريض مع الجلسة الحالية.
+        </div>
+
+        <span id="testName2" style="display:none;"></span>
+
+    </div>
+
+    <footer>
+        <div class="footer-brand">
+            <img src="logo.jpg" alt="DIAGNO-ASSIST">
+            <span class="brand-name">DIAGNO-ASSIST</span>
+        </div>
+        <p data-i18n="footer_desc">منصة رقمية متكاملة لمساعدتك في التشخيص والاختبارات وتتبع رحلة تعافي مرضاك.</p>
+        <p style="margin-top:8px;" data-i18n="footer_copyright">© 2026 DIAGNO-ASSIST — جميع الحقوق محفوظة</p>
+    </footer>
+
+    <!-- Fixed Bottom Bar -->
+    <div class="bottom-bar">
+        <div class="bottom-bar-right">
+            <a class="btn-back-test" href="results.html" data-i18n="test_back">← رجوع</a>
+            <button class="btn-save-test" id="calcBtn" data-i18n="test_calc">الحساب المباشر 🧮</button>
+        </div>
+        <div class="bottom-bar-center">
+        </div>
+        <div class="bottom-bar-left">
+            <button class="btn-fill-auto" id="fillAutoBtn" data-i18n="test_fill_auto">⚙️ تعبئة تلقائية (متوسطة)</button>
+            <button class="btn-fill-auto" id="fillHighBtn" data-i18n="test_fill_high">🟢 تعبئة تلقائية (مرتفعة)</button>
+        </div>
+    </div>
+
+    <!-- نافذة إدخال رمز التعبئة التلقائية (بديل عن prompt المحظور في بعض المتصفحات) -->
+    <div class="fill-modal-backdrop" id="fillModal" role="dialog" aria-modal="true" aria-labelledby="fillModalTitle">
+        <div class="fill-modal-card">
+            <div class="fill-modal-icon">🔐</div>
+            <h3 id="fillModalTitle">أدخل الرمز الخاص للتعبئة التلقائية</h3>
+            <p id="fillModalDesc">هذه التعبئة مخصصة للتجربة السريعة. أدخل الرمز للمتابعة.</p>
+            <input type="text" id="fillCodeInput" class="fill-code-input" inputmode="numeric" autocomplete="off" maxlength="8" placeholder="••••">
+            <div class="fill-modal-error" id="fillCodeError">رمز غير صحيح — حاول مرة أخرى.</div>
+            <div class="fill-modal-actions">
+                <button type="button" class="fill-modal-btn primary" id="fillCodeOk">تأكيد</button>
+                <button type="button" class="fill-modal-btn" id="fillCodeCancel">إلغاء</button>
+            </div>
+        </div>
+    </div>
+    <div class="fill-toast" id="fillToast" role="status" aria-live="polite"></div>
+
+    <script src="translations.js"></script>
+    <script src="i18n.js"></script>
+    <script>
+        const ITEMS_PTSD = [
+            'تتقحّم ذاكرتي تفاصيل الحدث الصادم دون رغبة مني',
+            'تباغتني مشاعر العجز التي عشتها أثناء الصدمة وكأنها تحدث الآن',
+            'أشعر بأنني أعيد معايشة الحدث الصادم من جديد',
+            'تتكرر مراودة الذكريات عن الحدث الصادم دون إرادتي',
+            'أجد صعوبة في إخراج تفاصيل الحدث الصادم من رأسي',
+            'تداهمني نوبات من الخوف المفاجئ دون سبب واضح منذ وقوع الصدمة',
+            'تراودني كوابيس تتعلق بالحادث الذي تعرضت له',
+            'تعيد لي الكوابيس مشاعر مرتبطة بالصدمة',
+            'تجتاحني تقلبات مزاجية حادة لا أستطيع السيطرة عليها',
+            'عندما تهاجمني ذكرى الصدمة يختل إدراكي للوقت أو المكان للحظات',
+            'أشعر أن ذكريات الصدمة تلاحقني حتى في لحظات الاسترخاء أو قبل النوم مباشرة',
+            'أشعر فجأة وكأنني أرى الحدث الصدمي الآن بكامل تفاصيله',
+            'أشعر بالذعر لمجرد التفكير في أنني قد أجبر على التحدث عما حدث لي',
+            'أتحاشى مشاهدة الأخبار أو البرامج التي قد تثير ذكريات الصدمة',
+            'أحاول تفادي الأفكار المزعجة التي تذكرني بالحدث',
+            'أقوم بجهد كبير لإشغال نفسي بالعمل أو أي نشاط للهرب من التفكير',
+            'أتهرب بصرامة من المحادثات أو النقاشات التي قد تفتح سيرة الصدمة',
+            'أغير طريقي أو أتجنب الأماكن الجغرافية التي وقعت فيها الصدمة',
+            'أتجنب الأشخاص الذين يذكرونني بالحدث الصادم',
+            'أبذل جهدًا واعيًا لتجنب التفكير في أي شيء يخص الحدث الصادم',
+            'أرفض الحديث عن تفاصيل تجربتي الصادمة للآخرين',
+            'أهملت أشياء أو هوايات كنت أحبها لمجرد أنها باتت مرتبطة في ذهني بذكريات الصدمة',
+            'أبتعد عن الأنشطة التي قد تتقاطع مع تفاصيل صدمتي',
+            'أكتم مشاعري الداخلية بجهد كبير لكي أتجنب الشعور بالألم المرتبط بالحدث',
+            'فقدت القدرة على الشعور بالاستمتاع تجاه الأنشطة التي كنت أستمتع بها قبل الحادثة',
+            'أشعر بالذنب تجاه ما حدث',
+            'ينتابني شعور باليأس تجاه المستقبل',
+            'منذ الحادث الصادم أشعر بالعجز عن التخطيط للمستقبل',
+            'منذ الحادث أصبحت أشعر بالغربة عن الآخرين',
+            'يسيطر عليّ شعور دائم بالترقب وكأن شيئًا ما سيحدث',
+            'أصبحت عاجزًا عن التعبير عن مشاعري تجاه المقربين مني',
+            'أشعر بعدم الارتياح عند رؤية صورة أو شخص مرتبط بالحدث الصادم',
+            'منذ الحادث أجد صعوبة في اتخاذ القرارات البسيطة بوضوح',
+            'يتشتت ذهني دومًا لفترة طويلة منذ الحادثة',
+            'أشعر بالذنب تجاه نجاتي من الحادث',
+            'عجزت عن تذكر أجزاء أو تفاصيل مهمة جدًا من الحدث الصادم',
+            'ألوم نفسي بقسوة على عدم قدرتي على منع الحادث',
+            'تسيطر عليّ مشاعر سلبية كالخوف والرعب والغضب أو الخزي والندم',
+            'فقدت القدرة على عيش المشاعر الإيجابية كالحب والفرح أو الرضا التام',
+            'ينتابني ضيق نفسي شديد إذا مررت بموقف أو سمعت كلمة تذكرني بما حدث',
+            'يستجيب جسدي بعنف (تسارع نبضات، تعرق، ضيق تنفس) عند التعرض لأي مذكّر بالصدمة',
+            'أعيش في حالة تأهب قصوى وترقب دائم للمخاطر كأنني مهدد في كل لحظة',
+            'أعاني من تشتت ذهني حاد وصعوبة بالغة في التركيز على دراستي أو عملي منذ الحادث',
+            'أنفجر غضبًا بشكل مفاجئ دون مبرر كاف',
+            'أشعر برغبة قوية لإيذاء الآخرين جسديًا أو ضرب الأشياء من حولي',
+            'أفزع وأنتفض بعنف من الأصوات المفاجئة أو الحركات غير المتوقعة',
+            'أقوم بتصرفات طائشة أو تدميرية لذاتي منذ الحادث الصدمي',
+            'أشعر بتململ حركي مستمر وعجز تام عن الجلوس بهدوء أو الاسترخاء',
+            'أبدي سلوكيات عدوانية (لفظية أو جسدية) دون مبرر كاف',
+            'أعاني من تشتت ذهني حاد وصعوبة بالغة في التركيز على دراستي أو عملي منذ الحادث',
+            'أجد صعوبة شديدة في الدخول في النوم أو الاستمرار فيه بشكل مريح',
+            'أستيقظ مذعورًا في منتصف الليل مع تسارع في ضربات القلب وضيق في الصدر',
+            'أصبحت سريع الاستثارة والانزعاج من المثيرات البيئية حولي (كالإضاءة أو الضوضاء)',
+            'يراودني قلق مزمن حيال سلامتي الشخصية وسلامة من أحبهم بشكل مبالغ فيه',
+            'أشعر بضغط نفسي جسدي (كغصة في الحلق أو ثقل في الصدر) نتيجة كبت الانفعالات الحادة',
+            'أشعر أنني أصبحت سريع الانفعال على أتفه الأمور بدون سبب واضح',
+            'عندما تجتاحني مشاعر قوية، أعجز عن تهدئة نفسي أو استعادة توازني',
+            'أمر بتقلبات مزاجية سريعة جدًا دون أسباب واضحة لمن حولي',
+            'أعيش حالة من الخدر العاطفي الطويل حيث لا أشعر بأي شيء على الإطلاق',
+            'تخرج انفعالاتي عن السيطرة بشكل يجعلني أشعر بالرعب من نفسي ومن ردود أفعالي',
+            'منذ الحادث، ألجأ لسلوكيات اندفاعية خطرة لكي أهرب من مشاعري عندما أشعر بالحزن أو الضغط',
+            'تمنعني حدة مشاعري من التفكير بعقلانية واتخاذ القرارات السليمة',
+            'صرت أبكي بحرقة حادة في مواقف قد يراها الآخرون عادية أو بسيطة، منذ الحادث الصادم',
+            'أصبحت أواجه صعوبة بالغة في التعبير عما بداخلي من مشاعر',
+            'أتهجم على الآخرين بالكلام الجارح كوسيلة للتنفيس عن غضبي',
+            'ينتابني إحساس بأنني قنبلة قد تنفجر انفعالياً في أي لحظة',
+            'أشعر أن حياتي قد انتهت فعليًا بعد ذلك الحدث الصادم',
+            'أعتقد أنني كنت السبب وراء ما حدث بشكل أو بآخر',
+            'يرافقني شعور بأنني إنسان محطم من الداخل لا يمكن إصلاحي',
+            'يتملكني إحساس بالعار من نفسي بسبب ما مررت به',
+            'أرى نفسي أقل قيمة من أي شخص أتعامل معه',
+            'أشعر أنني تحولت إلى عبء ثقيل على كاهل المحيطين بي وعائلتي',
+            'أجد صعوبة بالغة في مسامحة نفسي على أي خطأ',
+            'أشعر أن شخصيتي الحقيقية قد تلاشت وضاعت بعد الصدمة',
+            'يسيطر عليّ شعور بأنني لا أستحق السعادة أو النجاح أو الحب من الآخرين',
+            'أشعر أنني ضحية',
+            'أشعر بالعجز عن حماية نفسي أو السيطرة على مجريات حياتي',
+            'أشعر بالدونية حتى عندما يمدحني الآخرون',
+            'يتملكني يقين داخلي بأنني شخص غير مرغوب فيه',
+            'تشكلت لدي قناعة سلبية وثابتة بأنني شخص سيء',
+            'منذ الحادث، صرت أحس أنني غير كافٍ',
+            'أجد صعوبة في بناء علاقات مقربة أو حميمية مع أشخاص جدد في حياتي',
+            'أحافظ على مسافة وجدانية وعزلة عن الآخرين حماية لنفسي من التعرض للأذى',
+            'يسيطر عليّ شك من نوايا الآخرين حتى عندما يظهرون لي اللطف',
+            'أعجز عن الشعور بالأمان الوجداني داخل علاقاتي العاطفية أو الأسرية الحالية',
+            'أجد صعوبة في الجلوس أو الاقتراب من أو الاندماج مع الآخرين',
+            'أصبحت أفضل العزلة عن البشر على عناء التعامل معهم',
+            'أنسحب من العلاقة بمجرد أن أشعر أنها أصبحت قريبة أو جادة',
+            'أشعر بالخوف من أن الأشخاص الذين أحبهم سيهجرونني أو يتخلون عني',
+            'أشعر بنفور إذا حاول شخص ما التقرب مني أو إظهار التعاطف معي',
+            'صرت أجد نفسي أدخل في علاقات غير صحية أو مؤذية',
+            'أشعر أن الآخرين عاجزون عن فهم عمق المعاناة التي عشتها',
+            'صرت أنسحب من المناسبات الاجتماعية',
+            'فقدت الثقة في الأشخاص منذ الحادث الصادم'
+        ];
+
+        const ITEMS_MDD = [
+            'شعرت بمسحة من الحزن تخيم على يومي دون وجود سبب واضح',
+            'فقدت الاستمتاع بالأنشطة التي كنت أمارسها سابقًا',
+            'شعرت بفراغ داخلي يصعب عليّ تفسيره',
+            'شعرت برغبة متكررة في البكاء',
+            'لاحظت أن مزاجي يكون في أسوأ حالاته صباحًا عند الاستيقاظ',
+            'يتحسن مزاجي تدريجيًا خلال اليوم بعد أن كان سيئًا في أوله',
+            'لم تعد الهوايات التي أحبها تمنحني المتعة',
+            'شعرت بأن قدرتي على الإحساس بالمشاعر قد تراجعت',
+            'لم تعد الأنباء السارة أو المناسبات السعيدة تحرك مشاعري',
+            'اختفت لديّ مشاعر البهجة',
+            'شعرت بالجفاء من الأشخاص المقربين مني (كالعائلة أو الأصدقاء)',
+            'شعرت بالبرود العاطفي تجاه الأشخاص المقربين',
+            'حدث أن أردت البكاء دون أن أستطيع فعل ذلك',
+            'انتابني إحساس بالمرارة وكأن كل ما حولي في الحياة فقد قيمته',
+            'شعرت بضيق جعلني سريع الانفعال من أقل الكلمات أو المواقف',
+            'عجزت عن التفاعل انفعاليًا مع محيطي',
+            'شعرت بأنني منفصل عن الآخرين حتى عندما أكون بينهم',
+            'عجزت عن الحفاظ على تركيزي أثناء القراءة، أو مشاهدة التلفاز، أو متابعة نقاش بسيط',
+            'سيطرت عليّ فكرة أن الفشل هو حليفي الحتمي في أي عمل أو خطوة قد أقدم عليها',
+            'تملكني اعتقاد راسخ بأنني عبء ثقيل على عائلتي وعلى كل من حولي',
+            'واجهت صعوبة في استدعاء المعلومات أو تذكر المواعيد والالتزامات اليومية الروتينية',
+            'انتابتني أفكار تلح عليّ بأن الموت قد يكون راحة لي من هذه المعاناة المستمرة',
+            'أعتقد بأن عقلي مشوش أو أقل كفاءة',
+            'أحس وكأن عملياتي العقلية أصبحت أبطأ',
+            'شعرت بالتردد الشديد في اتخاذ القرارات اليومية البسيطة (مثل اختيار ملابسي أو طعامي)',
+            'سيطر عليّ التشاؤم تجاه مستقبلي',
+            'تملكني اعتقاد بأنني شخص عديم الجدوى',
+            'أفكر كثيرًا في الماضي',
+            'أعتقد أن الموت أحسن من الحياة',
+            'أعتقد بأن وجودي لا يترك أثرًا ذا قيمة',
+            'أرى بأن حياتي تفتقد إلى هدف واضح',
+            'راودتني أفكار بإنهاء حياتي',
+            'أفسر الأخطاء الصغيرة على أنها دليل على فشلي',
+            'عانيت من صعوبة شديدة في الدخول في النوم رغم شعوري بالتعب',
+            'استيقظت في منتصف الليل أو في الصباح الباكر وعجزت عن العودة للنوم مجددًا',
+            'نمت لساعات طويلة ومع ذلك استيقظت وأنا أشعر بالخمول',
+            'فقدت رغبتي في تناول الطعام',
+            'شعرت بشراهة غير معتادة للأكل',
+            'نقص وزني أو زاد وزني بشكل واضح',
+            'شعرت بإنهاك جسدي وفقدان مطلق للطاقة رغم أنني لم أبذل مجهودًا كبيرًا',
+            'عانيت من آلام أو أوجاع جسدية متفرقة (كصداع أو آلام ظهر) ليس لها تفسير طبي واضح',
+            'شعرت بثقل شديد وصعوبة في تحريك أطرافي (يداي وقدمي)',
+            'لاحظت تراجعًا في الرغبة الجنسية مقارنة بمستواي المعتاد',
+            'شعرت باضطرابات في جهازي الهضمي (كالغثيان أو الإمساك المستمر)',
+            'أبقى في فراشي لوقت طويل',
+            'أبديت ردود فعل جامدة تجاه المواقف التي كانت تستدعي مني استجابة سلوكية سريعة',
+            'أصبحت أؤجل كل المهام والمسؤوليات إلى أن تتراكم عليّ',
+            'أدائي أو إنتاجيتي في تراجع بشكل ملحوظ',
+            'تهاونت في مظهري الخارجي (اللبس، التنسيق...)',
+            'أهملت نظافتي الشخصية بشكل غير معتاد بالنسبة لي',
+            'استجاباتي بطيئة',
+            'انسحبت من التفاعلات الاجتماعية',
+            'تجنبت الرد على الاتصالات أو لقاء الأصدقاء',
+            'وجدت نفسي أقوم بحركات لا إرادية',
+            'انحصر نشاطي الحركي في مساحة محدودة (كالبقاء في غرفة واحدة) لمعظم اليوم',
+            'لاحظت أنا أو المقربون مني أن نبرة صوتي أصبحت خالية من التعابير الانفعالية',
+            'عجزت عن اتخاذ المبادرة لبدء أي نشاط جديد',
+            'أتكاسل عن أداء المهام الروتينية الأساسية (مثل إعداد الطعام أو ترتيب المكان...)',
+            'لاحظت كثرة تنهدي أو زفيري بشكل غير معتاد',
+            'أجد صعوبة في مغادرة المنزل حتى عندما يكون ذلك ضروريًا',
+            'أجلت الرد على الرسائل أو المكالمات رغم أهميتها',
+            'قضيت وقتًا طويلاً دون القيام بأي نشاط ذي معنى'
+        ];
+
+        const TESTS = {
+            ptsd: {
+                id: 'ptsd',
+                name: 'مقياس الطلبة لاضطراب ما بعد الصدمة',
+                items: ITEMS_PTSD,
+                fillMid: 240,
+                fillHigh: 300,
+                sessionKey: 'diagSessionsV2',
+                seedFixed: [[1, '01/07/2026', 112], [2, '12/07/2026', 158], [3, '19/07/2026', 224], [4, '26/07/2026', 271]],
+                seedDefault: 271
+            },
+            mdd: {
+                id: 'mdd',
+                name: 'مقياس الاكتئاب (MDD)',
+                items: ITEMS_MDD,
+                fillMid: 155,
+                fillHigh: 200,
+                sessionKey: 'diagSessionsMddV2',
+                seedFixed: [[1, '01/07/2026', 78], [2, '12/07/2026', 96], [3, '19/07/2026', 132], [4, '26/07/2026', 160]],
+                seedDefault: 160
+            }
+        };
+
+        const AP = JSON.parse(localStorage.getItem('diagActivePatient') || 'null');
+        const ptKey = base => AP ? base + '_' + AP.id : base;
+
+        const chosenId = localStorage.getItem(ptKey('chosenTest')) === 'mdd' ? 'mdd' : 'ptsd';
+        const T = TESTS[chosenId];
+        const ITEMS = T.items;
+        const MAX_SCORE = ITEMS.length * 4;
+        const MID_START = Math.ceil(MAX_SCORE / 2) + 1;
+        const HIGH_START = Math.ceil(MAX_SCORE * 0.75) + 1;
+        document.getElementById('testName').textContent = T.name + (AP ? ' — ملف: ' + AP.name : '');
+        document.getElementById('testHint').textContent = 'اختر مدى تكرار كل عبارة خلال الشهر الماضي' + (AP ? ' — ' + AP.name : '');
+        
+        // Update patient info dynamically
+        var testPatientInfo = document.getElementById('testPatientInfo');
+        if (testPatientInfo && AP) {
+            testPatientInfo.textContent = 'المريض: ' + AP.name + ' — جلسة التشخيص';
+        }
+        document.getElementById('rpMax').textContent = 'من ' + MAX_SCORE;
+        document.getElementById('questCount').textContent = '0 / ' + ITEMS.length;
+
+        const REVERSE = [];
+
+        const OPTS = [
+            { v: 0, label: 'لم يحدث أبدًا', tip: 'لم يحدث أبدًا خلال الشهر الماضي' },
+            { v: 1, label: 'أيام قليلة فقط', tip: 'حدثت لأيام قليلة فقط (أقل من أسبوع)' },
+            { v: 2, label: 'نصف الأيام', tip: 'حدثت في نصف الأيام (أسبوع إلى أسبوعين)' },
+            { v: 3, label: 'يوميًا تقريبًا', tip: 'يحدث يوميًا تقريبًا أو معظم أيام الشهر' }
+        ];
+
+        const questionsBox = document.getElementById('questions');
+        const emptyNote = document.getElementById('emptyNote');
+        const questCount = document.getElementById('questCount');
+        const progressFill = document.getElementById('progressFill');
+        const calcBtn = document.getElementById('calcBtn');
+        const resPanel = document.getElementById('resPanel');
+
+        function scoreOf(btn, qNo) {
+            const idx = parseInt(btn.dataset.v);
+            return REVERSE.includes(qNo) ? idx + 1 : 4 - idx;
+        }
+
+        function updateProgress() {
+            const answered = questionsBox.querySelectorAll('button.sel').length;
+            questCount.textContent = answered + ' / ' + ITEMS.length;
+            questCount.classList.toggle('done', answered === ITEMS.length);
+            const pct = ITEMS.length > 0 ? (answered / ITEMS.length) * 100 : 0;
+            progressFill.style.width = pct + '%';
+            progressFill.classList.toggle('complete', answered === ITEMS.length);
+
+            const circleEl = document.querySelector('.progress-circle-fill');
+            if (circleEl) {
+                const circumference = 2 * Math.PI * 45;
+                const offset = circumference - (pct / 100) * circumference;
+                circleEl.style.strokeDashoffset = offset;
+            }
+            const pctText = document.getElementById('progressPct');
+            if (pctText) pctText.textContent = Math.round(pct) + '%';
+        }
+
+        function buildQuestions() {
+            questionsBox.innerHTML = '';
+            if (ITEMS.length === 0) {
+                emptyNote.style.display = 'block';
+                questCount.textContent = '0 / 0';
+                return;
+            }
+            emptyNote.style.display = 'none';
+            ITEMS.forEach((text, idx) => {
+                const q = document.createElement('div');
+                q.className = 'question-card';
+                q.dataset.no = idx + 1;
+                let btns = '';
+                OPTS.forEach(o => {
+                    btns += '<button data-v="' + o.v + '" title="' + o.tip + '">' + o.label + '</button>';
+                });
+                q.innerHTML = '<div class="tq-header"><div class="tq-num">' + (idx + 1) + '</div><div class="tq-text">' + text + '</div></div>' +
+                    '<div class="answers-row">' + btns + '</div>';
+                questionsBox.appendChild(q);
+            });
+            questionsBox.querySelectorAll('.answers-row').forEach(row => {
+                row.querySelectorAll('button').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        row.querySelectorAll('button').forEach(b => b.classList.remove('sel'));
+                        btn.classList.add('sel');
+                        updateProgress();
+                    });
+                });
+            });
+            updateProgress();
+        }
+        buildQuestions();
+
+        function runCalculation() {
+            let total = 0;
+            let answered = 0;
+            questionsBox.querySelectorAll('.question-card').forEach(q => {
+                const sel = q.querySelector('button.sel');
+                if (sel) { total += scoreOf(sel, parseInt(q.dataset.no)); answered++; }
+            });
+            const maxScore = MAX_SCORE;
+            const avg = (total / answered).toFixed(2);
+            const pct = Math.round((total / maxScore) * 100);
+            let cls, state, desc;
+            if (total >= HIGH_START) {
+                cls = 'rp-high'; state = 'النتيجة: مرتفعة 🟢';
+                desc = 'الدرجة مرتفعة — أعراض ' + (chosenId === 'mdd' ? 'الاكتئاب' : 'اضطراب ما بعد الصدمة') + ' لدى المريض قليلة، ويعيش توازنًا نفسيًا جيدًا مقارنة بمعايير المقياس.';
+            } else if (total >= MID_START) {
+                cls = 'rp-mid'; state = 'النتيجة: متوسطة 🟠';
+                desc = 'الدرجة متوسطة — توجد بعض الأعراض، يُنصح بالمتابعة والرصد في الجلسات القادمة.';
+            } else {
+                cls = 'rp-low'; state = 'النتيجة: ضعيفة 🔴';
+                desc = 'الدرجة ضعيفة — الأعراض مرتفعة جدًا، يُنصح بتقييم سريري معمّق وبروتوكول علاجي متخصص.';
+            }
+            document.getElementById('rpCircle').className = 'rp-circle ' + cls;
+            document.getElementById('rpTotal').textContent = total;
+            document.getElementById('rpState').textContent = state;
+            document.getElementById('rpDesc').textContent = desc;
+            document.getElementById('rpAnswered').textContent = answered + ' / ' + ITEMS.length;
+            document.getElementById('rpAvg').textContent = avg + ' / 4';
+            document.getElementById('rpPct').textContent = pct + '%';
+            resPanel.classList.add('show');
+            resPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            const answerList = [];
+            questionsBox.querySelectorAll('.question-card').forEach(q => {
+                const sel = q.querySelector('button.sel');
+                const idx = parseInt(sel.dataset.v);
+                answerList.push({
+                    no: parseInt(q.dataset.no),
+                    text: q.querySelector('.tq-text').textContent.replace(/^\d+\.\s*/, ''),
+                    label: OPTS[idx].label,
+                    score: scoreOf(sel, parseInt(q.dataset.no))
+                });
+            });
+            const today = new Date();
+            const dateStr = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+            window.__curSession = {
+                number: 0,
+                date: dateStr,
+                total: total,
+                max: maxScore,
+                avg: parseFloat(avg),
+                pct: pct,
+                state: total >= HIGH_START ? 'مرتفعة' : total >= MID_START ? 'متوسطة' : 'ضعيفة',
+                answers: answerList
+            };
+            saveFileBtn.style.display = 'block';
+            saveFileBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        calcBtn.addEventListener('click', () => {
+            if (ITEMS.length === 0) {
+                showFillToast('لم تُضف عبارات المقياس بعد.');
+                return;
+            }
+            const answered = questionsBox.querySelectorAll('button.sel').length;
+            if (answered < ITEMS.length) {
+                showFillToast('يرجى الإجابة على جميع العبارات قبل الحساب (' + answered + ' / ' + ITEMS.length + ').');
+                return;
+            }
+            openCodeModal({ type: 'calc' });
+        });
+
+        const DEFAULT_CALC_CODE = '0912';
+        const fillModal = document.getElementById('fillModal');
+        const fillModalTitle = document.getElementById('fillModalTitle');
+        const fillModalDesc = document.getElementById('fillModalDesc');
+        const fillCodeInput = document.getElementById('fillCodeInput');
+        const fillCodeError = document.getElementById('fillCodeError');
+        const fillToast = document.getElementById('fillToast');
+        let pendingAction = null;
+        let fillToastTimer = null;
+
+        function getCalcCode() {
+            let code = '';
+            try { code = (localStorage.getItem('diagCalcCode') || '').trim(); } catch (e) { code = ''; }
+            return code || DEFAULT_CALC_CODE;
+        }
+
+        function showFillToast(message) {
+            fillToast.textContent = message;
+            fillToast.classList.add('show');
+            clearTimeout(fillToastTimer);
+            fillToastTimer = setTimeout(() => fillToast.classList.remove('show'), 5500);
+        }
+
+        function closeFillModal() {
+            fillModal.classList.remove('show');
+            fillCodeInput.value = '';
+            fillCodeInput.classList.remove('error');
+            fillCodeError.classList.remove('show');
+            pendingAction = null;
+        }
+
+        function openCodeModal(action) {
+            pendingAction = action;
+            fillCodeInput.value = '';
+            fillCodeInput.classList.remove('error');
+            fillCodeError.classList.remove('show');
+            if (action.type === 'calc') {
+                fillModalTitle.textContent = 'أدخل رمز الحساب المباشر';
+                fillModalDesc.textContent = 'أدخل الرمز الصحيح لعرض نتيجة الاختبار.';
+            } else {
+                fillModalTitle.textContent = 'أدخل الرمز الخاص للتعبئة التلقائية';
+                fillModalDesc.textContent = 'هذه التعبئة مخصصة للتجربة السريعة. أدخل الرمز للمتابعة.';
+            }
+            fillModal.classList.add('show');
+            setTimeout(function () { fillCodeInput.focus(); }, 60);
+        }
+
+        function applyFill(total, label) {
+            const extra = total - ITEMS.length;
+            const scores = new Array(ITEMS.length).fill(1);
+            for (let i = 0; i < extra; i++) scores[(i * 37) % ITEMS.length]++;
+            questionsBox.querySelectorAll('.question-card').forEach((q, idx) => {
+                const score = scores[idx] || 1;
+                const btn = q.querySelector('button[data-v="' + (4 - score) + '"]');
+                if (btn) {
+                    q.querySelectorAll('button').forEach(b => b.classList.remove('sel'));
+                    btn.classList.add('sel');
+                }
+            });
+            updateProgress();
+            showFillToast('تم ملء الاختبار تلقائيًا — النتيجة المتوقعة: ' + label + ' (' + total + ' / ' + MAX_SCORE + '). اضغط "الحساب المباشر 🧮" لعرضها.');
+        }
+
+        function fillTo(total, label) {
+            openCodeModal({ type: 'fill', total: total, label: label });
+        }
+
+        function submitCode() {
+            if (!pendingAction) return;
+            if (fillCodeInput.value.trim() !== getCalcCode()) {
+                fillCodeError.classList.add('show');
+                fillCodeInput.classList.add('error');
+                fillCodeInput.value = '';
+                fillCodeInput.focus();
+                return;
+            }
+            const action = pendingAction;
+            closeFillModal();
+            if (action.type === 'calc') runCalculation();
+            else applyFill(action.total, action.label);
+        }
+
+        document.getElementById('fillAutoBtn').addEventListener('click', () => fillTo(T.fillMid, 'متوسطة 🟠'));
+        document.getElementById('fillHighBtn').addEventListener('click', () => fillTo(T.fillHigh, 'مرتفعة 🟢'));
+        document.getElementById('fillCodeOk').addEventListener('click', submitCode);
+        document.getElementById('fillCodeCancel').addEventListener('click', closeFillModal);
+        fillModal.addEventListener('click', function (e) { if (e.target === fillModal) closeFillModal(); });
+        fillCodeInput.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') { e.preventDefault(); submitCode(); }
+            if (e.key === 'Escape') { e.preventDefault(); closeFillModal(); }
+        });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && fillModal.classList.contains('show')) closeFillModal();
+        });
+
+        const SESSION_KEY = ptKey(T.sessionKey);
+        function seedFixedSessions() {
+            const L = { 1: 'يوميًا تقريبًا', 2: 'نصف الأيام', 3: 'أيام قليلة فقط', 4: 'لم يحدث أبدًا' };
+            const mk = (number, date, total) => {
+                const extra = total - ITEMS.length;
+                const scores = new Array(ITEMS.length).fill(1);
+                for (let i = 0; i < extra; i++) scores[(i * 37) % ITEMS.length]++;
+                const answers = ITEMS.map((text, idx) => ({
+                    no: idx + 1, text: text, label: L[scores[idx]], score: scores[idx]
+                }));
+                return {
+                    number: number, date: date, total: total, max: MAX_SCORE,
+                    avg: Math.round((total / ITEMS.length) * 100) / 100,
+                    pct: Math.round((total / MAX_SCORE) * 100),
+                    state: total >= HIGH_START ? 'مرتفعة' : total >= MID_START ? 'متوسطة' : 'ضعيفة',
+                    answers: answers
+                };
+            };
+            return T.seedFixed.slice(0, 3).map(s => mk(s[0], s[1], s[2]));
+        }
+        const saveFileBtn = document.getElementById('saveFileBtn');
+        saveFileBtn.addEventListener('click', () => {
+            if (!window.__curSession) { alert('احسب النتيجة أولًا.'); return; }
+            let sessions = JSON.parse(localStorage.getItem(SESSION_KEY) || 'null');
+            if (!Array.isArray(sessions)) sessions = [];
+            if (AP) {
+                /* ملف مريض حقيقي: الحفاظ على السجل كاملًا وترقيم تسلسلي (لا زرع ولا قص) */
+                const maxNo = sessions.reduce((m, s) => Math.max(m, (s && s.number) || 0), 0);
+                window.__curSession.number = maxNo + 1;
+            } else {
+                /* تجربة زائر: الجلسات التجريبية كما كانت */
+                if (!sessions.length) sessions = seedFixedSessions();
+                sessions = sessions.slice(0, 3);
+                window.__curSession.number = 4;
+            }
+            sessions.push(window.__curSession);
+            localStorage.setItem(SESSION_KEY, JSON.stringify(sessions));
+            localStorage.setItem(ptKey('diagTestAnswered'), '1');
+            localStorage.setItem(ptKey('activeChartTest'), chosenId);
+            location.href = 'charts.html';
+        });
+    </script>
+
+    <script>
+    (function(){
+      var btn=document.getElementById('authBtn');
+      if(!btn)return;
+      var u=JSON.parse(localStorage.getItem('diagUser')||'null');
+      if(u){
+        btn.textContent=(u.isAdmin?'👨‍💼 ':'👤 ')+(u.isAdmin?'المدير':u.name);
+        btn.onclick=function(){location.href='profile.html'};
+      }else{
+        btn.onclick=function(){location.href='login.html'};
+      }
+    })();
+    </script>
+
+</body>
+</html>

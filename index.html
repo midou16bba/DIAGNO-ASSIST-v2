@@ -1,0 +1,728 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIAGNO-ASSIST | منصة التقييم النفسي</title>
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --blue: #2563eb;
+            --blue-deep: #1d4ed8;
+            --blue-light: #60a5fa;
+            --sky: #06b6d4;
+            --ink: #0b1c3f;
+            --muted: #5b6b8c;
+            --line: #e3ecfe;
+            --bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ===== خلفيات متدرجة ===== */
+        .bg-fx { position: fixed; inset: 0; z-index: -2; overflow: hidden; background: #fff; }
+        .orb { position: absolute; border-radius: 50%; filter: blur(90px); opacity: .55; }
+        .orb-1 { width: 520px; height: 520px; background: #cfe1ff; top: -160px; left: -120px; }
+        .orb-2 { width: 460px; height: 460px; background: #d8ecff; top: 30%; right: -140px; }
+        .orb-3 { width: 420px; height: 420px; background: #e6f7ff; bottom: -140px; left: 30%; }
+        .grid-lines {
+            position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(37,99,235,.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(37,99,235,.05) 1px, transparent 1px);
+            background-size: 46px 46px;
+            mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, #000 40%, transparent 100%);
+            -webkit-mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, #000 40%, transparent 100%);
+        }
+
+        .container { width: min(1620px, 94%); margin-inline: auto; }
+
+        /* ===== شريط التنقل ===== */
+        header.nav {
+            position: sticky; top: 0; z-index: 100;
+            backdrop-filter: blur(16px);
+            background: linear-gradient(120deg, #0b1c3f, #16337a 45%, #1d4ed8);
+            border-bottom: 1px solid rgba(255,255,255,.14);
+            box-shadow: 0 12px 36px rgba(11,28,63,.35);
+        }
+        header.nav .brand-name {
+            background: linear-gradient(120deg, #ffffff, #bfdbfe);
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        header.nav .brand-sub { color: #c8daff; }
+        header.nav .nav-links a { color: #d6e4ff; }
+        header.nav .nav-links a::after { background: linear-gradient(90deg, #22d3ee, #60a5fa); }
+        header.nav .nav-links a:hover { color: #fff; }
+        .nav-inner {
+            display: flex; align-items: center; justify-content: space-between;
+            height: 96px; gap: 24px;
+            width: auto; max-width: none; padding-inline: 3%;
+        }
+
+        /* الشعار */
+        .brand {
+            display: flex; align-items: center; gap: 16px;
+            text-decoration: none; flex-shrink: 0;
+        }
+        .brand-logo {
+            width: 64px; height: 64px; border-radius: 20px;
+            object-fit: cover;
+            box-shadow: 0 10px 26px rgba(37,99,235,.30), 0 0 0 4px rgba(37,99,235,.08);
+            animation: logoGlow 4s ease-in-out infinite;
+        }
+        @keyframes logoGlow {
+            0%,100% { box-shadow: 0 10px 26px rgba(37,99,235,.30), 0 0 0 4px rgba(37,99,235,.08); }
+            50%     { box-shadow: 0 14px 34px rgba(37,99,235,.45), 0 0 0 8px rgba(37,99,235,.06); }
+        }
+        .brand-text { line-height: 1.15; }
+        .brand-name {
+            display: block;
+            font-size: 27px; font-weight: 900; letter-spacing: .5px;
+            background: linear-gradient(120deg, var(--blue-deep), var(--blue) 55%, var(--sky));
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .brand-sub {
+            display: block;
+            font-size: 13.5px; font-weight: 700; color: var(--muted);
+            letter-spacing: .3px; margin-top: 3px;
+        }
+
+        .nav-links { display: flex; gap: 34px; align-items: center; }
+        .nav-links a {
+            text-decoration: none; color: var(--muted);
+            font-weight: 700; font-size: 15.5px;
+            position: relative; padding: 6px 0;
+            transition: color .25s;
+        }
+        .nav-links a::after {
+            content: ""; position: absolute; bottom: -2px; right: 0;
+            width: 0; height: 3px; border-radius: 3px;
+            background: linear-gradient(90deg, var(--blue), var(--sky));
+            transition: width .3s;
+        }
+        .nav-links a:hover { color: var(--blue); }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-links a .ico { font-size: 17px; }
+
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+            border: none; cursor: pointer; text-decoration: none;
+            font-family: inherit; font-weight: 800;
+            transition: transform .25s, box-shadow .25s;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--blue), var(--blue-light));
+            color: #fff; font-size: 16px;
+            padding: 14px 34px; border-radius: 16px;
+            box-shadow: 0 12px 28px rgba(37,99,235,.35);
+        }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 18px 38px rgba(37,99,235,.45); }
+        .btn-ghost {
+            background: #fff; color: var(--blue);
+            border: 2px solid var(--line);
+            font-size: 16px; padding: 12px 32px; border-radius: 16px;
+        }
+        .btn-ghost:hover { border-color: var(--blue); transform: translateY(-3px); }
+        .btn-yellow {
+            position: relative; overflow: hidden;
+            background: linear-gradient(120deg, #b45309, #f59e0b, #fde047, #f59e0b, #b45309);
+            background-size: 300% 100%;
+            color: #fff; font-size: 16px;
+            padding: 13px 36px; border-radius: 50px;
+            box-shadow: 0 12px 30px rgba(245,158,11,.45), inset 0 1px 0 rgba(255,255,255,.55), inset 0 -2px 6px rgba(120,53,15,.35);
+            animation: goldShift 4s ease-in-out infinite;
+        }
+        @keyframes goldShift {
+            0%, 100% { background-position: 0% 50%; }
+            50%      { background-position: 100% 50%; }
+        }
+        .btn-yellow::before {
+            content: ""; position: absolute; top: 0; right: -80%;
+            width: 45%; height: 100%;
+            background: linear-gradient(100deg, transparent, rgba(255,255,255,.65), transparent);
+            transform: skewX(-20deg);
+            animation: btnShine 3.2s ease-in-out infinite;
+        }
+        @keyframes btnShine {
+            0%        { right: -80%; }
+            55%, 100% { right: 135%; }
+        }
+        .btn-yellow:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 18px 42px rgba(245,158,11,.60), inset 0 1px 0 rgba(255,255,255,.55); }
+        .btn-yellow .star {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 27px; height: 27px; border-radius: 50%;
+            background: rgba(255,255,255,.28);
+            box-shadow: inset 0 1px 2px rgba(255,255,255,.5);
+            font-size: 14px;
+        }
+        .nav-cta { padding: 12px 28px; font-size: 15px; border-radius: 14px; }
+
+        /* ===== القسم الرئيسي ===== */
+        .hero { padding: 70px 0 90px; }
+        .hero-grid {
+            display: grid; grid-template-columns: 1.05fr .95fr;
+            align-items: center; gap: 48px;
+        }
+
+        .pill {
+            display: inline-flex; align-items: center; gap: 9px;
+            background: rgba(37,99,235,.07);
+            border: 1.5px solid rgba(37,99,235,.18);
+            color: var(--blue); font-size: 14px; font-weight: 800;
+            padding: 9px 20px; border-radius: 50px; margin-bottom: 24px;
+        }
+        .pill .dot {
+            width: 9px; height: 9px; border-radius: 50%;
+            background: var(--sky);
+            box-shadow: 0 0 0 4px rgba(6,182,212,.18);
+            animation: blink 1.8s infinite;
+        }
+        @keyframes blink { 50% { opacity: .4; } }
+
+        h1.hero-title {
+            font-size: clamp(34px, 5vw, 56px);
+            font-weight: 900; line-height: 1.35;
+            margin-bottom: 20px;
+        }
+        .grad {
+            background: linear-gradient(120deg, var(--blue-deep), var(--blue) 45%, var(--sky));
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-desc {
+            font-size: 17.5px; color: var(--muted);
+            line-height: 2; max-width: 540px; margin-bottom: 34px;
+        }
+        .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 42px; }
+
+        .trust { display: flex; gap: 44px; }
+        .trust-item b {
+            display: block; font-size: 27px; font-weight: 900; color: var(--blue);
+        }
+        .trust-item span { font-size: 13.5px; color: var(--muted); font-weight: 600; }
+
+        /* المرئيات */
+        .hero-visual { position: relative; display: flex; justify-content: center; }
+        .brain-wrap {
+            width: min(420px, 80vw); aspect-ratio: 1;
+            border-radius: 50%;
+            background:
+                radial-gradient(circle at 32% 28%, #7cc4ff, #2563eb 52%, #12309b 100%);
+            box-shadow:
+                0 40px 80px rgba(29,78,216,.35),
+                inset 0 0 60px rgba(255,255,255,.25);
+            display: flex; align-items: center; justify-content: center;
+            position: relative;
+            animation: floatY 5s ease-in-out infinite;
+        }
+        @keyframes floatY { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-18px); } }
+        .brain-wrap::before {
+            content: ""; position: absolute; inset: 34px;
+            border: 2.5px dashed rgba(255,255,255,.55);
+            border-radius: 50%;
+            animation: spin 26s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .brain-emoji {
+            width: 62%; height: 62%;
+            object-fit: cover; border-radius: 50%;
+            border: 5px solid rgba(255,255,255,.85);
+            box-shadow: 0 18px 40px rgba(0,0,0,.35);
+            z-index: 2;
+        }
+
+        .float-card {
+            position: absolute;
+            background: rgba(255,255,255,.92);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--line);
+            border-radius: 18px; padding: 14px 20px;
+            display: flex; align-items: center; gap: 12px;
+            box-shadow: 0 18px 44px rgba(11,28,63,.14);
+            animation: floatY 4s ease-in-out infinite;
+        }
+        .float-card .fc-ico {
+            width: 44px; height: 44px; border-radius: 13px;
+            display: flex; align-items: center; justify-content: center; font-size: 22px;
+        }
+        .float-card b { display: block; font-size: 14.5px; }
+        .float-card small { color: var(--muted); font-size: 11.5px; font-weight: 600; }
+        .fc-1 { top: 6%; right: -4%; animation-delay: .6s; }
+        .fc-1 .fc-ico { background: #e6f9f0; }
+        .fc-2 { bottom: 10%; left: -6%; animation-delay: 1.4s; }
+        .fc-2 .fc-ico { background: #eaf2ff; }
+        .fc-3 { top: 46%; left: -10%; animation-delay: 2.2s; }
+        .fc-3 .fc-ico { background: #fff4e3; }
+
+        /* ===== شريط الثقة ===== */
+        .marquee-band {
+            position: relative; overflow: hidden;
+            background: linear-gradient(135deg, #0a1628 0%, #0f2847 40%, #16337a 70%, #0b1c3f 100%);
+            padding: 40px 0;
+        }
+        .marquee-band::before {
+            content: ""; position: absolute; inset: 0;
+            background:
+                radial-gradient(ellipse 800px 400px at 20% 50%, rgba(34,211,238,.15), transparent),
+                radial-gradient(ellipse 600px 300px at 80% 50%, rgba(96,165,250,.12), transparent),
+                radial-gradient(ellipse 400px 200px at 50% 0%, rgba(245,158,11,.08), transparent);
+            pointer-events: none;
+        }
+        .marquee-band::after {
+            content: ""; position: absolute; inset-inline: 0; top: 0; height: 3px;
+            background: linear-gradient(90deg, transparent, #f59e0b, #22d3ee, #60a5fa, transparent);
+        }
+        .band-glow {
+            position: absolute; width: 300px; height: 300px; border-radius: 50%;
+            filter: blur(80px); opacity: .12; pointer-events: none;
+        }
+        .band-glow.g1 { background: #22d3ee; top: -100px; left: 10%; animation: glowPulse 6s ease-in-out infinite; }
+        .band-glow.g2 { background: #60a5fa; bottom: -100px; right: 15%; animation: glowPulse 8s ease-in-out infinite 2s; }
+        .band-glow.g3 { background: #f59e0b; top: -80px; right: 40%; animation: glowPulse 7s ease-in-out infinite 4s; }
+        @keyframes glowPulse {
+            0%, 100% { opacity: .08; transform: scale(1); }
+            50% { opacity: .18; transform: scale(1.2); }
+        }
+        .band-inner {
+            display: flex; justify-content: center; flex-wrap: wrap; gap: 18px; position: relative; z-index: 2;
+        }
+        .band-item {
+            display: flex; align-items: center; gap: 12px;
+            color: #eaf2ff; font-weight: 800; font-size: 15px;
+            padding: 14px 28px 14px 32px;
+            background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+            border: 1px solid rgba(255,255,255,.12);
+            border-radius: 60px; backdrop-filter: blur(12px);
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,.1),
+                inset 0 -1px 0 rgba(0,0,0,.1),
+                0 8px 32px rgba(0,0,0,.3);
+            transition: all .4s cubic-bezier(.25,.46,.45,.94);
+            animation: chipFloat 5s ease-in-out infinite;
+            position: relative; overflow: hidden;
+        }
+        .band-item::before {
+            content: ""; position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,.1), transparent 60%);
+            opacity: 0; transition: opacity .4s;
+            border-radius: 60px;
+        }
+        .band-item:hover::before { opacity: 1; }
+        .band-item:nth-child(1) { animation-delay: 0s; }
+        .band-item:nth-child(2) { animation-delay: .5s; }
+        .band-item:nth-child(3) { animation-delay: 1s; }
+        .band-item:nth-child(4) { animation-delay: 1.5s; }
+        .band-item:nth-child(5) { animation-delay: 2s; }
+        @keyframes chipFloat {
+            0%, 100% { transform: translateY(0); }
+            50%      { transform: translateY(-6px); }
+        }
+        .band-item:hover {
+            transform: translateY(-4px) scale(1.04);
+            background: linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.04));
+            border-color: rgba(255,255,255,.25);
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,.15),
+                inset 0 -1px 0 rgba(0,0,0,.1),
+                0 12px 40px rgba(0,0,0,.4),
+                0 0 20px rgba(34,211,238,.15);
+        }
+
+        .band-item .bi {
+            width: 42px; height: 42px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px;
+            background: linear-gradient(135deg, rgba(255,255,255,.1), rgba(255,255,255,.05));
+            border: 1px solid rgba(255,255,255,.1);
+            transition: all .3s;
+            box-shadow: 0 4px 12px rgba(0,0,0,.2);
+        }
+        .band-item:hover .bi {
+            transform: rotate(-8deg) scale(1.15);
+            background: linear-gradient(135deg, rgba(255,255,255,.18), rgba(255,255,255,.08));
+            box-shadow: 0 6px 16px rgba(0,0,0,.25);
+        }
+
+        /* ===== الأقسام ===== */
+        section.block { padding: 95px 0; }
+        .sec-head { text-align: center; max-width: 640px; margin: 0 auto 58px; }
+        .sec-tag {
+            display: inline-block; color: var(--blue); font-weight: 800;
+            font-size: 14px; letter-spacing: 1px; margin-bottom: 12px;
+        }
+        .sec-head h2 { font-size: clamp(27px, 3.6vw, 40px); font-weight: 900; margin-bottom: 12px; }
+        .sec-head p { color: var(--muted); font-size: 16px; line-height: 1.9; }
+
+        /* المميزات */
+        .feat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+        .feat-card {
+            background: #fff; border: 1.5px solid var(--line);
+            border-radius: 24px; padding: 34px 26px;
+            transition: transform .3s, box-shadow .3s, border-color .3s;
+            position: relative; overflow: hidden;
+        }
+        .feat-card::before {
+            content: ""; position: absolute; inset-inline: 0; top: 0; height: 4px;
+            background: linear-gradient(90deg, var(--blue), var(--sky));
+            transform: scaleX(0); transition: transform .35s;
+        }
+        .feat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 26px 54px rgba(37,99,235,.14);
+            border-color: rgba(37,99,235,.35);
+        }
+        .feat-card:hover::before { transform: scaleX(1); }
+        .feat-ico {
+            width: 62px; height: 62px; border-radius: 18px;
+            background: linear-gradient(135deg, #eaf2ff, #e6f7ff);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 29px; margin-bottom: 20px;
+        }
+        .feat-card h3 { font-size: 18.5px; margin-bottom: 10px; }
+        .feat-card p { color: var(--muted); font-size: 14px; line-height: 1.9; }
+
+        /* الخطوات */
+        .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+        .step-card {
+            background: linear-gradient(180deg, #fff, #f7faff);
+            border: 1.5px solid var(--line);
+            border-radius: 24px; padding: 30px 26px;
+            position: relative; transition: transform .3s, box-shadow .3s;
+        }
+        .step-card:hover { transform: translateY(-8px); box-shadow: 0 22px 48px rgba(37,99,235,.13); }
+        .step-num {
+            position: absolute; top: -16px; right: 24px;
+            width: 44px; height: 44px; border-radius: 14px;
+            background: linear-gradient(135deg, var(--blue), var(--blue-light));
+            color: #fff; font-weight: 900; font-size: 19px;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 10px 22px rgba(37,99,235,.35);
+        }
+        .step-ico { font-size: 34px; margin: 14px 0 14px; }
+        .step-card h3 { font-size: 17.5px; margin-bottom: 8px; }
+        .step-card p { color: var(--muted); font-size: 14px; line-height: 1.85; }
+
+        /* CTA */
+        .cta-box {
+            background:
+                radial-gradient(circle at 85% 20%, rgba(96,165,250,.35), transparent 45%),
+                radial-gradient(circle at 10% 85%, rgba(6,182,212,.28), transparent 45%),
+                linear-gradient(135deg, #0b1c3f, #1d4ed8);
+            border-radius: 32px; padding: 64px 40px;
+            text-align: center; color: #fff;
+            position: relative; overflow: hidden;
+        }
+        .cta-box h2 { font-size: clamp(25px, 3.4vw, 36px); font-weight: 900; margin-bottom: 12px; }
+        .cta-box p { color: #c8daff; font-size: 16.5px; margin-bottom: 30px; }
+        .btn-white {
+            background: #fff; color: var(--blue-deep);
+            font-size: 17px; padding: 16px 46px; border-radius: 16px;
+            box-shadow: 0 16px 36px rgba(0,0,0,.25);
+        }
+        .btn-white:hover { transform: translateY(-3px) scale(1.02); }
+
+        /* ===== التذييل ===== */
+        footer { background: #0b1c3f; color: #c8daff; margin-top: 95px; }
+        .footer-grid {
+            display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            gap: 34px; padding: 56px 0 34px;
+        }
+        .footer-brand { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+        .footer-brand img {
+            width: 54px; height: 54px; border-radius: 16px; object-fit: cover;
+            box-shadow: 0 8px 20px rgba(0,0,0,.35);
+        }
+        .footer-brand .fname { font-size: 21px; font-weight: 900; color: #fff; letter-spacing: .5px; }
+        .footer-brand .fsub { display: block; font-size: 12px; color: #93aede; margin-top: 2px; }
+        .footer-col p { font-size: 14px; line-height: 1.9; }
+        .footer-col h4 { color: #fff; font-size: 16px; margin-bottom: 16px; }
+        .footer-col a {
+            display: block; color: #93aede; text-decoration: none;
+            font-size: 14px; margin-bottom: 10px; transition: color .25s;
+        }
+        .footer-col a:hover { color: #fff; }
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,.1);
+            text-align: center; padding: 20px 0; color: #7f92b5; font-size: 13px;
+        }
+
+        /* ===== ظهور تدريجي ===== */
+        .reveal { opacity: 0; transform: translateY(34px); transition: opacity .7s ease, transform .7s ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        /* ===== استجابة ===== */
+        @media (max-width: 1020px) {
+            .hero-grid { grid-template-columns: 1fr; text-align: center; }
+            .hero-desc { margin-inline: auto; }
+            .hero-btns, .trust { justify-content: center; }
+            .hero-visual { order: -1; }
+            .feat-grid { grid-template-columns: repeat(2, 1fr); }
+            .steps-grid { grid-template-columns: repeat(2, 1fr); }
+            .nav-links { display: none; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 620px) {
+            .nav-inner { height: 84px; }
+            .brand-logo { width: 52px; height: 52px; border-radius: 16px; }
+            .brand-name { font-size: 21px; }
+            .brand-sub { font-size: 11.5px; }
+            .feat-grid, .steps-grid { grid-template-columns: 1fr; }
+            .float-card { display: none; }
+            .footer-grid { grid-template-columns: 1fr; }
+        }
+        @media(max-width:430px){
+          .nav-inner{height:auto;min-height:68px;padding-inline:2%;gap:8px}
+          .brand-logo{width:40px;height:40px;border-radius:12px}
+          .brand-name{font-size:16px}
+          .brand-sub{font-size:9.5px}
+          .brand{gap:8px}
+          .nav-cta{padding:8px 12px;font-size:12px;border-radius:8px}
+          .hero{padding:28px 0 36px}
+          .hero-grid{gap:20px}
+          .hero-title{font-size:24px;line-height:1.4}
+          .hero-desc{font-size:14.5px;line-height:1.85}
+          .hero-btns{gap:10px;margin-bottom:20px}
+          .btn-primary{padding:12px 20px;font-size:14px;border-radius:12px}
+          .btn-yellow{padding:12px 22px;font-size:14px}
+          section.block{padding:48px 0}
+          .sec-head{margin-bottom:28px}
+          .feat-card{padding:22px 16px}
+          .feat-ico{width:46px;height:46px;font-size:22px}
+          .step-card{padding:22px 16px}
+          .band-item{padding:10px 14px;font-size:12.5px}
+          .band-item .bi{width:32px;height:32px;font-size:16px}
+          .band-inner{gap:8px}
+          .cta-box{padding:32px 16px}
+          .cta-box h2{font-size:20px}
+          .cta-box p{font-size:14px}
+          .btn-white{padding:12px 24px;font-size:14px;border-radius:12px}
+          .brain-wrap::before{animation:none}
+          .band-glow{display:none}
+          .band-item{animation:none!important}
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-fx">
+        <div class="grid-lines"></div>
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <!-- ===== شريط التنقل ===== -->
+    <header class="nav">
+        <div class="container nav-inner">
+            <a class="brand" href="index.html">
+                <img class="brand-logo" src="logo.jpg" alt="DIAGNO-ASSIST">
+                <span class="brand-text">
+                    <span class="brand-name">DIAGNO-ASSIST</span>
+                    <span class="brand-sub" data-i18n="brand_sub">للأخصائيين النفسانيين</span>
+                </span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html"><span class="ico">🏠</span> <span data-i18n="nav_home">الرئيسية</span></a>
+                <a href="#how"><span class="ico">🔬</span> كيف يعمل</a>
+                <a href="#features"><span class="ico">🩺</span> المميزات</a>
+                <a href="pricing.html"><span class="ico">💰</span> <span data-i18n="nav_pricing">الأسعار</span></a>
+            </nav>
+            <button class="btn btn-primary nav-cta" id="authBtn">تسجيل الدخول</button>
+        </div>
+    </header>
+
+    <!-- ===== القسم الرئيسي ===== -->
+    <section class="hero">
+        <div class="container hero-grid">
+            <div>
+                <span class="pill"><span class="dot"></span> <span data-i18n="hero_desc">منصة رقمية لأخصائي الصحة النفسية</span></span>
+                <h1 class="hero-title">
+                    <span data-i18n="hero_title_1">نحو تحليل ذكي أعمق،</span><br>
+                    <span class="grad" data-i18n="hero_title_2">لتشخيص أدق وأوثق</span>
+                </h1>
+
+                <div class="hero-btns">
+                    <a class="btn btn-primary" href="tools.html?v=2"><span data-i18n="hero_btn_start">ابدأ التشخيص الآن ←</span></a>
+                    <a class="btn btn-yellow" href="pricing.html"><span class="star">⭐</span> <span data-i18n="hero_btn_pricing">اشترك</span></a>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <div class="brain-wrap">
+                    <img class="brain-emoji" src="logo.jpg" alt="DIAGNO-ASSIST">
+                </div>
+                <div class="float-card fc-1">
+                    <div class="fc-ico">📈</div>
+                    <div><b>تحسّن ملحوظ</b><small>+35% خلال 3 جلسات</small></div>
+                </div>
+                <div class="float-card fc-2">
+                    <div class="fc-ico">📋</div>
+                    <div><b>اختبارات مقننة</b><small>PTSD • MDD والمزيد</small></div>
+                </div>
+                <div class="float-card fc-3">
+                    <div class="fc-ico">🛡️</div>
+                    <div><b>بيانات مشفرة</b><small>سرية تامة 100%</small></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== شريط الثقة ===== -->
+    <div class="marquee-band">
+        <div class="band-glow g1"></div>
+        <div class="band-glow g2"></div>
+        <div class="band-glow g3"></div>
+        <div class="container band-inner">
+            <span class="band-item"><span class="bi">📖</span> DSM-5-TR</span>
+            <span class="band-item"><span class="bi">🌍</span> ICD-11</span>
+            <span class="band-item"><span class="bi">🔬</span> تشخيص فارقي ذكي</span>
+            <span class="band-item"><span class="bi">📊</span> رسوم بيانية للجلسات</span>
+            <span class="band-item"><span class="bi">🔒</span> خصوصية مشددة</span>
+        </div>
+    </div>
+
+    <!-- ===== المميزات ===== -->
+    <section class="block" id="features">
+        <div class="container">
+            <div class="sec-head reveal">
+                <span class="sec-tag" data-i18n="why_title">لماذا نحن؟</span>
+                <h2><span data-i18n="features_title">كل ما يحتاجه الأخصائي</span> <span class="grad">في مكان واحد</span></h2>
+                <p data-i18n="features_desc">أدوات احترافية صُممت لترفع جودة ممارستك السريرية وتوفر وقتك</p>
+            </div>
+            <div class="feat-grid">
+                <div class="feat-card reveal">
+                    <div class="feat-ico">📖</div>
+                    <h3 data-i18n="feature_1_title">معايير DSM-5-TR</h3>
+                    <p data-i18n="feature_1_desc">تشخيص مبني على أحدث الإصدارات المعتمدة عالمياً للأدلة التشخيصية.</p>
+                </div>
+                <div class="feat-card reveal">
+                    <div class="feat-ico">⚡</div>
+                    <h3 data-i18n="feature_2_title">نتائج فورية</h3>
+                    <p data-i18n="feature_2_desc">تحليل ذكي للأعراض يعرض الاضطرابات المحتملة مرتبة حسب الأرجحية.</p>
+                </div>
+                <div class="feat-card reveal">
+                    <div class="feat-ico">📋</div>
+                    <h3 data-i18n="feature_3_title">اختبارات مقننة</h3>
+                    <p data-i18n="feature_3_desc">مكتبة واسعة من المقاييس النفسية الموثوقة مع حساب تلقائي للدرجات.</p>
+                </div>
+                <div class="feat-card reveal">
+                    <div class="feat-ico">🛡️</div>
+                    <h3 data-i18n="feature_4_title">آمن وسري</h3>
+                    <p data-i18n="feature_4_desc">حماية بيانات مرضاك بأعلى معايير التشفير والخصوصية دون استثناء.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== كيف يعمل ===== -->
+    <section class="block" id="how" style="padding-top: 20px;">
+        <div class="container">
+            <div class="sec-head reveal">
+                <span class="sec-tag">رحلة العمل</span>
+                <h2>ست خطوات من العَرَض <span class="grad">إلى التعافي</span></h2>
+                <p>مسار متكامل ومترابط يبدأ بإدخال الأعراض ولا ينتهي إلا بملف مكتمل</p>
+            </div>
+            <div class="steps-grid">
+                <div class="step-card reveal"><span class="step-num">1</span><div class="step-ico">📝</div><h3>ملف المريض</h3><p>أنشئ ملفاً شاملاً لكل مريض تتحدّث بياناته مع كل جلسة.</p></div>
+                <div class="step-card reveal"><span class="step-num">2</span><div class="step-ico">🧠</div><h3>التشخيص الفارقي</h3><p>أدخل الأعراض ليقترح المحرك الاضطرابات مرتبة حسب الأرجحية.</p></div>
+                <div class="step-card reveal"><span class="step-num">3</span><div class="step-ico">🔬</div><h3>مقارنة الاضطرابات</h3><p>قارن بين الحالات المتشابهة للوصول إلى الاستنتاج الأدق.</p></div>
+                <div class="step-card reveal"><span class="step-num">4</span><div class="step-ico">📋</div><h3>تطبيق الاختبار</h3><p>طبّق المقاييس المعتمدة مباشرة داخل المنصة بسلاسة.</p></div>
+                <div class="step-card reveal"><span class="step-num">5</span><div class="step-ico">📊</div><h3>النتائج والرسوم</h3><p>درجات فورية ورسوم بيانية تُظهر تطور حالة المريض.</p></div>
+                <div class="step-card reveal"><span class="step-num">6</span><div class="step-ico">💾</div><h3>حفظ ومتابعة</h3><p>كل شيء محفوظ في السجل وجاهز لجلستك القادمة.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <section class="container reveal">
+        <div class="cta-box">
+            <h2 data-i18n="cta_title">مستعد لتجربة التشخيص الذكي؟</h2>
+            <p data-i18n="cta_desc">انضم إلى آلاف الأخصائيين الذين يثقون بمنصتنا يومياً</p>
+            <a class="btn btn-white" href="login.html"><span data-i18n="cta_btn">أنشئ حسابك مجاناً ←</span></a>
+        </div>
+    </section>
+
+    <!-- ===== التذييل ===== -->
+    <footer>
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <div class="footer-brand">
+                    <img src="logo.jpg" alt="DIAGNO-ASSIST">
+                    <div>
+                        <span class="fname">DIAGNO-ASSIST</span>
+                        <span class="fsub">للأخصائيين النفسانيين</span>
+                    </div>
+                </div>
+                <p data-i18n="footer_desc">منصة رقمية متكاملة لمساعدتك في التشخيص والاختبارات وتتبع رحلة تعافي مرضاك.</p>
+            </div>
+            <div class="footer-col">
+                <h4 data-i18n="footer_about">عن المنصة</h4>
+                <a href="#"><span data-i18n="footer_about_links">من نحن</span></a>
+                <a href="#features"><span data-i18n="footer_about_features">مميزات المنصة</span></a>
+                <a href="#how"><span data-i18n="footer_about_how">كيف يعمل</span></a>
+                <a href="pricing.html"><span data-i18n="footer_about_pricing">الأسعار</span></a>
+            </div>
+            <div class="footer-col">
+                <h4 data-i18n="footer_help">المساعدة والدعم</h4>
+                <a href="#"><span data-i18n="footer_help_faq">الأسئلة الشائعة</span></a>
+                <a href="#"><span data-i18n="footer_help_contact">تواصل معنا</span></a>
+                <a href="#"><span data-i18n="footer_help_center">مركز المساعدة</span></a>
+                <a href="#"><span data-i18n="footer_help_guide">دليل الاستخدام</span></a>
+            </div>
+            <div class="footer-col">
+                <h4 data-i18n="footer_legal">البنود القانونية</h4>
+                <a href="#"><span data-i18n="footer_legal_terms">الشروط والأحكام</span></a>
+                <a href="#"><span data-i18n="footer_legal_privacy">سياسة الخصوصية</span></a>
+                <a href="#"><span data-i18n="footer_legal_disclaimer">إخلاء المسؤولية الطبية</span></a>
+            </div>
+        </div>
+        <div class="footer-bottom container">
+            © 2026 DIAGNO-ASSIST — جميع الحقوق محفوظة
+        </div>
+    </footer>
+
+    <script>
+        // حالة تسجيل الدخول
+        (function () {
+            const btn = document.getElementById('authBtn');
+            const u = JSON.parse(localStorage.getItem('diagUser') || 'null');
+            if (u) {
+                btn.textContent = (u.isAdmin ? '👨‍💼 ' : '👤 ') + (u.isAdmin ? 'المدير' : u.name);
+                btn.onclick = () => { location.href = 'profile.html'; };
+            } else {
+                btn.onclick = () => { location.href = 'login.html'; };
+            }
+        })();
+
+        // الظهور التدريجي
+        const io = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    io.unobserve(e.target);
+                }
+            });
+        }, { threshold: .12 });
+        document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+    </script>
+
+<script src="translations.js"></script>
+<script src="i18n.js"></script>
+
+<div id="i18n-toast" class="i18n-toast"></div>
+<style>.i18n-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:#1e3a8a;color:#fff;padding:12px 28px;border-radius:12px;font-weight:700;font-size:14px;z-index:99999;transition:transform .4s cubic-bezier(.68,-.55,.27,1.55),opacity .4s;opacity:0;font-family:'Cairo',sans-serif}.i18n-toast.show{transform:translateX(-50%) translateY(0);opacity:1}</style>
+</body>
+</html>

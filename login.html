@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تسجيل الدخول | DIAGNO-ASSIST</title>
+<link rel="icon" type="image/jpeg" href="logo.jpg">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#2563EB;--primary-dark:#1D4ED8;--primary-light:#60A5FA;--navy:#12294E;--navy-dark:#0E1E38;--text-dark:#12294E;--text-mid:#41547F;--text-light:#5C6F96;--text-lighter:#7F92B5;--border:#E3ECFE;--bg:#F8FAFF;--white:#fff}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Cairo','Segoe UI',Tahoma,sans-serif;background:var(--bg);color:var(--text-dark);min-height:100vh;overflow-x:hidden}
+.bg-blob{position:fixed;border-radius:50%;filter:blur(120px);z-index:-1;opacity:.4}
+.blob-1{width:500px;height:500px;background:#c8daff;top:-200px;left:-150px}
+.blob-2{width:400px;height:400px;background:#b8ecd8;bottom:-150px;right:-100px}
+
+header.nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(16px);background:linear-gradient(120deg,#0b1c3f,#16337a 45%,#1d4ed8);border-bottom:1px solid rgba(255,255,255,.14);box-shadow:0 12px 36px rgba(11,28,63,.35)}
+header.nav .brand-name{background:linear-gradient(120deg,#fff,#bfdbfe);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+header.nav .brand-sub{color:#c8daff}
+header.nav .nav-links a{color:#d6e4ff}
+header.nav .nav-links a::after{background:linear-gradient(90deg,#22d3ee,#60a5fa)}
+header.nav .nav-links a:hover{color:#fff}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:96px;gap:24px;width:auto;max-width:none;padding-inline:3%}
+.brand{display:flex;align-items:center;gap:16px;text-decoration:none;flex-shrink:0}
+.brand-logo{width:64px;height:64px;border-radius:20px;object-fit:cover;box-shadow:0 10px 26px rgba(37,99,235,.30),0 0 0 4px rgba(37,99,235,.08)}
+.brand-text{line-height:1.15}
+.brand-name{display:block;font-size:27px;font-weight:900;letter-spacing:.5px;background:linear-gradient(120deg,#1d4ed8,#2563eb 55%,#06b6d4);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.brand-sub{display:block;font-size:13.5px;font-weight:700;letter-spacing:.3px;margin-top:3px}
+.nav-links{display:flex;gap:34px;align-items:center}
+.nav-links a{text-decoration:none;font-weight:700;font-size:15.5px;position:relative;padding:6px 0;transition:color .25s}
+.nav-links a::after{content:"";position:absolute;bottom:-2px;right:0;width:0;height:3px;border-radius:3px;transition:width .3s}
+.nav-links a:hover::after{width:100%}
+.nav-links a .ico{font-size:17px}
+.nav-cta{padding:12px 28px;font-size:15px;border-radius:14px;background:linear-gradient(135deg,#2563eb,#60a5fa);color:#fff;border:none;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 8px 24px rgba(37,99,235,.35);transition:all .25s}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(37,99,235,.45)}
+
+.auth-wrap{max-width:480px;margin:60px auto 80px;padding:0 20px}
+.auth-card{background:var(--white);border:1.5px solid var(--border);border-radius:24px;padding:40px 34px;box-shadow:0 20px 60px rgba(37,99,235,.08)}
+.auth-ico{width:72px;height:72px;border-radius:20px;margin:0 auto 18px;background:linear-gradient(135deg,var(--primary),var(--primary-light));font-size:32px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(37,99,235,.3)}
+.auth-card h1{text-align:center;font-size:26px;color:var(--text-dark);margin-bottom:6px;font-weight:900}
+.auth-card .sub{text-align:center;font-size:14px;color:var(--text-lighter);margin-bottom:28px;line-height:1.7}
+.field{margin-bottom:18px}
+.field label{display:block;font-size:14px;font-weight:700;color:var(--text-mid);margin-bottom:8px}
+.field input{width:100%;padding:13px 16px;border:2px solid var(--border);border-radius:14px;font-size:15px;font-family:inherit;color:var(--text-dark);background:var(--bg);transition:all .25s}
+.field input:focus{outline:none;border-color:var(--primary);background:var(--white);box-shadow:0 0 0 4px rgba(37,99,235,.08)}
+.auth-btn{width:100%;padding:15px;border:none;border-radius:14px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;font-size:17px;font-weight:800;cursor:pointer;box-shadow:0 8px 24px rgba(37,99,235,.35);transition:all .3s;font-family:inherit;margin-top:6px}
+.auth-btn:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(37,99,235,.45)}
+.auth-msg{margin-top:16px;display:none;text-align:center;border-radius:12px;padding:12px 16px;font-size:14px;font-weight:700;line-height:1.7}
+.auth-msg.err{display:block;background:#fbdcdc;color:#b91c1c;border:1px solid #f5a3a3}
+.auth-msg.ok{display:block;background:#dff6e8;color:#15803d;border:1px solid #a7e3c0}
+.auth-alt{text-align:center;margin-top:22px;font-size:14px;color:var(--text-lighter)}
+.auth-alt a{color:var(--primary);font-weight:800;text-decoration:none}
+
+footer{background:var(--navy-dark);color:#c8daff;margin-top:20px}
+.footer-grid{max-width:1340px;margin:0 auto;padding:50px 50px 30px;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:36px}
+.footer-col h4{color:#fff;font-size:16px;font-weight:800;margin-bottom:18px}
+.footer-col a{display:block;color:#b3a4d9;text-decoration:none;font-size:14px;margin-bottom:11px;transition:color .3s}
+.footer-col a:hover{color:#fff}
+.footer-brand{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.footer-brand img{width:42px;height:42px;border-radius:12px;object-fit:cover}
+.footer-brand .fname{color:#fff;font-weight:800;letter-spacing:1px}
+.footer-brand .fsub{display:block;font-size:11px;color:#b3a4d9;margin-top:2px}
+.footer-col p{font-size:14px;line-height:1.8;color:#c8daff}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.1);text-align:center;padding:18px;color:#7f92b5;font-size:13px}
+@media(max-width:800px){.nav-links{display:none}.nav-inner{padding-inline:4%}.footer-grid{grid-template-columns:1fr 1fr;padding:30px 18px}}
+@media(max-width:430px){
+  .nav-inner{height:auto;min-height:60px;gap:8px;padding-inline:2%}
+  .brand-logo{width:36px;height:36px;border-radius:10px}
+  .brand-name{font-size:16px}
+  .brand-sub{font-size:9px}
+  .brand{gap:6px}
+  .nav-cta{padding:7px 12px;font-size:11px;border-radius:8px}
+  .auth-card{padding:24px 16px;border-radius:16px}
+  .auth-wrap{margin:24px auto 36px;padding:0 12px}
+  .auth-card h1{font-size:20px}
+  .bg-blob{display:none}
+  .footer-grid{grid-template-columns:1fr;padding:22px 14px;gap:16px}
+}
+</style>
+</head>
+<body>
+<div class="bg-blob blob-1"></div>
+<div class="bg-blob blob-2"></div>
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <img class="brand-logo" src="logo.jpg" alt="DIAGNO-ASSIST">
+      <span class="brand-text">
+        <span class="brand-name">DIAGNO-ASSIST</span>
+        <span class="brand-sub" data-i18n="brand_sub">للأخصائيين النفسيين</span>
+      </span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html"><span class="ico">🏠</span> <span data-i18n="nav_home">الرئيسية</span></a>
+      <a href="index.html#how"><span class="ico">🔬</span> كيف يعمل</a>
+      <a href="index.html#features"><span class="ico">🩺</span> المميزات</a>
+      <a href="pricing.html"><span class="ico">💰</span> <span data-i18n="nav_pricing">الأسعار</span></a>
+    </nav>
+    <button class="nav-cta" id="authBtn">تسجيل الدخول</button>
+  </div>
+</header>
+<div class="auth-wrap">
+<div class="auth-card">
+<div class="auth-ico">🔐</div>
+<h1 data-i18n="login_title">تسجيل الدخول</h1>
+<p class="sub" data-i18n="login_sub">أدخل بيانات حسابك لتتمكن من استخدام المنصة</p>
+<div class="field"><label data-i18n="login_username">اسم المستخدم أو البريد الإلكتروني</label><input type="text" id="loginId"></div>
+<div class="field"><label data-i18n="login_password">كلمة المرور</label><input type="password" id="loginPass"></div>
+<button class="auth-btn" id="loginBtn"><span data-i18n="login_btn">دخول ←</span></button>
+<div class="auth-msg" id="loginMsg"></div>
+<div class="auth-alt"><span data-i18n="login_no_account">ليس لديك حساب</span> <a href="register.html"><span data-i18n="login_register_link">أنشئ حسابًا جديدًا ←</span></a></div>
+</div>
+</div>
+<footer>
+<div class="footer-grid">
+<div class="footer-col">
+<div class="footer-brand"><img src="logo.jpg" alt="DIAGNO-ASSIST"><div><span class="fname">DIAGNO-ASSIST</span><span class="fsub">للأخصائيين النفسانيين</span></div></div>
+<p>منصة رقمية متكاملة لمساعدتك في التشخيص والاختبارات وتتبع رحلة تعافي مرضاك.</p>
+</div>
+<div class="footer-col"><h4>عن المنصة</h4><a href="#">من نحن</a><a href="#">مميزات المنصة</a><a href="#">كيف يعمل</a><a href="#">الأسعار</a><a href="#">وظائف</a></div>
+<div class="footer-col"><h4>المساعدة والدعم</h4><a href="#">الأسئلة الشائعة</a><a href="#">تواصل معنا</a><a href="#">مركز المساعدة</a><a href="#">دليل الاستخدام</a><a href="#">الحالة التقنية</a></div>
+<div class="footer-col"><h4>البنود القانونية</h4><a href="#">الشروط والأحكام</a><a href="#">سياسة الخصوصية</a><a href="#">سياسة ملفات تعريف الارتباط</a><a href="#">إخلاء المسؤولية الطبية</a><a href="#">سياسة الاسترداد</a></div>
+</div>
+<div class="footer-bottom">© 2026 DIAGNO-ASSIST — جميع الحقوق محفوظة</div>
+</footer>
+<script src="translations.js"></script>
+<script src="i18n.js"></script>
+<script>
+var users=JSON.parse(localStorage.getItem('diagUsers')||'[]');
+var msg=document.getElementById('loginMsg');
+document.getElementById('loginBtn').addEventListener('click',function(){
+var id=document.getElementById('loginId').value.trim();
+var pass=document.getElementById('loginPass').value.trim();
+if(!id||!pass){msg.className='auth-msg err';msg.textContent='يرجى إدخال اسم المستخدم وكلمة المرور.';return}
+if(id.toLowerCase()==='admin yasser'&&pass==='0912'){
+var admin={name:'ياسر (مدير المنصة)',email:'admin@diagno-assist.com',username:'ADMIN YASSER',password:'0912',specialty:'أخصائي نفسي',state:'الجزائر',isAdmin:true};
+if(!users.some(function(u){return u.username.toLowerCase()==='admin yasser'})){users.push(admin);localStorage.setItem('diagUsers',JSON.stringify(users))}
+localStorage.setItem('diagUser',JSON.stringify(admin));msg.className='auth-msg ok';msg.textContent='✓ مرحبًا بك يا مدير '+admin.name+' — جاري التحويل...';
+setTimeout(function(){window.location.href='pricing.html'},900);return}
+if(!users.length){msg.className='auth-msg err';msg.textContent='لا يوجد حساب بهذا الاسم — قم بإنشاء حساب أولاً.';return}
+var user=users.find(function(u){return(u.username.toLowerCase()===id.toLowerCase()||u.email.toLowerCase()===id.toLowerCase())&&u.password===pass});
+if(!user){msg.className='auth-msg err';msg.textContent='خطأ في اسم المستخدم أو كلمة المرور.';return}
+localStorage.setItem('diagUser',JSON.stringify(user));msg.className='auth-msg ok';msg.textContent='✓ مرحبًا بك '+user.name+' — جاري التحويل...';
+setTimeout(function(){window.location.href='pricing.html'},900)});
+</script>
+<script>
+(function(){
+  var btn=document.getElementById('authBtn');
+  if(!btn)return;
+  var u=JSON.parse(localStorage.getItem('diagUser')||'null');
+  if(u){
+    btn.textContent=(u.isAdmin?'👨‍💼 ':'👤 ')+(u.isAdmin?'المدير':u.name);
+    btn.onclick=function(){location.href='profile.html'};
+  }else{
+    btn.onclick=function(){location.href='login.html'};
+  }
+})();
+</script>
+<div id="i18n-toast" class="i18n-toast"></div>
+<style>.i18n-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:#1e3a8a;color:#fff;padding:12px 28px;border-radius:12px;font-weight:700;font-size:14px;z-index:99999;transition:transform .4s cubic-bezier(.68,-.55,.27,1.55),opacity .4s;opacity:0;font-family:'Cairo',sans-serif}.i18n-toast.show{transform:translateX(-50%) translateY(0);opacity:1}</style>
+</body>
+</html>

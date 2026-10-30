@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الملف الشخصي | DIAGNO-ASSIST</title>
+<link rel="icon" type="image/jpeg" href="logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="translations.js"></script>
+<script src="i18n.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--blue:#2563eb;--blue-deep:#1d4ed8;--blue-light:#60a5fa;--sky:#06b6d4;--ink:#0b1c3f;--muted:#5b6b8c;--line:#e3ecfe;--bg:#f0f4f8;--white:#fff;--danger:#dc2626;--danger-bg:#fef2f2;--danger-border:#fecaca;--success:#16a34a;--success-bg:#f0fdf4;--success-border:#bbf7d0;--radius:16px}
+body{font-family:'Cairo','Segoe UI',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;overflow-x:hidden}
+
+/* ===== NAVBAR ===== */
+header.nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(16px);background:linear-gradient(120deg,#0b1c3f,#16337a 45%,#1d4ed8);border-bottom:1px solid rgba(255,255,255,.14);box-shadow:0 12px 36px rgba(11,28,63,.35)}
+header.nav .brand-name{background:linear-gradient(120deg,#fff,#bfdbfe);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+header.nav .brand-sub{color:#c8daff}
+header.nav .nav-links a{color:#d6e4ff}
+header.nav .nav-links a::after{background:linear-gradient(90deg,#22d3ee,#60a5fa)}
+header.nav .nav-links a:hover{color:#fff}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:96px;gap:24px;width:auto;max-width:none;padding-inline:3%}
+.brand{display:flex;align-items:center;gap:16px;text-decoration:none;flex-shrink:0}
+.brand-logo{width:64px;height:64px;border-radius:20px;object-fit:cover;box-shadow:0 10px 26px rgba(37,99,235,.30),0 0 0 4px rgba(37,99,235,.08)}
+.brand-text{line-height:1.15}
+.brand-name{display:block;font-size:27px;font-weight:900;letter-spacing:.5px;background:linear-gradient(120deg,#1d4ed8,#2563eb 55%,#06b6d4);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.brand-sub{display:block;font-size:13.5px;font-weight:700;letter-spacing:.3px;margin-top:3px}
+.nav-links{display:flex;gap:34px;align-items:center}
+.nav-links a{text-decoration:none;font-weight:700;font-size:15.5px;position:relative;padding:6px 0;transition:color .25s}
+.nav-links a::after{content:"";position:absolute;bottom:-2px;right:0;width:0;height:3px;border-radius:3px;transition:width .3s}
+.nav-links a:hover::after{width:100%}
+.nav-links a .ico{font-size:17px}
+.nav-cta{padding:12px 28px;font-size:15px;border-radius:14px;background:linear-gradient(135deg,#2563eb,#60a5fa);color:#fff;border:none;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 8px 24px rgba(37,99,235,.35);transition:all .25s}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(37,99,235,.45)}
+
+/* ===== HERO HEADER ===== */
+.hero{background:linear-gradient(135deg,#0b1c3f 0%,#16337a 50%,#1d4ed8 100%);padding:48px 20px 56px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+.hero-inner{position:relative;z-index:1;max-width:800px;margin:0 auto}
+.avatar-wrap{position:relative;display:inline-block;margin-bottom:20px}
+.avatar{width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.2);border:4px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:48px;font-weight:900;color:#fff;cursor:pointer;transition:all .3s;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.2)}
+.avatar:hover{border-color:#fff;transform:scale(1.05);box-shadow:0 12px 40px rgba(0,0,0,.3)}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.avatar-upload{position:absolute;bottom:4px;left:4px;width:36px;height:36px;background:var(--blue);border:3px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;box-shadow:0 4px 12px rgba(37,99,235,.4)}
+.avatar-upload:hover{background:var(--blue-deep);transform:scale(1.1)}
+.avatar-upload svg{width:18px;height:18px;color:#fff}
+.hero-name{color:#fff;font-size:28px;font-weight:900;margin-bottom:4px}
+.hero-role{color:rgba(255,255,255,.8);font-size:15px;font-weight:600;margin-bottom:8px}
+.hero-since{color:rgba(255,255,255,.6);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px}
+.hero-since svg{width:16px;height:16px}
+
+/* ===== PROFILE CONTENT ===== */
+.profile-section{max-width:720px;margin:-32px auto 40px;padding:0 16px;position:relative;z-index:2}
+
+/* ===== CARDS ===== */
+.card{background:#fff;border-radius:var(--radius);box-shadow:0 1px 8px rgba(0,0,0,.06);overflow:hidden;margin-bottom:20px;transition:transform .3s,box-shadow .3s;border:1px solid var(--line)}
+.card:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(37,99,235,.1)}
+.card-header{padding:20px 24px 0;display:flex;align-items:center;gap:12px}
+.card-header .icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.card-header .icon svg{width:22px;height:22px}
+.card-header .icon.blue{background:linear-gradient(135deg,#dbeafe,#bfdbfe);color:var(--blue)}
+.card-header .icon.green{background:linear-gradient(135deg,#d1fae5,#a7f3d0);color:var(--success)}
+.card-header .icon.orange{background:linear-gradient(135deg,#ffedd5,#fed7aa);color:#ea580c}
+.card-header .icon.purple{background:linear-gradient(135deg,#ede9fe,#ddd6fe);color:#7c3aed}
+.card-title{font-size:1.1rem;font-weight:800}
+.card-subtitle{font-size:.82rem;color:var(--muted);font-weight:600}
+.card-body{padding:20px 24px 24px}
+
+/* ===== FORM ELEMENTS ===== */
+.form-group{margin-bottom:18px}
+.form-label{display:block;font-size:.85rem;font-weight:700;color:var(--ink);margin-bottom:8px}
+.form-input{width:100%;padding:12px 16px;border:2px solid var(--line);border-radius:12px;font-family:inherit;font-size:.95rem;font-weight:600;color:var(--ink);background:#fafbfc;transition:all .25s;outline:none}
+.form-input:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 4px rgba(37,99,235,.1)}
+.form-input[readonly]{background:#f1f5f9;color:var(--muted);cursor:not-allowed;border-style:dashed}
+.form-input::placeholder{color:#94a3b8;font-weight:600}
+.form-hint{font-size:.78rem;color:var(--muted);margin-top:4px;font-weight:600}
+
+/* ===== BUTTONS ===== */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;cursor:pointer;font-family:inherit;font-weight:800;font-size:.95rem;padding:12px 28px;border-radius:12px;transition:all .25s;text-decoration:none}
+.btn-primary{background:linear-gradient(135deg,var(--blue),var(--blue-light));color:#fff;box-shadow:0 6px 20px rgba(37,99,235,.3)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(37,99,235,.4)}
+.btn-danger{background:var(--danger);color:#fff;box-shadow:0 6px 20px rgba(220,38,38,.3)}
+.btn-danger:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(220,38,38,.4)}
+.btn-outline{background:#fff;color:var(--blue);border:2px solid var(--blue)}
+.btn-outline:hover{background:var(--blue);color:#fff;transform:translateY(-2px)}
+.btn-block{width:100%}
+.btn svg{width:18px;height:18px}
+
+/* ===== LANGUAGE CARDS ===== */
+.lang-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.lang-option{border:2px solid var(--line);border-radius:14px;padding:16px 12px;text-align:center;cursor:pointer;transition:all .25s;background:#fafbfc;position:relative}
+.lang-option:hover{border-color:var(--blue-light);background:#f0f7ff;transform:translateY(-2px)}
+.lang-option.active{border-color:var(--blue);background:linear-gradient(135deg,#eff6ff,#dbeafe);box-shadow:0 4px 16px rgba(37,99,235,.15)}
+.lang-option.active::after{content:'✓';position:absolute;top:8px;left:8px;width:22px;height:22px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800}
+.lang-flag{font-size:32px;margin-bottom:8px;display:block}
+.lang-name{font-size:.88rem;font-weight:700;color:var(--ink);display:block}
+.lang-dir{font-size:.72rem;color:var(--muted);font-weight:600;display:block;margin-top:2px}
+
+/* ===== ACCOUNT INFO ===== */
+.info-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line)}
+.info-row:last-child{border-bottom:none}
+.info-label{font-size:.88rem;font-weight:700;color:var(--muted);display:flex;align-items:center;gap:8px}
+.info-label svg{width:18px;height:18px}
+.info-value{font-size:.92rem;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:6px}
+.status-badge{padding:4px 14px;border-radius:20px;font-size:.78rem;font-weight:800;display:inline-flex;align-items:center;gap:4px}
+.status-badge.active{background:var(--success-bg);color:var(--success);border:1px solid var(--success-border)}
+.status-badge.active::before{content:'';width:7px;height:7px;background:var(--success);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* ===== TOAST ===== */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(120px);padding:14px 28px;border-radius:14px;font-weight:800;font-size:.9rem;z-index:9999;opacity:0;transition:all .4s cubic-bezier(.68,-.55,.27,1.55);box-shadow:0 8px 32px rgba(0,0,0,.2);display:flex;align-items:center;gap:10px;font-family:'Cairo',sans-serif}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.success{background:var(--success);color:#fff}
+.toast.error{background:var(--danger);color:#fff}
+.toast.info{background:var(--blue);color:#fff}
+.toast svg{width:20px;height:20px;flex-shrink:0}
+
+/* ===== MODAL ===== */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9998;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px);padding:16px}
+.modal-overlay.show{display:flex}
+.modal{background:#fff;border-radius:var(--radius);padding:32px;max-width:420px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:modalIn .3s ease}
+@keyframes modalIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+.modal-icon{width:64px;height:64px;background:var(--danger-bg);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.modal-icon svg{width:32px;height:32px;color:var(--danger)}
+.modal-icon.blue{background:linear-gradient(135deg,#eff6ff,#dbeafe)}
+.modal-icon.blue svg{color:var(--blue)}
+.modal-title{font-size:1.2rem;font-weight:900;margin-bottom:8px}
+.modal-desc{font-size:.9rem;color:var(--muted);line-height:1.7;margin-bottom:24px}
+.modal-actions{display:flex;gap:10px}
+.modal-actions .btn{flex:1}
+
+/* ===== CALC CODE MODAL ===== */
+.code-modal{text-align:right}
+.code-modal .modal-icon{margin-inline:auto}
+.code-modal .modal-title,.code-modal .modal-desc{text-align:center}
+.code-modal .form-group{margin-bottom:14px}
+.code-modal .form-input{text-align:center;direction:ltr;font-weight:800;letter-spacing:4px;font-size:1.05rem}
+.modal-error{display:none;background:var(--danger-bg);color:var(--danger);border:1px solid var(--danger-border);border-radius:10px;padding:9px 12px;font-size:.8rem;font-weight:700;margin-bottom:14px;text-align:center}
+.modal-error.show{display:block}
+
+/* ===== FOOTER ===== */
+footer{background:var(--ink);color:rgba(255,255,255,.75);padding:48px 20px 0;margin-top:40px}
+.footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:36px;max-width:1100px;margin:0 auto}
+.footer-brand{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.footer-brand img{width:36px;height:36px;border-radius:8px}
+.footer-brand .fname{font-size:15px;font-weight:800;color:#fff;display:block}
+.footer-brand .fsub{font-size:10px;color:rgba(255,255,255,.5);font-weight:600;display:block}
+footer .footer-col p{font-size:.85rem;line-height:1.8}
+footer .footer-col h4{color:#fff;font-weight:800;margin-bottom:14px;font-size:.95rem}
+footer .footer-col a{display:block;font-size:.85rem;color:rgba(255,255,255,.6);padding:4px 0;transition:color .2s}
+footer .footer-col a:hover{color:#60a5fa}
+.footer-bottom{text-align:center;padding:20px 0;margin-top:36px;border-top:1px solid rgba(255,255,255,.1);font-size:.82rem;color:rgba(255,255,255,.4)}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:800px){
+  .nav-links{display:none}
+  .nav-inner{padding-inline:4%}
+  .hero{padding:36px 16px 44px}
+  .avatar{width:100px;height:100px;font-size:40px}
+  .hero-name{font-size:22px}
+  .hero-role{font-size:13px}
+  .profile-section{margin-top:-24px;padding:0 12px}
+  .card-header{padding:16px 18px 0}
+  .card-body{padding:16px 18px 20px}
+  .lang-grid{grid-template-columns:1fr}
+  .modal{margin:16px;padding:24px}
+  .modal-actions{flex-direction:column}
+  footer .footer-grid{grid-template-columns:1fr 1fr;gap:24px}
+  .btn{padding:10px 20px;font-size:.88rem}
+  .info-row{flex-direction:column;align-items:flex-start;gap:4px}
+}
+@media(max-width:480px){
+  footer .footer-grid{grid-template-columns:1fr}
+  .card-title{font-size:1rem}
+}
+
+/* ===== ANIMATIONS ===== */
+.fade-up{opacity:0;transform:translateY(24px);transition:all .6s cubic-bezier(.23,1,.32,1)}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+@media(max-width:430px){
+  .avatar{width:76px;height:76px;font-size:30px;border-width:3px}
+  .avatar-upload{width:26px;height:26px}
+  .avatar-upload svg{width:13px;height:13px}
+  .hero{padding:24px 12px 32px}
+  .hero-name{font-size:18px}
+  .hero-role{font-size:11px}
+  .lang-option{padding:10px 8px}
+  .lang-flag{font-size:24px}
+  .lang-name{font-size:.78rem}
+  .modal{padding:16px 12px}
+  .modal-title{font-size:1rem}
+  .modal-desc{font-size:.82rem}
+  .card-header .icon{width:32px;height:32px}
+  .card-header .icon svg{width:16px;height:16px}
+  .card-title{font-size:.9rem}
+  .card-subtitle{font-size:.72rem}
+  .status-badge{padding:3px 10px;font-size:.7rem}
+  .nav-inner{height:auto;min-height:60px;gap:8px;padding-inline:2%}
+  .brand-logo{width:36px;height:36px;border-radius:10px}
+  .brand-name{font-size:16px}
+  .brand-sub{font-size:9px}
+  .brand{gap:6px}
+  .nav-cta{padding:7px 12px;font-size:11px;border-radius:8px}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <img class="brand-logo" src="logo.jpg" alt="DIAGNO-ASSIST">
+      <span class="brand-text">
+        <span class="brand-name">DIAGNO-ASSIST</span>
+        <span class="brand-sub">للأخصائيين النفسيين</span>
+      </span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html"><span class="ico">🏠</span> الرئيسية</a>
+      <a href="index.html#how"><span class="ico">🔬</span> كيف يعمل</a>
+      <a href="index.html#features"><span class="ico">🩺</span> المميزات</a>
+      <a href="pricing.html"><span class="ico">💰</span> الأسعار</a>
+    </nav>
+    <button class="nav-cta" id="authBtn">تسجيل الدخول</button>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="avatar-wrap" onclick="document.getElementById('avatarInput').click()">
+      <div class="avatar" id="heroAvatar">
+        <span id="avatarLetter">م</span>
+        <img id="avatarImg" style="display:none" alt="avatar">
+      </div>
+      <div class="avatar-upload" title="تغيير الصورة">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+      </div>
+      <input type="file" id="avatarInput" accept="image/*" style="display:none">
+    </div>
+    <h1 class="hero-name" id="heroName">-</h1>
+    <p class="hero-role" id="heroRole">-</p>
+    <div class="hero-since">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+      <span data-i18n="member_since">عضو منذ</span> <span id="heroDate">-</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROFILE CONTENT ===== -->
+<div class="profile-section">
+
+  <!-- Card 1: المعلومات الشخصية -->
+  <div class="card fade-up">
+    <div class="card-header">
+      <div class="icon blue">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <div>
+        <div class="card-title" data-i18n="personal_info">المعلومات الشخصية</div>
+        <div class="card-subtitle" data-i18n="personal_info_sub">حدّث بياناتك الشخصية</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="form-group">
+        <label class="form-label" data-i18n="full_name">الاسم الكامل</label>
+        <input type="text" class="form-input" id="inputName" data-i18n-placeholder="full_name_ph" placeholder="أدخل اسمك الكامل">
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-i18n="email">البريد الإلكتروني</label>
+        <input type="email" class="form-input" id="inputEmail" readonly>
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-i18n="specialty">التخصص / المهنة</label>
+        <input type="text" class="form-input" id="inputSpecialty" data-i18n-placeholder="specialty_ph" placeholder="مثال: أخصائي نفسي سريري">
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-i18n="phone">رقم الهاتف</label>
+        <input type="tel" class="form-input" id="inputPhone" data-i18n-placeholder="phone_ph" placeholder="05XXXXXXXX">
+      </div>
+      <button class="btn btn-primary btn-block" id="btnSaveProfile" style="margin-top:8px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        <span data-i18n="save_changes">حفظ التغييرات</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Card 2: تغيير كلمة المرور -->
+  <div class="card fade-up">
+    <div class="card-header">
+      <div class="icon orange">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      </div>
+      <div>
+        <div class="card-title" data-i18n="change_password">تغيير كلمة المرور</div>
+        <div class="card-subtitle" data-i18n="change_password_sub">حافظ على أمان حسابك</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="form-group">
+        <label class="form-label" data-i18n="current_password">كلمة المرور الحالية</label>
+        <input type="password" class="form-input" id="inputCurrentPass" data-i18n-placeholder="current_password_ph" placeholder="أدخل كلمة المرور الحالية">
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-i18n="new_password">كلمة المرور الجديدة</label>
+        <input type="password" class="form-input" id="inputNewPass" data-i18n-placeholder="new_password_ph" placeholder="أدخل كلمة المرور الجديدة">
+      </div>
+      <div class="form-group">
+        <label class="form-label" data-i18n="confirm_password">تأكيد كلمة المرور الجديدة</label>
+        <input type="password" class="form-input" id="inputConfirmPass" data-i18n-placeholder="confirm_password_ph" placeholder="أعد إدخال كلمة المرور الجديدة">
+      </div>
+      <button class="btn btn-primary btn-block" id="btnChangePass" style="margin-top:8px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span data-i18n="update_password">تحديث كلمة المرور</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Card 3: إعدادات اللغة -->
+  <div class="card fade-up">
+    <div class="card-header">
+      <div class="icon green">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+      </div>
+      <div>
+        <div class="card-title" data-i18n="language_settings">إعدادات اللغة</div>
+        <div class="card-subtitle" data-i18n="language_settings_sub">اختر لغة الواجهة</div>
+      </div>
+    </div>
+    <div class="card-body">
+        <div class="lang-grid" id="langGrid">
+        <div class="lang-option active" data-lang="ar" onclick="setLanguage('ar')">
+          <span class="lang-flag">🇸🇦</span>
+          <span class="lang-name">العربية</span>
+          <span class="lang-dir">RTL ←</span>
+        </div>
+        <div class="lang-option" data-lang="en" onclick="setLanguage('en')">
+          <span class="lang-flag">🇺🇸</span>
+          <span class="lang-name">English</span>
+          <span class="lang-dir">→ LTR</span>
+        </div>
+        <div class="lang-option" data-lang="fr" onclick="setLanguage('fr')">
+          <span class="lang-flag">🇫🇷</span>
+          <span class="lang-name">Français</span>
+          <span class="lang-dir">→ LTR</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 4: رمز الحساب المباشر -->
+  <div class="card fade-up">
+    <div class="card-header">
+      <div class="icon orange">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7.5" cy="15.5" r="5.5"/><path d="M11.5 11.5L21 2m-4 4l3 3m-6 0l3 3"/></svg>
+      </div>
+      <div>
+        <div class="card-title" data-i18n="calc_code_title">رمز الحساب المباشر</div>
+        <div class="card-subtitle" data-i18n="calc_code_sub">الرمز المطلوب لعرض نتيجة الاختبار</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="info-row" style="border-bottom:none;padding-top:0">
+        <div class="info-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          <span data-i18n="calc_code_current">الرمز الحالي</span>
+        </div>
+        <div class="info-value"><span id="calcCodeMask" style="letter-spacing:3px">••••</span></div>
+      </div>
+      <button class="btn btn-primary btn-block" id="btnChangeCalcCode" style="margin-top:8px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="7.5" cy="15.5" r="5.5"/><path d="M11.5 11.5L21 2m-4 4l3 3m-6 0l3 3"/></svg>
+        <span data-i18n="calc_code_change">تغيير الرمز</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Card 5: معلومات الحساب -->
+  <div class="card fade-up">
+    <div class="card-header">
+      <div class="icon purple">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <div>
+        <div class="card-title" data-i18n="account_info">معلومات الحساب</div>
+        <div class="card-subtitle" data-i18n="account_info_sub">تفاصيل حسابك</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="info-row">
+        <div class="info-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span data-i18n="username">اسم المستخدم</span>
+        </div>
+        <div class="info-value" id="infoUsername">-</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          <span data-i18n="join_date">تاريخ الانضمام</span>
+        </div>
+        <div class="info-value" id="infoJoinDate">-</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <span data-i18n="account_status">حالة الحساب</span>
+        </div>
+        <div class="info-value"><span class="status-badge active" data-i18n="active">نشط</span></div>
+      </div>
+      <div style="margin-top:20px;padding-top:20px;border-top:2px solid var(--danger-bg)">
+        <button class="btn btn-danger btn-block" id="btnDeleteAccount">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+          <span data-i18n="delete_account">حذف الحساب</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-grid" style="max-width:1100px;margin:0 auto;padding:0 20px">
+    <div class="footer-col">
+      <div class="footer-brand">
+        <img src="logo.jpg" alt="DIAGNO-ASSIST">
+        <div>
+          <span class="fname">DIAGNO-ASSIST</span>
+          <span class="fsub">للأخصائيين النفسيين</span>
+        </div>
+      </div>
+      <p>منصة رقمية متكاملة لمساعدتك في التشخيص والاختبارات وتتبع رحلة تعافي مرضاك.</p>
+    </div>
+    <div class="footer-col">
+      <h4 data-i18n="footer_about">عن المنصة</h4>
+      <a href="#">من نحن</a>
+      <a href="#">مميزات المنصة</a>
+      <a href="#">كيف يعمل</a>
+      <a href="pricing.html">الأسعار</a>
+    </div>
+    <div class="footer-col">
+      <h4 data-i18n="footer_help">المساعدة والدعم</h4>
+      <a href="#">الأسئلة الشائعة</a>
+      <a href="#">تواصل معنا</a>
+      <a href="#">مركز المساعدة</a>
+      <a href="#">دليل الاستخدام</a>
+    </div>
+    <div class="footer-col">
+      <h4 data-i18n="footer_legal">البنود القانونية</h4>
+      <a href="#">الشروط والأحكام</a>
+      <a href="#">سياسة الخصوصية</a>
+      <a href="#">إخلاء المسؤولية الطبية</a>
+    </div>
+  </div>
+  <div class="footer-bottom" style="max-width:1100px;margin:0 auto;padding:20px">
+    © 2026 DIAGNO-ASSIST — جميع الحقوق محفوظة
+  </div>
+</footer>
+
+<!-- ===== DELETE CONFIRMATION MODAL ===== -->
+<div class="modal-overlay" id="deleteModal">
+  <div class="modal">
+    <div class="modal-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+    </div>
+    <h3 class="modal-title" data-i18n="delete_confirm_title">هل أنت متأكد؟</h3>
+    <p class="modal-desc" data-i18n="delete_confirm_desc">سيتم حذف حسابك وجميع بياناتك نهائياً. لا يمكن التراجع عن هذا الإجراء.</p>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeDeleteModal()" data-i18n="cancel">إلغاء</button>
+      <button class="btn btn-danger" id="btnConfirmDelete" data-i18n="confirm_delete">نعم، احذف الحساب</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CALC CODE MODAL ===== -->
+<div class="modal-overlay" id="calcCodeModal">
+  <div class="modal code-modal">
+    <div class="modal-icon blue">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7.5" cy="15.5" r="5.5"/><path d="M11.5 11.5L21 2m-4 4l3 3m-6 0l3 3"/></svg>
+    </div>
+    <h3 class="modal-title" data-i18n="calc_code_modal_title">تغيير رمز الحساب المباشر</h3>
+    <p class="modal-desc" data-i18n="calc_code_modal_desc">أدخل الرمز الحالي ثم اختر رمزًا جديدًا من 4 إلى 8 أرقام.</p>
+    <div class="modal-error" id="calcCodeError"></div>
+    <div class="form-group">
+      <label class="form-label" data-i18n="calc_code_current">الرمز الحالي</label>
+      <input type="password" class="form-input" id="inputCalcCurrentCode" inputmode="numeric" maxlength="8" autocomplete="off" data-i18n-placeholder="calc_code_current_ph" placeholder="أدخل الرمز الحالي">
+    </div>
+    <div class="form-group">
+      <label class="form-label" data-i18n="calc_code_new">الرمز الجديد</label>
+      <input type="password" class="form-input" id="inputCalcNewCode" inputmode="numeric" maxlength="8" autocomplete="off" data-i18n-placeholder="calc_code_new_ph" placeholder="الرمز الجديد (4 إلى 8 أرقام)">
+    </div>
+    <div class="form-group">
+      <label class="form-label" data-i18n="calc_code_confirm">تأكيد الرمز الجديد</label>
+      <input type="password" class="form-input" id="inputCalcConfirmCode" inputmode="numeric" maxlength="8" autocomplete="off" data-i18n-placeholder="calc_code_confirm_ph" placeholder="أعد إدخال الرمز الجديد">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" type="button" id="btnCancelCalcCode" data-i18n="cancel">إلغاء</button>
+      <button class="btn btn-primary" type="button" id="btnSaveCalcCode" data-i18n="calc_code_save">حفظ الرمز</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TOAST ===== -->
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  /* ===========================
+     STATE
+  =========================== */
+  var user = JSON.parse(localStorage.getItem('diagUser') || 'null');
+  var profile = JSON.parse(localStorage.getItem('diagProfile') || 'null');
+
+  if (!profile) {
+    profile = {
+      name: user ? (user.name || '') : '',
+      email: user ? (user.email || '') : '',
+      specialty: '',
+      phone: '',
+      avatar: '',
+      language: 'ar',
+      joinDate: user ? (user.joinDate || new Date().toISOString()) : new Date().toISOString()
+    };
+    localStorage.setItem('diagProfile', JSON.stringify(profile));
+  }
+
+  /* ===========================
+     TOAST
+  =========================== */
+  var toastTimer = null;
+  function showToast(msg, type) {
+    var toast = document.getElementById('toast');
+    var icons = {
+      success: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
+      error: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>',
+      info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>'
+    };
+    toast.innerHTML = (icons[type] || '') + msg;
+    toast.className = 'toast ' + (type || 'info');
+    clearTimeout(toastTimer);
+    requestAnimationFrame(function() {
+      toast.classList.add('show');
+    });
+    toastTimer = setTimeout(function() {
+      toast.classList.remove('show');
+    }, 3000);
+  }
+
+  /* ===========================
+     POPULATE FORMS
+  =========================== */
+  function populateProfile() {
+    document.getElementById('inputName').value = profile.name || '';
+    document.getElementById('inputEmail').value = profile.email || '';
+    document.getElementById('inputSpecialty').value = profile.specialty || '';
+    document.getElementById('inputPhone').value = profile.phone || '';
+
+    var name = (profile.name || '').trim();
+    var letter = name ? name.charAt(name.length - 1) : 'م';
+    document.getElementById('avatarLetter').textContent = letter;
+
+    if (profile.avatar) {
+      var img = document.getElementById('avatarImg');
+      img.src = profile.avatar;
+      img.style.display = 'block';
+      document.getElementById('avatarLetter').style.display = 'none';
+    }
+
+    document.getElementById('heroName').textContent = name || '-';
+    document.getElementById('heroRole').textContent = profile.specialty || (user ? (user.specialty || 'أخصائي نفسي') : 'أخصائي نفسي');
+
+    var jd = profile.joinDate ? new Date(profile.joinDate) : new Date();
+    var months = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+    document.getElementById('heroDate').textContent = jd.getDate() + ' ' + months[jd.getMonth()] + ' ' + jd.getFullYear();
+
+    document.getElementById('infoUsername').textContent = user ? (user.email || '-') : '-';
+    document.getElementById('infoJoinDate').textContent = jd.getDate() + ' ' + months[jd.getMonth()] + ' ' + jd.getFullYear();
+
+    var authBtn = document.getElementById('authBtn');
+    if (user) {
+      authBtn.textContent = (user.isAdmin ? '👨‍💼 ' : '👤 ') + (user.isAdmin ? 'المدير' : user.name);
+      authBtn.onclick = function() { location.href = 'profile.html'; };
+    } else {
+      authBtn.onclick = function() { location.href = 'login.html'; };
+    }
+  }
+
+  /* ===========================
+     SAVE PROFILE
+  =========================== */
+  document.getElementById('btnSaveProfile').addEventListener('click', function() {
+    var name = document.getElementById('inputName').value.trim();
+    var specialty = document.getElementById('inputSpecialty').value.trim();
+    var phone = document.getElementById('inputPhone').value.trim();
+
+    if (!name) {
+      showToast(t('toast_profile_error'), 'error');
+      return;
+    }
+
+    profile.name = name;
+    profile.specialty = specialty;
+    profile.phone = phone;
+    localStorage.setItem('diagProfile', JSON.stringify(profile));
+
+    populateProfile();
+    showToast(t('toast_profile_saved'), 'success');
+  });
+
+  /* ===========================
+     AVATAR UPLOAD
+  =========================== */
+  document.getElementById('avatarInput').addEventListener('change', function(e) {
+    var file = e.target.files[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) {
+      showToast('الصورة يجب أن تقل عن 2 ميجا', 'error');
+      return;
+    }
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      profile.avatar = ev.target.result;
+      localStorage.setItem('diagProfile', JSON.stringify(profile));
+      var img = document.getElementById('avatarImg');
+      img.src = ev.target.result;
+      img.style.display = 'block';
+      document.getElementById('avatarLetter').style.display = 'none';
+      showToast(t('toast_avatar_saved'), 'success');
+    };
+    reader.readAsDataURL(file);
+  });
+
+  /* ===========================
+     CHANGE PASSWORD
+  =========================== */
+  document.getElementById('btnChangePass').addEventListener('click', function() {
+    var current = document.getElementById('inputCurrentPass').value;
+    var newPass = document.getElementById('inputNewPass').value;
+    var confirm = document.getElementById('inputConfirmPass').value;
+
+    if (!current || !newPass || !confirm) {
+      showToast(t('toast_pass_empty'), 'error');
+      return;
+    }
+    if (newPass !== confirm) {
+      showToast(t('toast_pass_mismatch'), 'error');
+      return;
+    }
+    if (newPass.length < 6) {
+      showToast('كلمة المرور يجب أن تكون 6 أحرف على الأقل', 'error');
+      return;
+    }
+
+    var storedPass = user ? user.password : null;
+    if (storedPass && current !== storedPass) {
+      showToast(t('toast_pass_error'), 'error');
+      return;
+    }
+
+    if (user) {
+      user.password = newPass;
+      localStorage.setItem('diagUser', JSON.stringify(user));
+    }
+
+    document.getElementById('inputCurrentPass').value = '';
+    document.getElementById('inputNewPass').value = '';
+    document.getElementById('inputConfirmPass').value = '';
+
+    showToast(t('toast_pass_saved'), 'success');
+  });
+
+  /* ===========================
+     CALC CODE SETTINGS
+  =========================== */
+  var DEFAULT_CALC_CODE = '0912';
+
+  function getStoredCalcCode() {
+    var code = '';
+    try { code = (localStorage.getItem('diagCalcCode') || '').trim(); } catch (e) { code = ''; }
+    return code || DEFAULT_CALC_CODE;
+  }
+
+  var calcCodeModal = document.getElementById('calcCodeModal');
+  var calcCodeError = document.getElementById('calcCodeError');
+  var inputCalcCurrentCode = document.getElementById('inputCalcCurrentCode');
+  var inputCalcNewCode = document.getElementById('inputCalcNewCode');
+  var inputCalcConfirmCode = document.getElementById('inputCalcConfirmCode');
+
+  function showCalcCodeError(msg) {
+    calcCodeError.textContent = msg;
+    calcCodeError.classList.add('show');
+  }
+
+  function clearCalcCodeError() {
+    calcCodeError.textContent = '';
+    calcCodeError.classList.remove('show');
+  }
+
+  function closeCalcCodeModal() {
+    calcCodeModal.classList.remove('show');
+    inputCalcCurrentCode.value = '';
+    inputCalcNewCode.value = '';
+    inputCalcConfirmCode.value = '';
+    clearCalcCodeError();
+  }
+
+  document.getElementById('btnChangeCalcCode').addEventListener('click', function() {
+    inputCalcCurrentCode.value = '';
+    inputCalcNewCode.value = '';
+    inputCalcConfirmCode.value = '';
+    clearCalcCodeError();
+    calcCodeModal.classList.add('show');
+    setTimeout(function() { inputCalcCurrentCode.focus(); }, 80);
+  });
+
+  document.getElementById('btnCancelCalcCode').addEventListener('click', closeCalcCodeModal);
+
+  document.getElementById('btnSaveCalcCode').addEventListener('click', function() {
+    var current = inputCalcCurrentCode.value.trim();
+    var newCode = inputCalcNewCode.value.trim();
+    var confirmCode = inputCalcConfirmCode.value.trim();
+
+    if (!current || !newCode || !confirmCode) {
+      showCalcCodeError(t('calc_code_err_empty'));
+      return;
+    }
+    if (current !== getStoredCalcCode()) {
+      showCalcCodeError(t('calc_code_err_wrong'));
+      inputCalcCurrentCode.value = '';
+      inputCalcCurrentCode.focus();
+      return;
+    }
+    if (!/^\d{4,8}$/.test(newCode)) {
+      showCalcCodeError(t('calc_code_err_length'));
+      inputCalcNewCode.focus();
+      return;
+    }
+    if (newCode !== confirmCode) {
+      showCalcCodeError(t('calc_code_err_mismatch'));
+      inputCalcConfirmCode.value = '';
+      inputCalcConfirmCode.focus();
+      return;
+    }
+
+    localStorage.setItem('diagCalcCode', newCode);
+    closeCalcCodeModal();
+    showToast(t('calc_code_saved'), 'success');
+  });
+
+  [inputCalcCurrentCode, inputCalcNewCode, inputCalcConfirmCode].forEach(function(input) {
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        document.getElementById('btnSaveCalcCode').click();
+      }
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeCalcCodeModal();
+      }
+    });
+  });
+
+  calcCodeModal.addEventListener('click', function(e) {
+    if (e.target === calcCodeModal) closeCalcCodeModal();
+  });
+
+  /* ===========================
+     DELETE ACCOUNT
+  =========================== */
+  document.getElementById('btnDeleteAccount').addEventListener('click', function() {
+    document.getElementById('deleteModal').classList.add('show');
+  });
+
+  window.closeDeleteModal = function() {
+    document.getElementById('deleteModal').classList.remove('show');
+  };
+
+  document.getElementById('btnConfirmDelete').addEventListener('click', function() {
+    localStorage.removeItem('diagUser');
+    localStorage.removeItem('diagProfile');
+    localStorage.removeItem('diagLang');
+    showToast(t('toast_account_deleted'), 'success');
+    setTimeout(function() {
+      window.location.href = 'index.html';
+    }, 1500);
+  });
+
+  document.getElementById('deleteModal').addEventListener('click', function(e) {
+    if (e.target === this) closeDeleteModal();
+  });
+
+  /* ===========================
+     SCROLL ANIMATIONS
+  =========================== */
+  var io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(function(el) { io.observe(el); });
+
+  /* ===========================
+     INIT
+  =========================== */
+  applyLanguage();
+  populateProfile();
+
+})();
+</script>
+
+</body>
+</html>
